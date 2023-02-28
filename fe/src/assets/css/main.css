@@ -1,0 +1,24 @@
+:root {
+    --body-margin: 32px;
+    --row-distance: 10px;
+    --content-padding: 16px;
+    --header-height: 60px;
+
+    --ft-color-0: #d4d4d4;
+    --ft-color-1: white;
+
+    --bg-color-0: #081326;
+    --bg-color-1: #091629;
+}
+
+html {
+    background-color: var(--bg-color-0, rgb(124, 124, 124));
+}
+
+body {
+    margin: 0;
+}
+
+.main-content {
+    padding: var(--content-padding, 16px);
+}
