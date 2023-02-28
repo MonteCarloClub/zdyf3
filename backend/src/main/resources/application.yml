@@ -1,0 +1,43 @@
+logging:
+  config: classpath:logback-spring.xml
+atp:
+  devMode:
+    peerName: peer
+    ordererName: orderer
+#    peerUrl: grpc://192.168.31.128:7051
+#    peerUrl: grpc://8.133.190.119:7051
+#    peerUrl: grpc://127.0.0.1:7051
+    peerUrl: grpc://10.176.40.46:7051
+#    peerUrl: grpc://10.177.88.201:7051
+#    ordererUrl: grpc://192.168.31.128:7050
+#    ordererUrl: grpc://8.133.190.119:7050
+    ordererUrl: grpc://10.176.40.46:7050
+#    ordererUrl: grpc://10.177.88.201:7050
+    channelName: myc
+ #   baseUrl: http://101.201.49.180:8000
+    baseUrl: http://47.94.164.138:8000
+
+  path:
+    dabeUser: atp/user/
+    privateKey: atp/priKey/
+    publicKey: atp/pubKey/
+    cert: atp/cert/
+    shareData: atp/data/
+    encryptData: atp/data/enc/
+    cipherData: atp/data/cipher/
+
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+
+  datasource:
+    url: jdbc:mysql://10.176.40.46:3306/zdyf?serverTimezone=GMT&useSSL=false
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+server:
+  servlet:
+    context-path: /abe

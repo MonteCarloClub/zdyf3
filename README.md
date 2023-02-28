@@ -1,13 +1,14 @@
-# Abe-trustPlatform
+# 重点研发计划-课题三【2019YFB2101703】
 
-Java version: JDK 8
+课题任务书和相关文档见：`/doc`
+
+## 代码
+
+本仓库由以下三部分源码组成
+
+1. 区块链：`/blockchain`
+2. 后端：`/backend`
+3. 前端：`fe`
 
 
 
-包含前端，及后端源代码；
-
-
-
-## 编译打包
-
-[IDEA打包jar包_萧篱衣的博客-CSDN博客_ideajar包](https://blog.csdn.net/weixin_47272508/article/details/125974386)
