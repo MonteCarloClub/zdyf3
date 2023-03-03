@@ -247,6 +247,7 @@ func getUser(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 func create(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	log.Println("create new user start")
 
+
 	var requestStr = args[0]
 	initRequest := new(request.UserInitRequest)
 	if err := json.Unmarshal([]byte(requestStr), initRequest); err != nil {
@@ -258,19 +259,25 @@ func create(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 		log.Println(err.Error())
 		return shim.Error(err.Error())
 	}
+	log.Println("111111111111111111111111111111111111111111111")
 	if err = utils.VerifySign(string(pj), initRequest.PublicKey, initRequest.Sign); err != nil {
 		log.Println(err.Error())
 		return shim.Error(err.Error())
 	}
+	log.Println("222222222222222222222222222222")
 
 	uid := initRequest.Uid
+	log.Println("uiduiduid")
+	log.Println(uid)
 	publicKey := initRequest.PublicKey
 	upk := initRequest.UPK
 
+	log.Println("222222222222222222222222")
 	if err := utils.CheckId(uid); err != nil {
 		log.Println(err.Error())
 		return shim.Error(err.Error())
 	}
+	log.Println("22222222222222222222222")
 
 	if utils.ExistId(uid, stub) {
 		log.Printf("uid %s already exists\n", uid)
@@ -287,11 +294,15 @@ func create(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 		return shim.Error("publicKey already exists")
 	}
 
+	log.Println("useruser")
 	user = data.NewUser(uid, publicKey, upk)
+	log.Println(user)
+	log.Println("33333333333333333333333333333")
 	if err = data.SaveUser(user, stub); err != nil {
 		log.Println(err.Error())
 		return shim.Error(err.Error())
 	}
+	log.Println("333333333333333333333")
 
 	return shim.Success(nil)
 }

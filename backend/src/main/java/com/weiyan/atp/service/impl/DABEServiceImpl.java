@@ -146,6 +146,8 @@ public class DABEServiceImpl implements DABEService {
             return null;
         }
         String userJson = JsonProviderHolder.JACKSON.toJsonString(user);
+        System.out.println("22222222222");
+        System.out.println(userJson);
         ChaincodeResponse response = chaincodeService.query(
                 ChaincodeTypeEnum.DABE, "/user/declareAttr",
                 new ArrayList<>(Arrays.asList(userJson, attrName)));

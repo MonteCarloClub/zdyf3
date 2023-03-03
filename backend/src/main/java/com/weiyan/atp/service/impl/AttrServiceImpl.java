@@ -108,7 +108,9 @@ public class AttrServiceImpl implements AttrService {
         Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
         Preconditions.checkNotNull(user.getName());
         Preconditions.checkNotNull(user.getApkMap().get(request.getAttrName()), "no attr");
-
+        try{
+        String priKey = FileUtils.readFileToString(new File(priKeyPath + request.getFileName()),
+                StandardCharsets.UTF_8);
         DeclareUserAttrCCRequest ccRequest =
                 DeclareUserAttrCCRequest.builder()
                         .uid(user.getName())
@@ -117,8 +119,12 @@ public class AttrServiceImpl implements AttrService {
                                 : user.getName() + ":" + request.getAttrName())
                         .apk(user.getApkMap().get(request.getAttrName()).getGy())
                         .build();
+        CCUtils.sign(ccRequest, priKey);
         return chaincodeService.invoke(
                 ChaincodeTypeEnum.TRUST_PLATFORM, "/user/declareAttr", ccRequest);
+        } catch (IOException e) {
+            throw new BaseException(e.getMessage());
+        }
     }
 
     @Override
@@ -172,20 +178,41 @@ public class AttrServiceImpl implements AttrService {
 
     @Override
     public ChaincodeResponse applyAttr2(ApplyUserAttrRequest request) {
+        System.out.println(request.toString());
         DABEUser user = dabeService.getUser(request.getFileName());
         Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
         Preconditions.checkNotNull(user.getName());
 
-        ApplyUserAttrCCRequest ccRequest = ApplyUserAttrCCRequest.builder()
-                .uid(user.getName())
-                .toUid(request.getToUserName())
-                .toOrgId(request.getToOrgName())
-                .isPublic(true)
-                .attrName(request.getAttrName())
-                .remark(request.getRemark())
-                .build();
-        return chaincodeService.invoke(
-                ChaincodeTypeEnum.TRUST_PLATFORM, "/user/applyAttr", ccRequest);
+//        ApplyUserAttrCCRequest ccRequest = ApplyUserAttrCCRequest.builder()
+//                .uid(user.getName())
+//                .toUid(request.getToUserName())
+//                .toOrgId(request.getToOrgName())
+//                .isPublic(true)
+//                .attrName(request.getAttrName())
+//                .remark(request.getRemark())
+//                .build();
+//        System.out.println("testtesttest");
+//        System.out.println(ccRequest.toString());
+//        return chaincodeService.invoke(
+//                ChaincodeTypeEnum.TRUST_PLATFORM, "/user/applyAttr", ccRequest);
+        try {
+            String priKey = FileUtils.readFileToString(
+                    new File(priKeyPath + request.getFileName()),
+                    StandardCharsets.UTF_8);
+            ApplyUserAttrCCRequest ccRequest = ApplyUserAttrCCRequest.builder()
+                    .uid(user.getName())
+                    .toUid(request.getToUserName())
+                    .toOrgId(request.getToOrgName())
+                    .isPublic(request.getIsPublic())
+                    .attrName(request.getAttrName())
+                    .remark(request.getRemark())
+                    .build();
+            CCUtils.sign(ccRequest, priKey);
+            return chaincodeService.invoke(
+                    ChaincodeTypeEnum.TRUST_PLATFORM, "/user/applyAttr", ccRequest);
+        } catch (IOException e) {
+            throw new BaseException(e.getMessage());
+        }
     }
 
     //撤销他人属性
@@ -243,6 +270,10 @@ public class AttrServiceImpl implements AttrService {
     @Override
     public ChaincodeResponse queryAttrApply(String toUid, String toOrgId,
                                             String userName, AttrApplyStatusEnum status) {
+        System.out.println("ooooooooooooooooooooooooo");
+        System.out.println(userName);
+        userName = "fuser2";
+        status = AttrApplyStatusEnum.PENDING;
         QueryUserAttrApplyCCRequest ccRequest = QueryUserAttrApplyCCRequest.builder()
             .fromUid(userName)
             .toUid(toUid)

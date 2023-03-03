@@ -24,4 +24,15 @@ public class ApplyUserAttrCCRequest extends BaseCCRequest {
     private String attrName;
 
     private String remark;
+
+    @Override
+    public String toString() {
+        return "ApplyUserAttrCCRequest{" +
+                "toUid='" + toUid + '\'' +
+                ", toOrgId='" + toOrgId + '\'' +
+                ", isPublic=" + isPublic +
+                ", attrName='" + attrName + '\'' +
+                ", remark='" + remark + '\'' +
+                '}';
+    }
 }
