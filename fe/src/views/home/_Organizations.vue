@@ -44,6 +44,7 @@ export default {
   padding: 32px 0;
   margin: 0 16px;
   text-align: center;
+  color: var(--ft-color-2, rgb(63, 63, 63))
 }
 
 .grid-entry img {

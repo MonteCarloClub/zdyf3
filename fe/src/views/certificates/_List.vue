@@ -188,7 +188,7 @@ export default {
 <style scoped>
 .content {
   padding: 16px;
-  background-color: var(--bg-color-1, #d4d4d4);
+  background-color: var(--bg-color-0, white);
 }
 
 .wer {

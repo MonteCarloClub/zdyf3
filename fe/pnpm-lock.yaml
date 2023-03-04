@@ -11,6 +11,7 @@ specifiers:
   element-ui: ^2.15.6
   eslint: ^6.7.2
   eslint-plugin-vue: ^6.2.2
+  shebang-command: ^2.0.0
   vue: ^2.6.11
   vue-router: 3.0.7
   vue-template-compiler: ^2.6.11
@@ -19,6 +20,7 @@ dependencies:
   axios: 0.24.0
   core-js: registry.npmmirror.com/core-js/3.20.2
   element-ui: 2.15.6_vue@2.6.14
+  shebang-command: 2.0.0
   vue: registry.npmmirror.com/vue/2.6.14
   vue-router: 3.0.7_vue@2.6.14
 
@@ -226,6 +228,19 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
+    dev: false
+
+  /follow-redirects/1.14.6_debug@4.3.3:
+    resolution: {integrity: sha512-fhUl5EwSJbbl8AR+uYL2KQDxLkdSjZGR36xy46AO7cOMTrCMON6Sa28FmAnC2tRTDbd/Uuzz3aJBv7EBN7JH8A==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: registry.npmmirror.com/debug/4.3.3
+    dev: true
 
   /fsevents/1.2.13:
     resolution: {integrity: sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==}
@@ -315,6 +330,28 @@ packages:
   /resize-observer-polyfill/1.5.1:
     resolution: {integrity: sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg==}
     dev: false
+
+  /shebang-command/1.2.0:
+    resolution: {integrity: sha512-EV3L1+UQWGor21OmnvojK36mhg+TyIKDh3iFBKBohr5xeXIhNBcx8oWdgkTEEQ+BEFFYdLRuqMfd5L84N1V5Vg==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      shebang-regex: 1.0.0
+    dev: true
+
+  /shebang-command/2.0.0:
+    resolution: {integrity: sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==}
+    engines: {node: '>=8'}
+    dependencies:
+      shebang-regex: 3.0.0
+
+  /shebang-regex/1.0.0:
+    resolution: {integrity: sha512-wpoSFAxys6b2a2wHZ1XpDSgD7N9iVjg29Ph9uV/uaP9Ex/KXlkTZTeddxDPSYQpgvzKLGJke2UU0AzoGCjNIvQ==}
+    engines: {node: '>=0.10.0'}
+    dev: true
+
+  /shebang-regex/3.0.0:
+    resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
+    engines: {node: '>=8'}
 
   /supports-color/7.2.0:
     resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}
@@ -1955,7 +1992,7 @@ packages:
     version: 5.1.0
     dependencies:
       lru-cache: registry.nlark.com/lru-cache/4.1.5
-      shebang-command: registry.nlark.com/shebang-command/1.2.0
+      shebang-command: 1.2.0
       which: registry.nlark.com/which/1.3.1
     dev: true
 
@@ -1968,7 +2005,7 @@ packages:
       nice-try: registry.nlark.com/nice-try/1.0.5
       path-key: registry.nlark.com/path-key/2.0.1
       semver: registry.nlark.com/semver/5.7.1
-      shebang-command: registry.nlark.com/shebang-command/1.2.0
+      shebang-command: 1.2.0
       which: registry.nlark.com/which/1.3.1
     dev: true
 
@@ -1979,7 +2016,7 @@ packages:
     engines: {node: '>= 8'}
     dependencies:
       path-key: registry.nlark.com/path-key/3.1.1
-      shebang-command: registry.nlark.com/shebang-command/2.0.0
+      shebang-command: 2.0.0
       which: registry.nlark.com/which/2.0.2
     dev: true
 
@@ -3278,7 +3315,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: registry.nlark.com/eventemitter3/4.0.7
-      follow-redirects: 1.14.6
+      follow-redirects: 1.14.6_debug@4.3.3
       requires-port: registry.nlark.com/requires-port/1.0.0
     transitivePeerDependencies:
       - debug
@@ -5697,38 +5734,6 @@ packages:
     dependencies:
       inherits: registry.nlark.com/inherits/2.0.4
       safe-buffer: registry.nlark.com/safe-buffer/5.2.1
-    dev: true
-
-  registry.nlark.com/shebang-command/1.2.0:
-    resolution: {integrity: sha1-RKrGW2lbAzmJaMOfNj/uXer98eo=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/shebang-command/download/shebang-command-1.2.0.tgz}
-    name: shebang-command
-    version: 1.2.0
-    engines: {node: '>=0.10.0'}
-    dependencies:
-      shebang-regex: registry.nlark.com/shebang-regex/1.0.0
-    dev: true
-
-  registry.nlark.com/shebang-command/2.0.0:
-    resolution: {integrity: sha1-zNCvT4g1+9wmW4JGGq8MNmY/NOo=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/shebang-command/download/shebang-command-2.0.0.tgz}
-    name: shebang-command
-    version: 2.0.0
-    engines: {node: '>=8'}
-    dependencies:
-      shebang-regex: registry.nlark.com/shebang-regex/3.0.0
-    dev: true
-
-  registry.nlark.com/shebang-regex/1.0.0:
-    resolution: {integrity: sha1-2kL0l0DAtC2yypcoVxyxkMmO/qM=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/shebang-regex/download/shebang-regex-1.0.0.tgz}
-    name: shebang-regex
-    version: 1.0.0
-    engines: {node: '>=0.10.0'}
-    dev: true
-
-  registry.nlark.com/shebang-regex/3.0.0:
-    resolution: {integrity: sha1-rhbxZE2HPsrYQ7AwexQzYtTEIXI=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/shebang-regex/download/shebang-regex-3.0.0.tgz}
-    name: shebang-regex
-    version: 3.0.0
-    engines: {node: '>=8'}
     dev: true
 
   registry.nlark.com/side-channel/1.0.4:

@@ -53,7 +53,7 @@ a {
 }
 
 .tab {
-  color: var(--ft-color-0, #d4d4d4);
+  color: var(--ft-color-1, gray);
   padding: 12px 0;
   border-radius: 4px;
   transition: all 0.2s ease;
@@ -62,12 +62,12 @@ a {
 
 .current {
   padding-left: 12px;
-  color: var(--ft-color-1, #d4d4d4);
+  color: var(--ft-color-0, black);
 }
 
 .tab:hover {
   padding-left: 12px;
-  color: var(--ft-color-1, #d4d4d4);
+  color: var(--ft-color-0, black);
   cursor: pointer;
 }
 

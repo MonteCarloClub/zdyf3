@@ -43,11 +43,11 @@ export default {
 
 <style scoped>
 section:nth-child(even) {
-  background-color: var(--bg-color-0, #081326);
+  background-color: var(--bg-color-0, white);
 }
 
 section:nth-child(odd) {
-  background-color: var(--bg-color-1, #091629);
+  background-color: var(--bg-color-2, #f1f1f2);
 }
 </style>
 
@@ -61,10 +61,6 @@ section:nth-child(odd) {
 
 .section {
   padding: 36px var(--body-margin, 32px);
-}
-
-.section > div{
-  filter: invert(1);
 }
 
 .entry-title {

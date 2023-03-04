@@ -49,7 +49,6 @@ export default {
   width: 480px;
   justify-self: end;
   position: relative;
-  filter: invert(1);
 }
 
 .image-box::before {
