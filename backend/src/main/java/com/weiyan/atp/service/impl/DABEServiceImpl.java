@@ -75,9 +75,16 @@ public class DABEServiceImpl implements DABEService {
         try {
             String filePath = userPath + fileName;
             String resource = FileUtils.readFileToString(new File(filePath), StandardCharsets.UTF_8);
+            System.out.println(resource);
             DABEUser user = JsonProviderHolder.JACKSON.parse(resource, DABEUser.class);
+            System.out.println("sorryyyyyyyy");
             String hash = SecurityUtils.md5(password);
+            System.out.println(user.getPassword());
+            boolean ans = user.getPassword().equals(hash);
+            System.out.println(ans);
+            System.out.println("goodddddd");
             if (!user.getPassword().equals(hash)) {
+                System.out.println("qaqaqaqaqaqaq");
                 return null;
             }
             return user;

@@ -155,22 +155,32 @@ public class ContentServiceImpl implements ContentService {
         String encryptedContent = getEncryptedContent(request);
         DABEUser user = dabeService.getUser(request.getFileName());
         Preconditions.checkNotNull(user.getName());
-
+        try {
+            String priKey = FileUtils.readFileToString(
+                    new File(priKeyPath + request.getFileName()),
+                    StandardCharsets.UTF_8);
         ShareContentCCRequest shareContentCCRequest = ShareContentCCRequest.builder()
                 .uid(user.getName())
                 .tags(request.getTags())
-                //.content(encryptedContent)
+               // .content(encryptedContent)
                 .timestamp(new Date().toString())
                 .fileName(request.getSharedFileName())
                 .ip(request.getIp())
                 .location(request.getLocation())
                 .policy(request.getPolicy())
                 .build();
+        System.out.println("ccccccccccccccccc");
+        System.out.println(shareContentCCRequest.toString());
+            CCUtils.sign(shareContentCCRequest, priKey);
         ChaincodeResponse response = chaincodeService.invoke(
                 ChaincodeTypeEnum.TRUST_PLATFORM, "/common/shareMessage", shareContentCCRequest);
         if (response.isFailed()) {
             log.info("invoke share content to plat error: {}", response.getMessage());
             throw new BaseException("invoke share content to plat error");
+        }
+        } catch (IOException e) {
+            log.info("get priKey", e);
+            throw new BaseException(e.getMessage());
         }
         log.info("invoke share content to plat success");
 
@@ -180,7 +190,7 @@ public class ContentServiceImpl implements ContentService {
                 .policy(request.getPolicy())
                 .tags(request.getTags())
                 .uid(user.getName())
-                .timeStamp(shareContentCCRequest.getTimestamp())
+                .timeStamp(String.valueOf(System.currentTimeMillis()))
                 .build();
     }
 
@@ -219,6 +229,10 @@ public class ContentServiceImpl implements ContentService {
 //        if (StringUtils.isEmpty(fromUserName) && StringUtils.isEmpty(tag)) {
 //            throw new BaseException("request error, cannot query all message");
 //        }
+        System.out.println("nnnnnnnnnnnnnnnn");
+        System.out.println(fromUserName);
+        System.out.println(tag);
+        System.out.println(bookmark);
         QueryContentsCCRequest request = QueryContentsCCRequest.builder()
             .fromUid(fromUserName)
             .tag(tag)
@@ -231,9 +245,12 @@ public class ContentServiceImpl implements ContentService {
             log.info("query contents from plat error: {}", response.getMessage());
             throw new BaseException("query contents from plat error: " + response.getMessage());
         }
+        System.out.println("response:");
+        System.out.println(response.getMessage());
         BaseListResponse<ContentResponse> baseListResponse = JsonProviderHolder.JACKSON.parse(
-            response.getMessage(), new TypeReference<BaseListResponse<ContentResponse>>() {
-            });
+            response.getMessage(), new TypeReference<BaseListResponse<ContentResponse>>() {});
+        //System.out.println("baselistresponse:");
+        //System.out.println(baseListResponse.getResult().stream());
         return PlatContentsResponse.builder()
             .bookmark(baseListResponse.getResponseMetadata().getBookmark())
             .count(Integer.parseInt(baseListResponse.getResponseMetadata().getRecordsCount()))

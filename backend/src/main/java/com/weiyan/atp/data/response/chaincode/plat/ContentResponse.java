@@ -14,7 +14,19 @@ public class ContentResponse {
     private String fileName;
     private String uid;
     private List<String> tags;
-    private String timeStamp;
+    private String timestamp;
     private String ip;
     private String policy;
+
+    @Override
+    public String toString() {
+        return "ContentResponse{" +
+                "fileName='" + fileName + '\'' +
+                ", uid='" + uid + '\'' +
+                ", tags=" + tags +
+                ", timeStamp='" + timestamp + '\'' +
+                ", ip='" + ip + '\'' +
+                ", policy='" + policy + '\'' +
+                '}';
+    }
 }

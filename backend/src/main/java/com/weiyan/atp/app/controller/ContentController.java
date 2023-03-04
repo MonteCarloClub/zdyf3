@@ -156,13 +156,20 @@ public class ContentController {
     @PostMapping("/decryption")
     public Result<String> decryptContent(@RequestBody @Validated DecryptContentRequest request,HttpServletRequest req) {
         String ipAddress = SecurityUtils.getIpAddr(req);
+        System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+        System.out.println(request.toString());
         request.setIp(ipAddress);
         ChaincodeResponse response = null;
         if(!request.getUserName().equals(request.getSharedUser())){
 
-            String filePath = encryptDataPath +request.getSharedUser()+"/"+ request.getFileName();
+              String filePath = encryptDataPath +request.getSharedUser()+"/"+ request.getFileName();
+ //           String filePath = "atp\\data\\enc\\深圳市气象局\\深圳市\\ 深圳市福田区\\ 气象\\ 福田区-气象数据.xlsx";
+            System.out.println("ppppppppppppppppppp");
+            System.out.println(filePath);
             try {
                 String cipher= FileUtils.readFileToString(new File(filePath), StandardCharsets.UTF_8);
+                System.out.println("ccccccccccccccccccccccccccccc");
+                System.out.println(cipher);
                 request.setCipher(cipher);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -239,6 +246,7 @@ public class ContentController {
     @GetMapping("/list")
     public Result<PlatContentsResponse> queryContents(String fromUserName, String tag,
                                                       int pageSize, String bookmark) {
+       // fromUserName = "深圳市";
         PlatContentsResponse res = contentService.queryPlatContents(fromUserName, tag, pageSize, bookmark);
         return Result.okWithData(res);
     }
@@ -304,78 +312,78 @@ public class ContentController {
                 StandardCharsets.UTF_8);
 
 
-        try {
-            //加载驱动
-            Class.forName(Driver);
-
-
-            Connection conn = DriverManager.getConnection(mysqlUrl, mysqlUser, mysqlPassword);	//创建connection对象,用来连接数据库
-            if(!conn.isClosed())
-                System.out.println("Succeed!");
-
-
-            //获取时间与文件名哈希作为标识
-            SHA256hash foo = new SHA256hash();
-            String id = foo.getSHA(filename);
-
-            //插入标识与文件路径
-            String sql = "insert into DataId(id,path,permission) values(?,?,?)";
-            java.sql.PreparedStatement pstmt = null;
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, id);
-            pstmt.setString(2, encryptDataPath +request.getFileName()+"/"+ filename);
-            pstmt.setString(3, request.getPolicy());
-
-            boolean row = pstmt.execute();
-            System.out.println(row);
-
-            //释放资源
-            pstmt.close();
-            conn.close();
-
-        }catch(Exception e) {
-            System.out.println("defeat!");
-            System.out.println(e);
-        }
+//        try {
+//            //加载驱动
+//            Class.forName(Driver);
+//
+//
+//            Connection conn = DriverManager.getConnection(mysqlUrl, mysqlUser, mysqlPassword);	//创建connection对象,用来连接数据库
+//            if(!conn.isClosed())
+//                System.out.println("Succeed!");
+//
+//
+//            //获取时间与文件名哈希作为标识
+//            SHA256hash foo = new SHA256hash();
+//            String id = foo.getSHA(filename);
+//
+//            //插入标识与文件路径
+//            String sql = "insert into DataId(id,path,permission) values(?,?,?)";
+//            java.sql.PreparedStatement pstmt = null;
+//            pstmt = conn.prepareStatement(sql);
+//            pstmt.setString(1, id);
+//            pstmt.setString(2, encryptDataPath +request.getFileName()+"/"+ filename);
+//            pstmt.setString(3, request.getPolicy());
+//
+//            boolean row = pstmt.execute();
+//            System.out.println(row);
+//
+//            //释放资源
+//            pstmt.close();
+//            conn.close();
+//
+//        }catch(Exception e) {
+//            System.out.println("defeat!");
+//            System.out.println(e);
+//        }
 
 
         //System.out.println("驱动无法加载不是因为connection refused");
 
         //对接
-        String url = baseUrl+"/attrpolicy";
-        HttpClient client = HttpClients.createDefault();
-        //默认post请求
-        HttpPost post = new HttpPost(url);
-        //拼接多参数
-        JSONObject json = new JSONObject();
-        JSONArray array = new JSONArray();
-        try {
-            json.put("contentHash", SecurityUtils.md5(encryptionResponse.getCipherHash()));
-            json.put("policy",request.getPolicy());
-            json.put("uid",request.getFileName());
-            array.put(request.getTags().get(0));
-            array.put(request.getTags().get(1));
-            array.put(request.getTags().get(2));
-            array.put(request.getTags().get(3));
-            json.put("tags",array);
-            json.put("userIP",request.getIp());
-            json.put("timestamp",encryptionResponse.getTimeStamp());
-            String message = "" + json + "";
-            post.addHeader("Content-type", "application/json; charset=utf-8");
-            post.setHeader("Accept", "application/json");
-            post.setEntity(new StringEntity(message, StandardCharsets.UTF_8));
-            HttpResponse httpResponse = client.execute(post);
-            HttpEntity entity = httpResponse.getEntity();
-            System.err.println("状态:" + httpResponse.getStatusLine());
-            System.err.println("参数:" + EntityUtils.toString(entity));
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        String url = baseUrl+"/attrpolicy";
+//        HttpClient client = HttpClients.createDefault();
+//        //默认post请求
+//        HttpPost post = new HttpPost(url);
+//        //拼接多参数
+//        JSONObject json = new JSONObject();
+//        JSONArray array = new JSONArray();
+//        try {
+//            json.put("contentHash", SecurityUtils.md5(encryptionResponse.getCipherHash()));
+//            json.put("policy",request.getPolicy());
+//            json.put("uid",request.getFileName());
+//            array.put(request.getTags().get(0));
+//            array.put(request.getTags().get(1));
+//            array.put(request.getTags().get(2));
+//            array.put(request.getTags().get(3));
+//            json.put("tags",array);
+//            json.put("userIP",request.getIp());
+//            json.put("timestamp",encryptionResponse.getTimeStamp());
+//            String message = "" + json + "";
+//            post.addHeader("Content-type", "application/json; charset=utf-8");
+//            post.setHeader("Accept", "application/json");
+//            post.setEntity(new StringEntity(message, StandardCharsets.UTF_8));
+//            HttpResponse httpResponse = client.execute(post);
+//            HttpEntity entity = httpResponse.getEntity();
+//            System.err.println("状态:" + httpResponse.getStatusLine());
+//            System.err.println("参数:" + EntityUtils.toString(entity));
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        } catch (ClientProtocolException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         if(request.getTags().get(2).equals("test")){
             revokeUserAttr(request.getFileName(),"位置异常");

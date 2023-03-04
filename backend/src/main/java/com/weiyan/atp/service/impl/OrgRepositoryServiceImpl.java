@@ -124,6 +124,7 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
                 .uid(user.getName())
                 .userStr(JsonProviderHolder.JACKSON.toJsonString(user))
                 .build();
+        CCUtils.sign(ccRequest, getPriKey(request.getFileName()));
         return chaincodeService.invoke(
                 ChaincodeTypeEnum.TRUST_PLATFORM, "/org/createOrgApply", ccRequest);
     }
@@ -153,6 +154,7 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
                 .attrName(request.getAttrName())
                 .uid(user.getName())
                 .build();
+        CCUtils.sign(ccRequest, getPriKey(request.getFileName()));
         return chaincodeService.invoke(
                 ChaincodeTypeEnum.TRUST_PLATFORM, "/org/declareAttrApply", ccRequest);
     }
@@ -214,7 +216,12 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
         if (response2.isFailed()) {
             throw new BaseException("generate share in dabe error: " + response2.getMessage());
         }
+
+//        String filePath = userPath + fileName;
+//        String resource = FileUtils.readFileToString(new File(filePath), StandardCharsets.UTF_8);
+//        DABEUser user = JsonProviderHolder.JACKSON.parse(resource, DABEUser.class);
         DABEUser newUser = JsonProviderHolder.JACKSON.parse(response2.getMessage(), DABEUser.class);
+        newUser.setPassword(user.getPassword());
         CCUtils.saveDABEUser(userPath + request.getFileName(),
                 JsonProviderHolder.JACKSON.toJsonString(newUser));
 
@@ -255,6 +262,7 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
                                  ApproveOrgApplyRequest request) {
         DABEUser user = dabeService.getUser(request.getFileName());
         Preconditions.checkNotNull(user.getName());
+        String priKey = getPriKey(request.getFileName());
 
         // 0_5. 查询必要的申请信息
         PlatOrgApply orgApply = queryOrgApply(request.getOrgName(), type, request.getAttrName());
@@ -266,6 +274,7 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
                     .uid(user.getName())
                     .attrName(request.getAttrName())
                     .build();
+            CCUtils.sign(ccRequest1, priKey);
             ChaincodeResponse response1 = chaincodeService.invoke(
                     ChaincodeTypeEnum.TRUST_PLATFORM, type.getApproveFunctionName(), ccRequest1);
             if (response1.isFailed()) {
@@ -289,11 +298,16 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
             throw new BaseException("generate share in dabe error: " + response2.getMessage());
         }
         DABEUser newUser = JsonProviderHolder.JACKSON.parse(response2.getMessage(), DABEUser.class);
+        System.out.println("CHECKKKKK");
         newUser.setPassword(user.getPassword());
         newUser.setUserType(user.getUserType());
         newUser.setChannel(user.getChannel());
         CCUtils.saveDABEUser(userPath + request.getFileName(),
                 JsonProviderHolder.JACKSON.toJsonString(newUser));
+        System.out.println("checkkkkkkkkkkkkkkkkkk");
+        System.out.println(JsonProviderHolder.JACKSON.toJsonString(user));
+        System.out.println(JsonProviderHolder.JACKSON.toJsonString(newUser));
+
 
         // 3. plat提交秘密
         Map<String, String> shareMap = type == OrgApplyTypeEnum.CREATION
@@ -314,6 +328,7 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
                             .uid(user.getName())
                             .attrName(request.getAttrName())
                             .build();
+                    CCUtils.sign(ccRequest, priKey);
                     ChaincodeResponse response = chaincodeService.invoke(
                             ChaincodeTypeEnum.TRUST_PLATFORM, "/org/shareSecret", ccRequest);
                     if (response.isFailed()) {
@@ -370,7 +385,8 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
                              String fileName, String attrName) {
         DABEUser user = dabeService.getUser(fileName);
         Preconditions.checkNotNull(user.getName());
-
+        String priKey = getPriKey(fileName);
+        PrivateKey privateKey = SecurityUtils.from(SecurityUtils.X509, priKey, "");
         if ((type == OrgApplyTypeEnum.CREATION && user.getOpkMap().containsKey(orgName)
                 && StringUtils.isNotEmpty(user.getOpkMap().get(orgName).getOpk()))
                 ||
@@ -379,7 +395,10 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
             //no need do anything
             log.info("already has part pk");
         } else {
-            user = generatePartPk2(type, orgName, fileName, attrName, user);
+            user = generatePartPk(type, orgName, fileName, attrName, user, privateKey);
+            System.out.println("0000000000000000000000000000");
+            System.out.println(user);
+//            user = generatePartPk2(type, orgName, fileName, attrName, user);
         }
 
         // 3. plat 提交 /org/submitPartPK
@@ -391,6 +410,7 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
                 .uid(user.getName())
                 .attrName(attrName)
                 .build();
+        CCUtils.sign(request, priKey);
         ChaincodeResponse response2 = chaincodeService.invoke(
                 ChaincodeTypeEnum.TRUST_PLATFORM, "/org/submitPartPK", request);
         if (response2.isFailed()) {
@@ -409,10 +429,14 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
         if (!user.getOskMap().containsKey(orgName)) {
             throw new BaseException("need share secret first");
         }
+//        orgApply.getShareMap().get(user.getName()).forEach((k, v) ->
+//                orgApply.getShareMap().get(user.getName())
+//                        .put(k, new String(SecurityUtils.decrypt(
+//                                SecurityUtils.RSA_PKCS1, privateKey, Base64.decode(v)))));
+
         orgApply.getShareMap().get(user.getName()).forEach((k, v) ->
                 orgApply.getShareMap().get(user.getName())
-                        .put(k, new String(SecurityUtils.decrypt(
-                                SecurityUtils.RSA_PKCS1, privateKey, Base64.decode(v)))));
+                        .put(k, v));
         if (type == OrgApplyTypeEnum.CREATION) {
             OSKPart oskPart = user.getOskMap().get(orgName);
             oskPart.getOthersShare().add(oskPart.getShare().get(user.getName()));
@@ -436,8 +460,14 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
             throw new BaseException("assemble share in dabe error: " + response.getMessage());
         }
         DABEUser newUser = JsonProviderHolder.JACKSON.parse(response.getMessage(), DABEUser.class);
+        newUser.setPassword(user.getPassword());
+        newUser.setUserType(user.getUserType());
+        newUser.setChannel(user.getChannel());
         CCUtils.saveDABEUser(userPath + fileName,
                 JsonProviderHolder.JACKSON.toJsonString(newUser));
+//        DABEUser newUser = JsonProviderHolder.JACKSON.parse(response.getMessage(), DABEUser.class);
+//        CCUtils.saveDABEUser(userPath + fileName,
+//                JsonProviderHolder.JACKSON.toJsonString(newUser));
         return newUser;
     }
 
@@ -483,6 +513,8 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
         newUser.setChannel(user.getChannel());
         CCUtils.saveDABEUser(userPath + fileName,
                 JsonProviderHolder.JACKSON.toJsonString(newUser));
+//        CCUtils.saveDABEUser(userPath + fileName,
+//                JsonProviderHolder.JACKSON.toJsonString(newUser));
         return newUser;
     }
 
@@ -510,13 +542,14 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
     public void mixPartPk2(OrgApplyTypeEnum type, String orgName, String attrName, String fileName) {
         DABEUser user = dabeService.getUser(fileName);
         Preconditions.checkNotNull(user.getName());
-
+        String priKey = getPriKey(fileName);
         MixPartPKCCRequest request = MixPartPKCCRequest.builder()
                 .orgId(orgName)
                 .type(type)
                 .uid(user.getName())
                 .attrName(attrName)
                 .build();
+        CCUtils.sign(request, priKey);
         ChaincodeResponse response = chaincodeService.invoke(
                 ChaincodeTypeEnum.TRUST_PLATFORM, "/org/mixPartPK", request);
         if (response.isFailed()) {

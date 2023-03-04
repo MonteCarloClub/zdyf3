@@ -96,7 +96,7 @@ func getMessage(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 		return shim.Error(err.Error())
 	}
 
-	result, err := data.GetSharedMessage(getRequest.FromUid, getRequest.Tag, getRequest.PageSize, getRequest.Bookmark, stub)
+	result, err := data.GetSharedMessage(getRequest.FromUid, getRequest.Tagup, getRequest.PageSize, getRequest.Bookmark, stub)
 	if err != nil {
 		log.Println(err)
 		return shim.Error(err.Error())
