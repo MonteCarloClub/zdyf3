@@ -142,19 +142,27 @@ func approveAttrApply(stub shim.ChaincodeStubInterface, args []string) pb.Respon
 // 查询给自己（uid）的申请
 // ===================================================================================
 func getAttrApply(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-	log.Println("get attr apply")
+	log.Println("get attr apply!!!!!!!!!!!!!!!!")
+	log.Println("getAttrApply args args")
 	var requestStr = args[0]
+	log.Println(requestStr)
+	log.Println("getAttrApply args end")
 
 	applyRequest := new(request.GetAttrApplyRequest)
 	if err := json.Unmarshal([]byte(requestStr), applyRequest); err != nil {
 		return shim.Error(err.Error())
 	}
+	log.Println(applyRequest.FromUid)
+	log.Println(applyRequest.ToOrgId)
+	log.Println(applyRequest.ToUid)
 	if applyRequest.FromUid == "" && applyRequest.ToOrgId == "" && applyRequest.ToUid == "" {
 		return shim.Error("invalid request")
 	}
-
+	log.Println("bytesbytesbytes")
 	bytesArray, err := data.QueryUserAttrApplyBytes(applyRequest.FromUid, applyRequest.ToUid, applyRequest.ToOrgId, applyRequest.Status, stub)
-	if err != nil {
+	log.Println(bytesArray)
+	log.Println("endendend")
+        if err != nil {
 		return shim.Error(err.Error())
 	}
 	buffer := utils.GetListResponse(bytesArray)
@@ -167,10 +175,12 @@ func getAttrApply(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 // 申请属性
 // ===================================================================================
 func applyAttr(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-	log.Println("apply attr")
+	log.Println("apply attr！！！！")
 	// 反序列化请求，验签
 	var requestStr = args[0]
+	log.Println("applyAttr args args")
 	log.Println(requestStr)
+	log.Println("applyAttr args end")
 	applyRequest := new(request.ApplyAttrRequest)
 	if err := json.Unmarshal([]byte(requestStr), applyRequest); err != nil {
 		log.Println(err)
@@ -202,6 +212,7 @@ func applyAttr(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 		log.Println(err.Error())
 		return shim.Error(err.Error())
 	}
+	log.Println("attr apply begin!!!!")
 
 	apply, err := data.NewUserApply(fromUid, toUid, toOrgId, attrName, remark, isPublic, stub)
 	if err != nil {
@@ -212,6 +223,7 @@ func applyAttr(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 		log.Println(err)
 		return shim.Error(err.Error())
 	}
+	log.Println("apply attr end!!!!!!!!!!")
 	return shim.Success(nil)
 }
 
@@ -249,19 +261,23 @@ func create(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 
 
 	var requestStr = args[0]
+	log.Println("argsargsargsargs")
+	log.Println(requestStr)
+	log.Println("args end!!!!")
 	initRequest := new(request.UserInitRequest)
 	if err := json.Unmarshal([]byte(requestStr), initRequest); err != nil {
 		log.Println(err.Error())
 		return shim.Error(err.Error())
 	}
 	pj, err := utils.GetRequestParamJson([]byte(requestStr))
+//        _, err := utils.GetRequestParamJson([]byte(requestStr))
 	if err != nil {
 		log.Println(err.Error())
 		return shim.Error(err.Error())
 	}
 	log.Println("111111111111111111111111111111111111111111111")
 	if err = utils.VerifySign(string(pj), initRequest.PublicKey, initRequest.Sign); err != nil {
-		log.Println(err.Error())
+			log.Println(err.Error())
 		return shim.Error(err.Error())
 	}
 	log.Println("222222222222222222222222222222")
@@ -273,10 +289,10 @@ func create(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	upk := initRequest.UPK
 
 	log.Println("222222222222222222222222")
-	if err := utils.CheckId(uid); err != nil {
-		log.Println(err.Error())
-		return shim.Error(err.Error())
-	}
+	//if err := utils.CheckId(uid); err != nil {
+	//	log.Println(err.Error())
+	//	return shim.Error(err.Error())
+	//}
 	log.Println("22222222222222222222222")
 
 	if utils.ExistId(uid, stub) {
@@ -314,6 +330,9 @@ func declareAttr(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	log.Println("user declare new attr start")
 
 	var requestStr = args[0]
+	log.Println("declare args args")
+	log.Println(requestStr)
+	log.Println("decalsre args end")
 	attrRequest := new(request.UserAnnounceAttrRequest)
 	if err := json.Unmarshal([]byte(requestStr), attrRequest); err != nil {
 		return shim.Error(err.Error())
@@ -336,6 +355,7 @@ func declareAttr(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	if err := utils.CheckTimeWithin(timestamp, 5, time.Minute); err != nil {
 		return shim.Error(err.Error())
 	}
+	log.Println("queryUserByid declareattr")
 
 	user, err := data.QueryUserByUid(uid, stub)
 	if err != nil {
@@ -356,11 +376,13 @@ func declareAttr(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 			return shim.Error("user already has attr")
 		}
 	}
+	log.Println("newAttr bgin!!")
 
 	newAttr := data.NewAttr(uid, attrName, apk)
 	if err = data.SaveUserAttr(user, newAttr, stub); err != nil {
 		return shim.Error(err.Error())
 	}
+	log.Println("newAttr end!!")
 
 	return shim.Success(nil)
 }

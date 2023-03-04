@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"log"
-	"regexp"
+//	"regexp"
 	//"strconv"
-	"strings"
+//	"strings"
 	"time"
 	"trustPlatform/constant"
 )
@@ -51,11 +51,11 @@ func CheckInputNumber(num int, args []string) (err error) {
 // 检测id名称是否合法
 // ===================================================================================
 func CheckId(id string) (err error) {
-	if ok, _ := regexp.MatchString("^[a-zA-Z0-9]{6,18}$", id); !ok {
-		log.Printf(InvalidIDError, id)
-		err = fmt.Errorf(InvalidIDError, id)
-		return err
-	}
+//	if ok, _ := regexp.MatchString("^[a-zA-Z0-9]{6,18}$", id); !ok {
+//		log.Printf(InvalidIDError, id)
+//		err = fmt.Errorf(InvalidIDError, id)
+//		return err
+//	}
 	return
 }
 
@@ -63,16 +63,16 @@ func CheckId(id string) (err error) {
 // 检测属性名称是否合法
 // ===================================================================================
 func CheckAttr(attr string, id string) (err error) {
-	split := strings.Split(attr, ":")
-	if len(split) != 2 || split[0] != id {
-		log.Printf("attr %s is not match id %s", attr, id)
-		return fmt.Errorf("attr %s is not match id %s", attr, id)
-	}
-	if ok, _ := regexp.MatchString("^[a-zA-Z0-9]{1,32}$", split[1]); !ok {
-		log.Printf(InvalidIDError, attr)
-		err = fmt.Errorf(InvalidIDError, attr)
-		return err
-	}
+//	split := strings.Split(attr, ":")
+//	if len(split) != 2 || split[0] != id {
+//		log.Printf("attr %s is not match id %s", attr, id)
+//		return fmt.Errorf("attr %s is not match id %s", attr, id)
+//	}
+//	if ok, _ := regexp.MatchString("^[a-zA-Z0-9]{1,32}$", split[1]); !ok {
+//		log.Printf(InvalidIDError, attr)
+//		err = fmt.Errorf(InvalidIDError, attr)
+//		return err
+//	}
 	return
 }
 

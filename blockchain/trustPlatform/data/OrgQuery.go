@@ -27,7 +27,7 @@ func QueryCreateOrgApply(orgId string, status ApplyStatus, stub shim.ChaincodeSt
 	var queryString string
 	if status == Pending {
 		queryString = fmt.Sprintf("{\"selector\":{\"docType\":\"%s\",\"orgId\":\"%s\",\"type\":0,\"status\":{\"$lt\":\"%d\"}}}",
-			constant.OrgApply, orgId, Success)
+			constant.OrgApply, orgId, status)
 	} else {
 		queryString = fmt.Sprintf("{\"selector\":{\"docType\":\"%s\",\"orgId\":\"%s\",\"type\":0,\"status\":%d}}",
 			constant.OrgApply, orgId, status)

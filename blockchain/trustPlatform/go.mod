@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/Knetic/govaluate v3.0.0+incompatible // indirect
+	github.com/fatih/set v0.2.1
 	github.com/fsouza/go-dockerclient v1.6.4 // indirect
 	github.com/go-kratos/kratos v0.4.2
 	github.com/hashicorp/go-version v1.2.0 // indirect

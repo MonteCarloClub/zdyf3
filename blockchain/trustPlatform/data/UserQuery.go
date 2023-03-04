@@ -52,6 +52,11 @@ func QueryUserJsonByUid(uid string, stub shim.ChaincodeStubInterface) (user []by
 func QueryUserByPublicKey(pk string, stub shim.ChaincodeStubInterface) (user *User, err error) {
 	log.Println("query user by publicKey: " + pk)
 	queryString := fmt.Sprintf("{\"selector\":{\"docType\":\"%s\",\"publicKey\":\"%s\"}}", constant.User, pk)
+	log.Println("111111111111111111111111111111111111111")
+	log.Println(queryString)
+	log.Println("2222222222222222222222222222")
+	log.Println(len(pk))
+	log.Println("333333333333333333333333333")
 	resultsIterator, err := stub.GetQueryResult(queryString)
 	if err != nil {
 		return nil, err
