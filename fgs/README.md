@@ -1,6 +1,6 @@
-## 数据共享交换-前端源码
+## 细粒度权限管理-前端
 
-技术栈：pnpm + vue2
+pnpm + vue2
 
 ### 初始化（安装依赖）
 
@@ -19,7 +19,7 @@ pnpm run serve
 ```
 pnpm run build
 ```
-直接打包在 `../backend/src/main/resources/static` 下
+直接打包在 `../backend/src/main/resources/fgs` 下
 
 ### Lints and fixes files
 
