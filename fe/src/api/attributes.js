@@ -156,7 +156,7 @@ export const attrApi = {
         // toId     被申请用户/组织名
         // type     申请类型（用户属性/组织属性） （Int）0 用户；1 组织
         // userName 申请人
-        // status   申请状态 ALL / PENDING / SUCCESS / FAIL
+        // status   申请状态 ALL / PENDING(0) / SUCCESS(1)) / FAIL(2) / REVOKE(3)
         const params = {
             toId: _data.to,
             type: _data.role,

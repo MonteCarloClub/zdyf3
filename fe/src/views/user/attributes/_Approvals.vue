@@ -1,6 +1,16 @@
 <template>
   <div>
     <Card title="属性审批">
+      <!-- <template v-slot:op>
+        <el-select v-model="selectedStatus" placeholder="请选择" size="small">
+          <el-option
+            v-for="status in Object.keys(statusTypes)"
+            :key="status"
+            :label="status"
+            :value="status">
+          </el-option>
+        </el-select>
+      </template> -->
       <div v-if="attributes.length">
         <el-table :data="attributes" style="width: 100%">
           <el-table-column prop="isPublic" label="" width="50">
@@ -83,17 +93,20 @@ export default {
       });
     });
 
-    const status = "ALL";
-    let res = [];
+    // let res = [];
+    // Promise.all(Object.keys(this.statusTypes).map((status) => this.queryWithStatus(query, status)))
+    //   .then((responses) => {
+    //     responses.forEach((response) => {
+    //       res = res.concat(response);
+    //     });
+    //     this.attributes = res;
+    //   })
+    //   .catch(console.log);
 
-    Promise.all(query.map(({ to, role }) => attrApi.applications({ to, role, status })))
-      .then((responses) => {
-        responses.forEach((response) => {
-          res = res.concat(response);
-        });
-        this.attributes = res;
-      })
-      .catch(console.log);
+    // 很扯淡噢
+    this.queryWithStatus(query, "REVOKE").then((res) => {
+      this.attributes = res;
+    });
   },
 
   data() {
@@ -108,12 +121,27 @@ export default {
       statusTypes: {
         SUCCESS: "success",
         FAIL: "danger",
-        PENDING: "info",
+        PENDING: "pending",
+        REVOKE: "revoke",
       },
+      // selectedStatus: "PENDING",
     };
   },
 
   methods: {
+    queryWithStatus(query, status) {
+      let res = [];
+      return new Promise((resolve, reject) => {
+        Promise.all(query.map(({ to, role }) => attrApi.applications({ to, role, status })))
+          .then((responses) => {
+            responses.forEach((response) => {
+              res = res.concat(response);
+            });
+            resolve(res);
+          })
+          .catch(reject);
+      });
+    },
     agree(application, agree) {
       const to = getters.userName();
       const { attrName, fromUid } = application;
@@ -148,7 +176,7 @@ export default {
         .revoke({
           userName,
           toUserName: fromUid,
-          attrName
+          attrName,
         })
         .then(() => {
           this.$message({
