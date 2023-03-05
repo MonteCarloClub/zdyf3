@@ -2,3 +2,9 @@
 log
 *.iml
 target
+
+backend
+blockchain
+doc
+ds
+fgs
