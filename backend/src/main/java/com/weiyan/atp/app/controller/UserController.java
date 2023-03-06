@@ -179,6 +179,8 @@ public class UserController {
 
     @PostMapping("/attr")
     public Result<Object> declareAttr(@RequestBody @Validated DeclareUserAttrRequest request) {
+        System.out.println("rrrrrrrrrrrrrrrrrrrrrrrr");
+        System.out.println(request.toString());
         ChaincodeResponse response = attrService.declareUserAttr2(request);
         //对接
         String url = baseUrl + "/creatattr";

@@ -107,6 +107,8 @@ public class AttrServiceImpl implements AttrService {
         DABEUser user = dabeService.getUser(request.getFileName());
         Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
         Preconditions.checkNotNull(user.getName());
+        System.out.println("uuuuuuuuuuuuuuuu");
+        System.out.println(user.toString());
         Preconditions.checkNotNull(user.getApkMap().get(request.getAttrName()), "no attr");
         try{
         String priKey = FileUtils.readFileToString(new File(priKeyPath + request.getFileName()),
