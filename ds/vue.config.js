@@ -6,11 +6,11 @@ module.exports = (options = {}) => ({
     port: 8081,
     disableHostCheck: true,   // That solved it
     proxy: {
-      '/api/': {
+      '/dev/': {
         target: 'http://10.176.40.46:8080',
         changeOrigin: true,
         pathRewrite: {
-          '^/api': ''
+          '^/dev': '/abe'
         }
       },
       '/cert/': {

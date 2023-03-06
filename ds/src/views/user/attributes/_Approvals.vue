@@ -103,8 +103,8 @@ export default {
     //   })
     //   .catch(console.log);
 
-    // 很扯淡噢
-    this.queryWithStatus(query, "REVOKE").then((res) => {
+    const status = "ALL";
+    this.queryWithStatus(query, status).then((res) => {
       this.attributes = res;
     });
   },
