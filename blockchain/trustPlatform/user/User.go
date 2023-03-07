@@ -47,11 +47,60 @@ func Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		return getAttrApply(stub, args)
 	} else if strings.HasPrefix(function, "/user/approveAttrApply") {
 		return approveAttrApply(stub, args)
+	} else if strings.HasPrefix(function, "/user/revokeAttr") {
+		return revokeAttr(stub, args)
+	} else if strings.HasPrefix(function, "/user/getAttrHistory") {
+		return getAttrHistory(stub, args)
 	}
 
 	return shim.Error("Invalid invoke function name. Expecting \"/user/create\" \"/user/declareAttr\"" +
 		" \"/user/getUser\" \"/user/applyAttr\" \"/user/getAttrApply\" \"/user/approveAttrApply\"")
 }
+
+// ===================================================================================
+// 撤销用户属性
+// ===================================================================================
+func revokeAttr(stub shim.ChaincodeStubInterface, args []string) pb.Response{
+	log.Println("revoke attr apply")
+	var requestStr = args[0]
+	log.Println(requestStr)
+	revokeRequest := new(request.RevokeAttrApplyRequest)
+	if err := json.Unmarshal([]byte(requestStr), revokeRequest); err != nil {
+		log.Println(err)
+		return shim.Error(err.Error())
+	}
+	if err := preCheckRequest(requestStr, revokeRequest.Uid, revokeRequest.Sign, stub); err != nil {
+		log.Println(err)
+		return shim.Error(err.Error())
+	}
+
+	toUid := revokeRequest.Uid
+	Uid := revokeRequest.ToUid
+	attrName := revokeRequest.AttrName
+	remark := revokeRequest.Remark
+	toOrgId := ""
+	apply, err := data.QueryUserApplyByAllConditions(Uid, toUid, toOrgId, attrName, stub)
+	if err != nil {
+		log.Println(err)
+		return shim.Error(err.Error())
+	}
+	if apply.Status != constant.Success {
+		log.Println("apply status error")
+		return shim.Error("apply status error")
+	}
+
+	apply.Status = constant.Revoke
+
+	if err := data.SaveUserAttrApply(apply, stub); err != nil {
+		log.Println(err)
+		return shim.Error(err.Error())
+	}
+	return shim.Success(nil)
+}
+
+// ===================================================================================
+// 得到用户属性审批历史
+// ===================================================================================
 
 // ===================================================================================
 // 审批属性申请
