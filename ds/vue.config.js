@@ -1,9 +1,9 @@
 module.exports = (options = {}) => ({
   publicPath: './',
-  outputDir: '../backend/src/main/resources/static',
+  outputDir: '../backend/src/main/resources/static/ds',
   devServer: {
     host: 'localhost',
-    port: 8081,
+    port: 8066,
     disableHostCheck: true,   // That solved it
     proxy: {
       '/dev/': {

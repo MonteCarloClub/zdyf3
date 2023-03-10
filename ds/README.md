@@ -11,7 +11,7 @@ pnpm install
 ### 开发
 
 ```
-pnpm run serve
+pnpm start
 ```
 
 ### 打包
@@ -19,7 +19,7 @@ pnpm run serve
 ```
 pnpm run build
 ```
-直接打包在 `../backend/src/main/resources/static` 下
+直接打包在 `../backend/src/main/resources/ds` 下
 
 ### Lints and fixes files
 
