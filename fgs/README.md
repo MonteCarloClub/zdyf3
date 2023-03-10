@@ -11,7 +11,7 @@ pnpm install
 ### 开发
 
 ```
-pnpm run serve
+pnpm start
 ```
 
 ### 打包
