@@ -94,13 +94,24 @@ type SharedMessage struct {
 	Tags []string `json:"tags"`
 	// 加密内容
 	Content string `json:"content"`
+	Timestamp string `json:"timestamp"`
+	FileName string `json:"fileName"`
+	Ip string `json:"ip"`
+	Location string `json:"location"`
+	Policy string `json:"policy"`
+
 }
 
-func NewSharedMessage(uid, content string, tags []string) *SharedMessage {
+func NewSharedMessage(uid, content string, tags []string, timestamp string, fileName string, ip string, location string, policy string) *SharedMessage {
 	return &SharedMessage{
 		ObjectType: constant.SharedMessage,
 		Uid:        uid,
 		Tags:       tags,
 		Content:    content,
+		Timestamp:  timestamp,
+		FileName:   fileName,
+		Ip:         ip,
+		Location:   location,
+		Policy:     policy,
 	}
 }

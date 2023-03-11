@@ -92,7 +92,7 @@ func SaveUserAttrApply(apply *UserApply, stub shim.ChaincodeStubInterface) (err 
 // ===================================================================================
 func SaveSharedMessage(message *SharedMessage, stub shim.ChaincodeStubInterface) (err error) {
 	log.Printf("save shared message from: %s with %s\n", message.Uid, message.Tags)
-
+        log.Printf("timestamp:%s\n filename:%s\n", message.Timestamp, message.FileName)
 	messageBytes, err := json.Marshal(message)
 	if err != nil {
 		return err

@@ -156,13 +156,20 @@ public class ContentController {
     @PostMapping("/decryption")
     public Result<String> decryptContent(@RequestBody @Validated DecryptContentRequest request,HttpServletRequest req) {
         String ipAddress = SecurityUtils.getIpAddr(req);
+        System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+        System.out.println(request.toString());
         request.setIp(ipAddress);
         ChaincodeResponse response = null;
         if(!request.getUserName().equals(request.getSharedUser())){
 
-            String filePath = encryptDataPath +request.getSharedUser()+"/"+ request.getFileName();
+              String filePath = encryptDataPath +request.getSharedUser()+"/"+ request.getFileName();
+ //           String filePath = "atp\\data\\enc\\深圳市气象局\\深圳市\\ 深圳市福田区\\ 气象\\ 福田区-气象数据.xlsx";
+            System.out.println("ppppppppppppppppppp");
+            System.out.println(filePath);
             try {
                 String cipher= FileUtils.readFileToString(new File(filePath), StandardCharsets.UTF_8);
+                System.out.println("ccccccccccccccccccccccccccccc");
+                System.out.println(cipher);
                 request.setCipher(cipher);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -239,6 +246,7 @@ public class ContentController {
     @GetMapping("/list")
     public Result<PlatContentsResponse> queryContents(String fromUserName, String tag,
                                                       int pageSize, String bookmark) {
+       // fromUserName = "深圳市";
         PlatContentsResponse res = contentService.queryPlatContents(fromUserName, tag, pageSize, bookmark);
         return Result.okWithData(res);
     }
@@ -278,10 +286,10 @@ public class ContentController {
         System.out.println(filename);
 
         //连接mysql
-        //String driver = "com.mysql.cj.jdbc.Driver";	//驱动名，默认
-        //String url1 = "jdbc:mysql://localhost:3306/zdyf?serverTimezone=GMT&useSSL=false";	//将要访问的数据库名称zdyf
-        //String user = "root";	//mysql数据库用户名
-        //String password = "123456";	//mysql数据库用户密码
+        String driver = "com.mysql.cj.jdbc.Driver";	//驱动名，默认
+        String url1 = "jdbc:mysql://localhost:3306/zdyf?serverTimezone=GMT&useSSL=false";	//将要访问的数据库名称zdyf
+        String user = "root";	//mysql数据库用户名
+        String password = "123456";	//mysql数据库用户密码
 
 
         //根据相对路径获取绝对路径

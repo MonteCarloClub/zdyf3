@@ -75,9 +75,16 @@ public class DABEServiceImpl implements DABEService {
         try {
             String filePath = userPath + fileName;
             String resource = FileUtils.readFileToString(new File(filePath), StandardCharsets.UTF_8);
+            System.out.println(resource);
             DABEUser user = JsonProviderHolder.JACKSON.parse(resource, DABEUser.class);
+            System.out.println("sorryyyyyyyy");
             String hash = SecurityUtils.md5(password);
+            System.out.println(user.getPassword());
+            boolean ans = user.getPassword().equals(hash);
+            System.out.println(ans);
+            System.out.println("goodddddd");
             if (!user.getPassword().equals(hash)) {
+                System.out.println("qaqaqaqaqaqaq");
                 return null;
             }
             return user;
@@ -146,6 +153,8 @@ public class DABEServiceImpl implements DABEService {
             return null;
         }
         String userJson = JsonProviderHolder.JACKSON.toJsonString(user);
+        System.out.println("22222222222");
+        System.out.println(userJson);
         ChaincodeResponse response = chaincodeService.query(
                 ChaincodeTypeEnum.DABE, "/user/declareAttr",
                 new ArrayList<>(Arrays.asList(userJson, attrName)));

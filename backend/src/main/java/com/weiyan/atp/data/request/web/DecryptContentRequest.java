@@ -30,4 +30,17 @@ public class DecryptContentRequest {
     private String ip;
 
     private String location;
+
+    @Override
+    public String toString() {
+        return "DecryptContentRequest{" +
+                "userName='" + userName + '\'' +
+                ", fileName='" + fileName + '\'' +
+                ", cipher='" + cipher + '\'' +
+                ", tags=" + tags +
+                ", sharedUser='" + sharedUser + '\'' +
+                ", ip='" + ip + '\'' +
+                ", location='" + location + '\'' +
+                '}';
+    }
 }

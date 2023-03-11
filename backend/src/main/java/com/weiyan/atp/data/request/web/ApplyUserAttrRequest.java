@@ -21,4 +21,16 @@ public class ApplyUserAttrRequest {
     private String attrName;
 
     private String remark;
+
+    @Override
+    public String toString() {
+        return "ApplyUserAttrRequest{" +
+                "fileName='" + fileName + '\'' +
+                ", toUserName='" + toUserName + '\'' +
+                ", toOrgName='" + toOrgName + '\'' +
+                ", isPublic=" + isPublic +
+                ", attrName='" + attrName + '\'' +
+                ", remark='" + remark + '\'' +
+                '}';
+    }
 }

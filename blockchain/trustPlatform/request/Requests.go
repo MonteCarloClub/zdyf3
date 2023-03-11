@@ -101,6 +101,11 @@ type ShareMessageRequest struct {
 	Tags []string `json:"tags"`
 	// 加密内容
 	Content string `json:"content"`
+        FileName string `json:"fileName"`
+        Ip string `json:"ip"`
+        Location string `json:"location"`
+        Policy string `json:"policy"`
+
 }
 
 // 整合请求

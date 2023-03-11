@@ -16,6 +16,7 @@ import com.weiyan.atp.service.DABEService;
 import com.weiyan.atp.service.UserRepositoryService;
 import com.weiyan.atp.utils.CCUtils;
 import com.weiyan.atp.utils.JsonProviderHolder;
+import com.weiyan.atp.app.controller.CommonController;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -59,6 +60,8 @@ public class UserRepositoryServiceImpl implements UserRepositoryService {
         Preconditions.checkNotNull(user.getName());
         Preconditions.checkNotNull(user.getEggAlpha());
         try {
+            CommonController cc = new CommonController();
+            cc.generateRsaKeysFile(user.getName());
             String priKey = FileUtils.readFileToString(new File(priKeyPath + request.getFileName()),
                 StandardCharsets.UTF_8);
             String pubKey = FileUtils.readFileToString(new File(pubKeyPath + request.getFileName()),
@@ -87,15 +90,43 @@ public class UserRepositoryServiceImpl implements UserRepositoryService {
         Preconditions.checkNotNull(user, NO_USER_ERROR + userName);
         Preconditions.checkNotNull(user.getName());
         Preconditions.checkNotNull(user.getEggAlpha());
-        CreateUserCCRequest ccRequest =
-                CreateUserCCRequest.builder()
-                        .uid(user.getName())
-                        .upk(user.getEggAlpha())
-                        .userType(userType)
-                        .channel(channel)
-                        .build();
-        return chaincodeService.invoke(
-                ChaincodeTypeEnum.TRUST_PLATFORM, "/user/create", ccRequest);
+//        CommonController cc = new CommonController();
+//        cc.generateRsaKeysFile(user.getName());
+//        String priKey = FileUtils.readFileToString(new File(priKeyPath + userName),
+//                StandardCharsets.UTF_8);
+//        String pubKey = FileUtils.readFileToString(new File(pubKeyPath + userName),
+//                StandardCharsets.UTF_8);
+//        CreateUserCCRequest ccRequest =
+//                CreateUserCCRequest.builder()
+//                        .publicKey(pubKey)
+//                        .uid(user.getName())
+//                        .upk(user.getEggAlpha())
+//                        .userType(userType)
+//                        .channel(channel)
+//                        .build();
+//        return chaincodeService.invoke(
+//                ChaincodeTypeEnum.TRUST_PLATFORM, "/user/create", ccRequest);
+        try {
+            CommonController cc = new CommonController();
+            cc.generateRsaKeysFile(user.getName());
+            String priKey = FileUtils.readFileToString(new File(priKeyPath + userName),
+                    StandardCharsets.UTF_8);
+            String pubKey = FileUtils.readFileToString(new File(pubKeyPath + userName),
+                    StandardCharsets.UTF_8);
+
+            CreateUserCCRequest ccRequest =
+                    CreateUserCCRequest.builder()
+                            .publicKey(pubKey)
+                            .uid(user.getName())
+                            .upk(user.getEggAlpha())
+                            .userType(userType)
+                            .build();
+            CCUtils.sign(ccRequest, priKey);
+            return chaincodeService.invoke(
+                    ChaincodeTypeEnum.TRUST_PLATFORM, "/user/create", ccRequest);
+        } catch (IOException e) {
+            throw new BaseException(e.getMessage());
+        }
     }
 
 

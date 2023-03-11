@@ -107,8 +107,12 @@ public class AttrServiceImpl implements AttrService {
         DABEUser user = dabeService.getUser(request.getFileName());
         Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
         Preconditions.checkNotNull(user.getName());
+        System.out.println("uuuuuuuuuuuuuuuu");
+        System.out.println(user.toString());
         Preconditions.checkNotNull(user.getApkMap().get(request.getAttrName()), "no attr");
-
+        try{
+        String priKey = FileUtils.readFileToString(new File(priKeyPath + request.getFileName()),
+                StandardCharsets.UTF_8);
         DeclareUserAttrCCRequest ccRequest =
                 DeclareUserAttrCCRequest.builder()
                         .uid(user.getName())
@@ -117,8 +121,12 @@ public class AttrServiceImpl implements AttrService {
                                 : user.getName() + ":" + request.getAttrName())
                         .apk(user.getApkMap().get(request.getAttrName()).getGy())
                         .build();
+        CCUtils.sign(ccRequest, priKey);
         return chaincodeService.invoke(
                 ChaincodeTypeEnum.TRUST_PLATFORM, "/user/declareAttr", ccRequest);
+        } catch (IOException e) {
+            throw new BaseException(e.getMessage());
+        }
     }
 
     @Override
@@ -172,20 +180,41 @@ public class AttrServiceImpl implements AttrService {
 
     @Override
     public ChaincodeResponse applyAttr2(ApplyUserAttrRequest request) {
+        System.out.println(request.toString());
         DABEUser user = dabeService.getUser(request.getFileName());
         Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
         Preconditions.checkNotNull(user.getName());
 
-        ApplyUserAttrCCRequest ccRequest = ApplyUserAttrCCRequest.builder()
-                .uid(user.getName())
-                .toUid(request.getToUserName())
-                .toOrgId(request.getToOrgName())
-                .isPublic(true)
-                .attrName(request.getAttrName())
-                .remark(request.getRemark())
-                .build();
-        return chaincodeService.invoke(
-                ChaincodeTypeEnum.TRUST_PLATFORM, "/user/applyAttr", ccRequest);
+//        ApplyUserAttrCCRequest ccRequest = ApplyUserAttrCCRequest.builder()
+//                .uid(user.getName())
+//                .toUid(request.getToUserName())
+//                .toOrgId(request.getToOrgName())
+//                .isPublic(true)
+//                .attrName(request.getAttrName())
+//                .remark(request.getRemark())
+//                .build();
+//        System.out.println("testtesttest");
+//        System.out.println(ccRequest.toString());
+//        return chaincodeService.invoke(
+//                ChaincodeTypeEnum.TRUST_PLATFORM, "/user/applyAttr", ccRequest);
+        try {
+            String priKey = FileUtils.readFileToString(
+                    new File(priKeyPath + request.getFileName()),
+                    StandardCharsets.UTF_8);
+            ApplyUserAttrCCRequest ccRequest = ApplyUserAttrCCRequest.builder()
+                    .uid(user.getName())
+                    .toUid(request.getToUserName())
+                    .toOrgId(request.getToOrgName())
+                    .isPublic(request.getIsPublic())
+                    .attrName(request.getAttrName())
+                    .remark(request.getRemark())
+                    .build();
+            CCUtils.sign(ccRequest, priKey);
+            return chaincodeService.invoke(
+                    ChaincodeTypeEnum.TRUST_PLATFORM, "/user/applyAttr", ccRequest);
+        } catch (IOException e) {
+            throw new BaseException(e.getMessage());
+        }
     }
 
     //撤销他人属性
@@ -243,6 +272,10 @@ public class AttrServiceImpl implements AttrService {
     @Override
     public ChaincodeResponse queryAttrApply(String toUid, String toOrgId,
                                             String userName, AttrApplyStatusEnum status) {
+        System.out.println("ooooooooooooooooooooooooo");
+        System.out.println(userName);
+      //  userName = "深圳市气象局";
+      //  status = AttrApplyStatusEnum.PENDING;
         QueryUserAttrApplyCCRequest ccRequest = QueryUserAttrApplyCCRequest.builder()
             .fromUid(userName)
             .toUid(toUid)
@@ -325,35 +358,44 @@ public class AttrServiceImpl implements AttrService {
         DABEUser user = dabeService.getUser(request.getFileName());
         Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
         Preconditions.checkNotNull(user.getName());
+        try{
+            String priKey = FileUtils.readFileToString(
+                    new File(priKeyPath + request.getFileName()),
+                    StandardCharsets.UTF_8);
 
-        // 检查属性名是否合法
-        String[] split = StringUtils.split(request.getAttrName(), ":");
-        if (split.length != 2) {
-            throw new BaseException("attrName error");
-        }
-
-        // 如果同意需要给秘密
-        String secret = null;
-        if (request.getAgree().equals(Boolean.TRUE)) {
-            ChaincodeResponse res1 = dabeService.approveAttrApply(
-                    request.getFileName(), request.getAttrName(), request.getToUserName());
-            if (res1.getStatus() == Status.FAIL) {
-                throw new BaseException("get secret failed");
+            // 检查属性名是否合法
+            String[] split = StringUtils.split(request.getAttrName(), ":");
+            if (split.length != 2) {
+                throw new BaseException("attrName error");
             }
-            secret = res1.getMessage();
+
+            // 如果同意需要给秘密
+            String secret = null;
+            if (request.getAgree().equals(Boolean.TRUE)) {
+                ChaincodeResponse res1 = dabeService.approveAttrApply(
+                        request.getFileName(), request.getAttrName(), request.getToUserName());
+                if (res1.getStatus() == Status.FAIL) {
+                    throw new BaseException("get secret failed");
+                }
+                secret = res1.getMessage();
+            }
+
+            ApproveAttrApplyCCRequest ccRequest = ApproveAttrApplyCCRequest.builder()
+                    .uid(user.getName())
+                    .fromUid(request.getToUserName())
+                    .toOrgId(split[0].equals(user.getName()) ? "" : split[0])
+                    .attrName(request.getAttrName())
+                    .secret(secret)
+                    .agree(request.getAgree())
+                    .remark(request.getRemark())
+                    .build();
+            CCUtils.sign(ccRequest, priKey);
+            return chaincodeService.invoke(
+                    ChaincodeTypeEnum.TRUST_PLATFORM, "/user/approveAttrApply", ccRequest);
+        }catch (IOException e) {
+            throw new BaseException(e.getMessage());
         }
 
-        ApproveAttrApplyCCRequest ccRequest = ApproveAttrApplyCCRequest.builder()
-                .uid(user.getName())
-                .fromUid(request.getToUserName())
-                .toOrgId(split[0].equals(user.getName()) ? "" : split[0])
-                .attrName(request.getAttrName())
-                .secret(secret)
-                .agree(request.getAgree())
-                .remark(request.getRemark())
-                .build();
-        return chaincodeService.invoke(
-                ChaincodeTypeEnum.TRUST_PLATFORM, "/user/approveAttrApply", ccRequest);
     }
 
     @Override
@@ -365,7 +407,7 @@ public class AttrServiceImpl implements AttrService {
      * 同步成功的属性申请
      */
     @Override
-    public DABEUser syncSuccessAttrApply(String fileName, String toUid, String toOrgId) {
+    public DABEUser syncSuccessAttrApply2(String fileName, String toUid, String toOrgId) {
         DABEUser user = dabeService.getUser(fileName);
         Preconditions.checkNotNull(user, NO_USER_ERROR + fileName);
         Preconditions.checkNotNull(user.getName());
@@ -380,6 +422,8 @@ public class AttrServiceImpl implements AttrService {
 
             response = queryAttrApply(
                 toUid, toOrgId, user.getName(), AttrApplyStatusEnum.SUCCESS);
+            System.out.println("responsessssssssssssssssssssssssssss");
+            System.out.println(response);
             if (response.getStatus() == Status.FAIL) {
                 log.warn("query for attr apply failed");
                 throw new BaseException("query for attr apply failed");
@@ -387,6 +431,7 @@ public class AttrServiceImpl implements AttrService {
 
             List<PlatUserAttrApply> successApplies = JsonProviderHolder.JACKSON.parseList(
                 response.getMessage(), PlatUserAttrApply.class);
+            System.out.println(successApplies);
             successApplies.stream()
                 .filter(successApply ->
                     (successApply.getIsPublic().equals(Boolean.TRUE)
@@ -398,7 +443,8 @@ public class AttrServiceImpl implements AttrService {
                             user.getPrivacyAttrMap().get(successApply.getAttrName()))))
                 .forEach(successApply -> {
                     try {
-                        String secret = getSecret(successApply, privateKey);
+//                        String secret = getSecret(successApply, privateKey);
+                        String secret = getSecret(successApply);
                         String plainAttrName = getPlainAttrName(successApply, user);
                         user.getAppliedAttrMap().put(plainAttrName, secret);
                     } catch (Exception e) {
@@ -421,7 +467,7 @@ public class AttrServiceImpl implements AttrService {
     }
 
     @Override
-    public DABEUser syncSuccessAttrApply2(String fileName, String toUid, String toOrgId) {
+    public DABEUser syncSuccessAttrApply(String fileName, String toUid, String toOrgId) {
         DABEUser user = dabeService.getUser(fileName);
         Preconditions.checkNotNull(user, NO_USER_ERROR + fileName);
         Preconditions.checkNotNull(user.getName());
@@ -439,6 +485,7 @@ public class AttrServiceImpl implements AttrService {
 
             List<PlatUserAttrApply> successApplies = JsonProviderHolder.JACKSON.parseList(
                     response.getMessage(), PlatUserAttrApply.class);
+            System.out.println(successApplies);
             successApplies.stream()
                     .filter(successApply ->
                             (successApply.getIsPublic().equals(Boolean.TRUE)
@@ -481,6 +528,7 @@ public class AttrServiceImpl implements AttrService {
     private String getSecret(PlatUserAttrApply successApply, PrivateKey privateKey) {
         if (successApply.getN() == 1) {
             // user attr
+            System.out.println(successApply.getApprovalMap().get(successApply.getToUid()).getSecret());
             byte[] secret = SecurityUtils.decrypt(SecurityUtils.RSA_PKCS1, privateKey,
                 Base64.decode(successApply.getApprovalMap().get(successApply.getToUid()).getSecret()));
             return new String(secret);

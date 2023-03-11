@@ -61,6 +61,7 @@ func shareMessage(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	log.Println("enter shareMessage")
 	// 反序列化请求，验签
 	var requestStr = args[0]
+	log.Println(requestStr)
 	shareRequest := new(request.ShareMessageRequest)
 	if err := json.Unmarshal([]byte(requestStr), shareRequest); err != nil {
 		log.Println(err)
@@ -74,7 +75,7 @@ func shareMessage(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 		return shim.Error("too much tags")
 	}
 
-	message := data.NewSharedMessage(shareRequest.Uid, shareRequest.Content, shareRequest.Tags)
+	message := data.NewSharedMessage(shareRequest.Uid, shareRequest.Content, shareRequest.Tags, shareRequest.Timestamp, shareRequest.FileName, shareRequest.Ip, shareRequest.Location, shareRequest.Policy)
 	if err := data.SaveSharedMessage(message, stub); err != nil {
 		log.Println(err)
 		return shim.Error(err.Error())
