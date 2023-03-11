@@ -43,21 +43,21 @@ static
 
 ```nginx
 server{
-	location /datashare {
-		alias /home/zdyf/datashare/;
-		#指定主页
-		index index.html;
-		#自动跳转
-		autoindex on;
-	}
+    location /datashare {
+        alias /home/zdyf/datashare/;
+        #指定主页
+        index index.html;
+        #自动跳转
+        autoindex on;
+    }
 
-	location /fgs {
-		alias /home/zdyf/fgs/;
-		#指定主页
-		index index.html;
-		#自动跳转
-		autoindex on;
-	}
+    location /fgs {
+        alias /home/zdyf/fgs/;
+        #指定主页
+        index index.html;
+        #自动跳转
+        autoindex on;
+    }
 }
 ```
 
