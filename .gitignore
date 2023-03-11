@@ -1,5 +1,6 @@
 dist
 node_modules
 
+backend/src/main/resources/static/static/*
 backend/src/main/resources/static/fgs/*
 backend/src/main/resources/static/ds/*
