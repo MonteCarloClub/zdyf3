@@ -1,8 +1,8 @@
 logging:
   config: classpath:logback-spring.xml
-  level:
-    org:
-      springframework: DEBUG
+#  level:
+#    org:
+#      springframework: DEBUG
 atp:
   devMode:
     peerName: peer
