@@ -203,6 +203,11 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>io.github.javiercanillas</groupId>
+            <artifactId>jackson-masker</artifactId>
+            <version>0.9.9</version>
+        </dependency>
 
     </dependencies>
 
