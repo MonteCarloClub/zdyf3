@@ -36,9 +36,13 @@ public class DABEUser {
 
     // 合约user没有的
     private Map<String, String> appliedAttrMap = new HashMap<>();
+
     // 使用对方公钥/属性密钥加密后的映射
     private Map<String, String> privacyAttrMap = new HashMap<>();
 
+    public void deleteAttr(String key){
+        appliedAttrMap.remove(key);
+    }
     @JsonProperty("Password")
     private String password;
 

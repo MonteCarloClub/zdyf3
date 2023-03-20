@@ -46,14 +46,10 @@ public class PlatContent {
     private static final String PATTERN = "Policy\":\"(.*?)\"";
 
     public PlatContent(ContentResponse response) {
-        System.out.println("content response");
-        System.out.println(response.toString());
         this.tags = response.getTags();
         this.fileName = response.getFileName();
         this.sharedUser = response.getUid();
-        this.timeStamp = response.getTimestamp();
-        System.out.println("tttttttttttt");
-        System.out.println(this.timeStamp);
+        this.timeStamp = response.getTimeStamp();
         this.ip = response.getIp();
         this.policy = response.getPolicy();
         try {

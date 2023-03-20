@@ -14,7 +14,7 @@ public class ContentResponse {
     private String fileName;
     private String uid;
     private List<String> tags;
-    private String timestamp;
+    private String timeStamp;
     private String ip;
     private String policy;
 
@@ -24,7 +24,7 @@ public class ContentResponse {
                 "fileName='" + fileName + '\'' +
                 ", uid='" + uid + '\'' +
                 ", tags=" + tags +
-                ", timeStamp='" + timestamp + '\'' +
+                ", timeStamp='" + timeStamp + '\'' +
                 ", ip='" + ip + '\'' +
                 ", policy='" + policy + '\'' +
                 '}';
