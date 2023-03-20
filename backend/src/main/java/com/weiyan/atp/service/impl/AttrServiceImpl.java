@@ -230,6 +230,11 @@ public class AttrServiceImpl implements AttrService {
         Preconditions.checkNotNull(user2.getName());
         Preconditions.checkNotNull(user2.getAppliedAttrMap().get(request.getAttrName()), "no attr");
 
+        user2.deleteAttr(request.getAttrName());
+
+        CCUtils.saveDABEUser(userPath + user2.getName(),
+                JsonProviderHolder.JACKSON.toJsonString(user2));
+
         RevokeUserAttrCCRequest ccRequest = RevokeUserAttrCCRequest.builder()
                 .uid(user1.getName())
                 .toUid(request.getToUserName())
