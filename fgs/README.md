@@ -1,30 +1,30 @@
 ## 细粒度权限管理-前端
 
-pnpm + vue2
+pnpm + vue3 + [antdv](https://antdv.com/components/overview)
 
 ### 初始化（安装依赖）
 
-```
-pnpm install
+```bash
+$ pnpm install
 ```
 
 ### 开发
 
-```
-pnpm start
+```bash
+$ pnpm start
 ```
 
 ### 打包
 
-```
-pnpm run build
+```bash
+$ pnpm run build
 ```
 直接打包在 `../backend/src/main/resources/fgs` 下
 
 ### Lints and fixes files
 
-```
-pnpm run lint
+```bash
+$ pnpm run lint
 ```
 
 ### Customize configuration

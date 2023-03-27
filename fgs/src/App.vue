@@ -1,39 +1,28 @@
 <template>
-  <div id="app">
-      <router-view></router-view>
+  <div>
+    <router-link to="/">home</router-link>|
+    <router-link to="/sign">sign</router-link>
   </div>
+  <img alt="Vue logo" src="./assets/logo.png" />
+  <div>{{ userName }}</div>
+  <router-view></router-view>
 </template>
 
-<script>
-export default {
-  name: "App",
+<script setup lang="ts">
+import { computed } from "vue";
+import { useUserStore } from "@/store/user";
 
-  data() {
-    return {};
-  },
-
-  computed: {},
-
-  methods: {},
-};
+const store = useUserStore();
+const userName = computed(() => store.getUserInfo?.username)
 </script>
 
-<style scoped>
+<style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  min-width: 900px;
-  margin: auto;
-}
-
-.el-header {
-  top: 0;
-  z-index: 100;
-  position: sticky;
-  padding: 0 !important;
-  background-color: var(--bg-color-0, white);
-  transition: ease 0.6s all;
-  box-shadow: 0 4px 12px #00000014, 0 0 1px #0100001a;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
 }
 </style>
