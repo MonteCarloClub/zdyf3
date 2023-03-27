@@ -1,9 +1,9 @@
 package main
 
 import (
+	"github.com/MonteCarloClub/dabe/model"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
-	DecentralizedABE "github.com/thorweiyan/DecentralizedABE2020/model"
 	"log"
 )
 
@@ -28,7 +28,7 @@ func (d *DABECC) generateOPK(stub shim.ChaincodeStubInterface, args []string) pb
 	requestStr := args[0]
 	log.Println(requestStr)
 	request := new(GenerateOPKRequest)
-	if err := DecentralizedABE.Deserialize2Struct([]byte(requestStr), request); err != nil {
+	if err := model.Deserialize2Struct([]byte(requestStr), request); err != nil {
 		log.Println(err.Error())
 		return shim.Error(err.Error())
 	}
@@ -60,7 +60,7 @@ func (d *DABECC) generateAPK(stub shim.ChaincodeStubInterface, args []string) pb
 	requestStr := args[0]
 	log.Println(requestStr)
 	request := new(GenerateAPKRequest)
-	if err := DecentralizedABE.Deserialize2Struct([]byte(requestStr), request); err != nil {
+	if err := model.Deserialize2Struct([]byte(requestStr), request); err != nil {
 		log.Println(err.Error())
 		return shim.Error(err.Error())
 	}

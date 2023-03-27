@@ -1,10 +1,10 @@
 package main
 
 import (
+	"github.com/MonteCarloClub/dabe/model"
 	"github.com/Nik-U/pbc"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
-	DecentralizedABE "github.com/thorweiyan/DecentralizedABE2020/model"
 	"log"
 	"strconv"
 	"strings"
@@ -85,8 +85,8 @@ func (d *DABECC) approveAttr(stub shim.ChaincodeStubInterface, args []string) pb
 	toUid := args[1]
 	attrName := args[2]
 
-	user := new(DecentralizedABE.User)
-	if err := DecentralizedABE.Deserialize2Struct([]byte(userBytes), user); err != nil {
+	user := new(model.User)
+	if err := model.Deserialize2Struct([]byte(userBytes), user); err != nil {
 		log.Println(err.Error())
 		return shim.Error(err.Error())
 	}
@@ -121,8 +121,8 @@ func (d *DABECC) assembleShare(stub shim.ChaincodeStubInterface, args []string) 
 		log.Println(err.Error())
 		return shim.Error(err.Error())
 	}
-	user := new(DecentralizedABE.User)
-	if err := DecentralizedABE.Deserialize2Struct([]byte(userBytes), user); err != nil {
+	user := new(model.User)
+	if err := model.Deserialize2Struct([]byte(userBytes), user); err != nil {
 		log.Println(err.Error())
 		return shim.Error(err.Error())
 	}
@@ -141,7 +141,7 @@ func (d *DABECC) assembleShare(stub shim.ChaincodeStubInterface, args []string) 
 		return shim.Error(err.Error())
 	}
 
-	bytes, err := DecentralizedABE.Serialize2Bytes(user)
+	bytes, err := model.Serialize2Bytes(user)
 	if err != nil {
 		log.Println(err.Error())
 		return shim.Error(err.Error())
@@ -172,8 +172,8 @@ func (d *DABECC) share(stub shim.ChaincodeStubInterface, args []string) pb.Respo
 		return shim.Error(err.Error())
 	}
 
-	user := new(DecentralizedABE.User)
-	if err := DecentralizedABE.Deserialize2Struct([]byte(userBytes), user); err != nil {
+	user := new(model.User)
+	if err := model.Deserialize2Struct([]byte(userBytes), user); err != nil {
 		log.Println(err.Error())
 		return shim.Error(err.Error())
 	}
@@ -196,7 +196,7 @@ func (d *DABECC) share(stub shim.ChaincodeStubInterface, args []string) pb.Respo
 		}
 	}
 
-	bytes, err := DecentralizedABE.Serialize2Bytes(user)
+	bytes, err := model.Serialize2Bytes(user)
 	if err != nil {
 		log.Println(err.Error())
 		return shim.Error(err.Error())
@@ -208,8 +208,8 @@ func (d *DABECC) declareAttr(stub shim.ChaincodeStubInterface, args []string) pb
 	log.Println("user declareAttr")
 	userBytes := args[0]
 	attrName := args[1]
-	user := new(DecentralizedABE.User)
-	if err := DecentralizedABE.Deserialize2Struct([]byte(userBytes), user); err != nil {
+	user := new(model.User)
+	if err := model.Deserialize2Struct([]byte(userBytes), user); err != nil {
 		log.Println(err.Error())
 		return shim.Error(err.Error())
 	}
@@ -219,7 +219,7 @@ func (d *DABECC) declareAttr(stub shim.ChaincodeStubInterface, args []string) pb
 		return shim.Error(err.Error())
 	}
 
-	bytes, err := DecentralizedABE.Serialize2Bytes(user)
+	bytes, err := model.Serialize2Bytes(user)
 	if err != nil {
 		log.Println(err.Error())
 		return shim.Error(err.Error())
@@ -231,7 +231,7 @@ func (d *DABECC) create(stub shim.ChaincodeStubInterface, args []string) pb.Resp
 	log.Println("create user")
 	name := args[0]
 	user := d.Dabe.UserSetup(name)
-	bytes, err := DecentralizedABE.Serialize2Bytes(user)
+	bytes, err := model.Serialize2Bytes(user)
 	if err != nil {
 		log.Println(err.Error())
 		return shim.Error(err.Error())
