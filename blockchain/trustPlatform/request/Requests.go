@@ -108,6 +108,14 @@ type ShareMessageRequest struct {
 
 }
 
+//撤销属性申请
+type RevokeAttrApplyRequest struct {
+	BaseRequest
+	ToUid   string  `json:"toUid"`
+	AttrName string `json:"attrName"`
+	Remark   string `json:"remark"`
+}
+
 // 整合请求
 type MixPartPKRequest struct {
 	BaseRequest
