@@ -39,7 +39,7 @@ export default {
     const userName = getters.userName();
     attrApi.history(userName).then((res) => {
       this.records = res;
-    });
+    }).catch(console.log);
   },
 };
 </script>

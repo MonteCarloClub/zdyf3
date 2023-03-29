@@ -1,5 +1,4 @@
 import request from '@/utils/request'
-import axios from 'axios'
 
 /** 文件管理
  * 
@@ -25,26 +24,12 @@ export const fileApi = {
         data.append('tags', tags);
         data.append('policy', policy);
 
-        return new Promise((resolve, reject) => {
-            request({
-                url: '/content/upload',
-                method: 'post',
-                headers: { 'Content-Type': 'multipart/form-data' },
-                data,
-                timeout: 0,
-            }).then(response => {
-                // {
-                //     "code":200   200, 成功; 其他，失败
-                //     "msg":"success",  描述
-                //     "data": null
-                // }
-                if (response.code === 200) {
-                    resolve(response.data)
-                }
-                else {
-                    reject(response)
-                }
-            }).catch(reject)
+        return request({
+            url: '/content/upload',
+            method: 'post',
+            headers: { 'Content-Type': 'multipart/form-data' },
+            data,
+            timeout: 0,
         })
     },
 
@@ -66,44 +51,33 @@ export const fileApi = {
             bookmark: _data.bookmark,
         }
 
-        return new Promise((resolve, reject) => {
-            request({
-                url: '/content/list',
-                method: 'get',
-                data,
-                params: data
-            }).then(response => {
-                // {
-                //     "code":200   200, 成功; 其他，失败
-                //     "msg":"success",  描述
-                //     "data":{
-                //          "contents":[
-                //              {
-                //                  "fileName":"test.txt",
-                //                  "policy":"(someone:friend AND someone:family)",
-                //                  "cipher":"xxx",
-                //                  "tags":[
-                //                      "shanghai",
-                //                      "myc",
-                //                      "edu",
-                //                      "test"
-                //                  ],
-                //                  "sharedUser":"someone"
-                //              }
-                //          ],
-                //          "bookmark":"g1AAAA...",
-                //          "pageSize":10,
-                //          "count":1
-                //      }
-                // }
-                if (response.code === 200) {
-                    resolve(response.data)
-                }
-                else {
-                    reject(response)
-                }
-            }).catch(reject)
+        return request({
+            url: '/content/list',
+            method: 'get',
+            data,
+            params: data
         })
+        /**
+         * {
+         *     "contents":[
+         *         {
+         *             "fileName":"test.txt",
+         *             "policy":"(someone:friend AND someone:family)",
+         *             "cipher":"xxx",
+         *             "tags":[
+         *                 "shanghai",
+         *                 "myc",
+         *                 "edu",
+         *                 "test"
+         *             ],
+         *             "sharedUser":"someone"
+         *         }
+         *     ],
+         *     "bookmark":"g1AAAA...",
+         *     "pageSize":10,
+         *     "count":1
+         * }
+         */
     },
 
     /**
@@ -124,25 +98,14 @@ export const fileApi = {
             sharedUser,
         }
 
-        return new Promise((resolve, reject) => {
-            request({
-                url: '/content/decryption',
-                method: 'post',
-                data
-            }).then(response => {
-                // {
-                //     "code":200     200, 成功; 其他，失败
-                //     "msg":null,    描述
-                //     "data": content 共享文件内容
-                // }
-                if (response.code === 200) {
-                    resolve(response.data)
-                }
-                else {
-                    reject(response)
-                }
-            }).catch(reject)
+        return request({
+            url: '/content/decryption',
+            method: 'post',
+            data
         })
+        /**
+         * content 共享文件内容
+         */
     },
 
     /**
@@ -158,27 +121,12 @@ export const fileApi = {
             sharedUser,
         }
 
-        return new Promise((resolve, reject) => {
-            axios.request({
-                baseURL: process.env.NODE_ENV === "development" ? process.env.VUE_APP_DEV_URL : process.env.VUE_APP_PRO_URL,
-                url: '/content/download',
-                method: 'get',
-                data,
-                params: data,
-                responseType: 'blob', // important
-            }).then(response => {
-                // {
-                //     "code":200     200, 成功; 其他，失败
-                //     "msg":null,    描述
-                //     "data":content 共享文件内容
-                // }
-                if (response.status === 200) {
-                    resolve(response.data)
-                }
-                else {
-                    reject(response)
-                }
-            }).catch(reject)
+        return request({
+            url: '/content/download',
+            method: 'get',
+            data,
+            params: data,
+            responseType: 'blob', // important
         })
     },
 
@@ -197,27 +145,15 @@ export const fileApi = {
             sharedUser,
         }
 
-        return new Promise((resolve, reject) => {
-            axios.request({
-                baseURL: process.env.NODE_ENV === "development" ? process.env.VUE_APP_DEV_URL : process.env.VUE_APP_PRO_URL,
-                url: '/content/cipher',
-                method: 'get',
-                data,
-                params: data,
-                responseType: 'blob', // important
-            }).then(response => {
-                // {
-                //     "code":200     200, 成功; 其他，失败
-                //     "msg":null,    描述
-                //     "data":content 共享文件内容
-                // }
-                if (response.status === 200) {
-                    resolve(response.data)
-                }
-                else {
-                    reject(response)
-                }
-            }).catch(reject)
+        return request({
+            url: '/content/cipher',
+            method: 'get',
+            data,
+            params: data,
+            responseType: 'blob', // important
         })
+        /**
+         * content 共享文件内容
+         */
     }
 }

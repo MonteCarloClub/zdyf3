@@ -10,7 +10,7 @@ module.exports = (options = {}) => ({
         target: 'http://10.176.40.46:8080',
         changeOrigin: true,
         pathRewrite: {
-          '^/dev': '/abe'
+          '^/dev': ''
         }
       },
       '/cert/': {

@@ -62,7 +62,7 @@ export default {
         })
         .catch((e) => {
           this.$message({
-            message: e.message,
+            message: e,
             type: "error",
           });
         });

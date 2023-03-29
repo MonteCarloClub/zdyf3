@@ -160,7 +160,7 @@ export default {
         })
         .catch((e) => {
           this.$message({
-            message: e.message,
+            message: e,
             duration: 2 * 1000,
             type: "error",
           });
@@ -187,7 +187,7 @@ export default {
         })
         .catch((e) => {
           this.$message({
-            message: e.message,
+            message: e,
             duration: 2 * 1000,
             type: "error",
           });

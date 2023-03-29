@@ -65,9 +65,9 @@ export default {
             .then((_) => {
               this.saveFile(fileName, _);
             })
-            .catch((e) => {
+            .catch((message) => {
               this.$message({
-                message: e.message,
+                message,
                 duration: 5000,
                 type: "error",
               });
@@ -75,7 +75,7 @@ export default {
         })
         .catch((e) => {
           this.$message({
-            message: e.message,
+            message: e,
             duration: 5000,
             type: "error",
           });
@@ -93,7 +93,7 @@ export default {
         })
         .catch((e) => {
           this.$message({
-            message: e.message,
+            message: e,
             duration: 5000,
             type: "error",
           });

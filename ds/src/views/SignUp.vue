@@ -119,7 +119,6 @@ export default {
     },
 
     download(content) {
-      console.log(content);
       const fileName = 'certificate.cert'
       var a = document.createElement("a");
       var file = new Blob([content], { type: 'text/plain' });
