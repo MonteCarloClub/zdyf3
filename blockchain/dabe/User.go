@@ -127,16 +127,21 @@ func (d *DABECC) assembleShare(stub shim.ChaincodeStubInterface, args []string) 
 		return shim.Error(err.Error())
 	}
 
-	var sharesForUser []*pbc.Element
-	aid := 0
-	if attrName != "" {
-		aid = 1
-		sharesForUser = user.OSKMap[orgName].ASKMap[attrName].OthersShare
-	} else {
-		sharesForUser = user.OSKMap[orgName].OthersShare
-	}
+	/**
+	 * todo: AssembleShare的参数表尚错误，此前的版本参数表少1参数，目前仅使编译通过
+	 * @KofClubs, 2023-03-30
+	 */
+	//var sharesForUser []*pbc.Element
+	//aid := 0
+	//if attrName != "" {
+	//	aid = 1
+	//	sharesForUser = user.OSKMap[orgName].ASKMap[attrName].OthersShare
+	//} else {
+	//	sharesForUser = user.OSKMap[orgName].OthersShare
+	//}
 
-	if _, err := user.AssembleShare(sharesForUser, d.Dabe, n, aid, orgName, attrName); err != nil {
+	if _, err := user.AssembleShare(nil, nil, d.Dabe, n, 0, orgName, attrName); err != nil {
+		//if _, err := user.AssembleShare(sharesForUser, d.Dabe, n, aid, orgName, attrName); err != nil {
 		log.Println(err.Error())
 		return shim.Error(err.Error())
 	}
