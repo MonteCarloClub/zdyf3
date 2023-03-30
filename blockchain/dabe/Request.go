@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/MonteCarloClub/dabe/model"
 	"github.com/Nik-U/pbc"
-	DecentralizedABE "github.com/thorweiyan/DecentralizedABE2020/model"
 )
 
 type GenerateOPKRequest struct {
@@ -28,7 +28,7 @@ type EncryptRequest struct {
 
 type Authority struct {
 	PK     *pbc.Element `field:"2"`
-	APKMap map[string]*DecentralizedABE.APK
+	APKMap map[string]*model.APK
 }
 
 type DecryptRequest struct {
@@ -41,6 +41,6 @@ func (a *Authority) GetPK() *pbc.Element {
 	return a.PK
 }
 
-func (a *Authority) GetAPKMap() map[string]*DecentralizedABE.APK {
+func (a *Authority) GetAPKMap() map[string]*model.APK {
 	return a.APKMap
 }

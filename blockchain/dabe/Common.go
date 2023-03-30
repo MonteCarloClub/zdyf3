@@ -1,9 +1,9 @@
 package main
 
 import (
+	"github.com/MonteCarloClub/dabe/model"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
-	DecentralizedABE "github.com/thorweiyan/DecentralizedABE2020/model"
 	"log"
 )
 
@@ -27,12 +27,12 @@ func (d *DABECC) encrypt(stub shim.ChaincodeStubInterface, args []string) pb.Res
 	requestBytes := args[0]
 	request := new(EncryptRequest)
 	log.Println(requestBytes)
-	if err := DecentralizedABE.Deserialize2Struct([]byte(requestBytes), request); err != nil {
+	if err := model.Deserialize2Struct([]byte(requestBytes), request); err != nil {
 		log.Println(err)
 		return shim.Error(err.Error())
 	}
 
-	authorities := make(map[string]DecentralizedABE.Authority)
+	authorities := make(map[string]model.Authority)
 	for key, value := range request.AuthorityMap {
 		authorities[key] = value
 	}
@@ -41,7 +41,7 @@ func (d *DABECC) encrypt(stub shim.ChaincodeStubInterface, args []string) pb.Res
 		log.Println(err)
 		return shim.Error(err.Error())
 	}
-	bytes, err := DecentralizedABE.Serialize2Bytes(cipher)
+	bytes, err := model.Serialize2Bytes(cipher)
 	if err != nil {
 		log.Println(err)
 		return shim.Error(err.Error())
@@ -53,12 +53,12 @@ func (d *DABECC) encrypt(stub shim.ChaincodeStubInterface, args []string) pb.Res
 func (d *DABECC) decrypt(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	requestBytes := args[0]
 	request := new(DecryptRequest)
-	if err := DecentralizedABE.Deserialize2Struct([]byte(requestBytes), request); err != nil {
+	if err := model.Deserialize2Struct([]byte(requestBytes), request); err != nil {
 		log.Println(err)
 		return shim.Error(err.Error())
 	}
-	cipher := new(DecentralizedABE.Cipher)
-	if err := DecentralizedABE.Deserialize2Struct([]byte(request.Cipher), cipher); err != nil {
+	cipher := new(model.Cipher)
+	if err := model.Deserialize2Struct([]byte(request.Cipher), cipher); err != nil {
 		log.Println(err)
 		return shim.Error(err.Error())
 	}
