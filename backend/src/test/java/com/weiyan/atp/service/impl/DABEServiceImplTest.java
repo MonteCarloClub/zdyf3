@@ -39,12 +39,12 @@ class DABEServiceImplTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(Slf4j.class);
 
     @Test
-    void getUser() throws Exception {  
+    void getUser() throws Exception {
 
     }
 
     @Test
-    void  getUser2() throws Exception {
+    void getUser2() throws Exception {
         String uri = "/dabe/user2";
 
         MockMvc mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
@@ -56,7 +56,20 @@ class DABEServiceImplTest {
         ).andReturn();
 
         int status = result.getResponse().getStatus();
-        Assert.assertEquals("錯誤",200,status);
+        Assert.assertEquals("错误", 200, status);
+    }
+
+    @Test
+    void getUser2BatchDryRun() throws Exception {
+        String uri = "/dabe/user2_batch_dry_run";
+        MockMvc mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.post(uri)
+                        .param("batch_size", String.valueOf(10000000))
+                        .accept(MediaType.APPLICATION_JSON)
+        ).andReturn();
+        int status = result.getResponse().getStatus();
+        Assert.assertEquals("/dabe/user2_batch_dry_run: fail", 200, status);
     }
 
     @Test
