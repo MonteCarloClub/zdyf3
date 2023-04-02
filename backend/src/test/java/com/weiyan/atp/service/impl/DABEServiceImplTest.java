@@ -60,6 +60,20 @@ class DABEServiceImplTest {
     }
 
     @Test
+    void getUser2DryRun() throws Exception {
+        String uri = "/dabe/user2_dry_run";
+        MockMvc mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.post(uri)
+                        .param("filename", "filename")
+                        .param("password", "password")
+                        .accept(MediaType.APPLICATION_JSON)
+        ).andReturn();
+        int status = result.getResponse().getStatus();
+        Assert.assertEquals("/dabe/user2_dry_run: fail", 200, status);
+    }
+
+    @Test
     void getUser2BatchDryRun() throws Exception {
         String uri = "/dabe/user2_batch_dry_run";
         MockMvc mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();

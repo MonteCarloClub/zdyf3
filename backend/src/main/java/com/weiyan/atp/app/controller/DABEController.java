@@ -34,6 +34,12 @@ public class DABEController {
         return handleUser(dabeService.getUser2(fileName, password));
     }
 
+    @PostMapping("/user2_dry_run")
+    public Result<DABEUser> getUser2DryRun(String filename, String password) {
+        dabeService.getUser2DryRun(filename, password);
+        return null;
+    }
+
     @PostMapping("/user2_batch_dry_run")
     public Result<DABEUser> getUser2BatchDryRun(int batch_size) {
         String filename = "filename_", password = "password_";
@@ -88,7 +94,6 @@ public class DABEController {
 
     @GetMapping("/user/apply")
     public Result<Object> approveAttrApply(String fileName, String attrName, String toUserName) {
-        return dabeService.approveAttrApply(fileName, attrName, toUserName)
-                .getResult(str -> str);
+        return dabeService.approveAttrApply(fileName, attrName, toUserName).getResult(str -> str);
     }
 }
