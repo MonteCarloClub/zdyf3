@@ -34,13 +34,13 @@ public class DABEController {
         return handleUser(dabeService.getUser2(fileName, password));
     }
 
-    @PostMapping("/user2_dry_run")
+    @GetMapping("/user2_dry_run")
     public Result<DABEUser> getUser2DryRun(String filename, String password) {
         dabeService.getUser2DryRun(filename, password);
-        return null;
+        return handleUserDryRun();
     }
 
-    @PostMapping("/user2_batch_dry_run")
+    @GetMapping("/user2_batch_dry_run")
     public Result<DABEUser> getUser2BatchDryRun(int batch_size) {
         String filename = "filename_", password = "password_";
         long loTimestamp = System.currentTimeMillis();
@@ -54,7 +54,7 @@ public class DABEController {
         }
         long hiTimestamp = System.currentTimeMillis();
         System.out.printf("/user2_batch dry run: %d user(s) handled in %d ms%n", batch_size, hiTimestamp - loTimestamp);
-        return null;
+        return handleUserDryRun();
     }
 
     @PostMapping("/user3")
@@ -80,7 +80,7 @@ public class DABEController {
         }
     }
 
-    private Result<DABEUser> handleUserDryRun(DABEUser user) {
+    private Result<DABEUser> handleUserDryRun() {
         return Result.success();
     }
 

@@ -64,7 +64,7 @@ class DABEServiceImplTest {
         String uri = "/dabe/user2_dry_run";
         MockMvc mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.post(uri)
+                MockMvcRequestBuilders.get(uri)
                         .param("filename", "filename")
                         .param("password", "password")
                         .accept(MediaType.APPLICATION_JSON)
@@ -78,7 +78,7 @@ class DABEServiceImplTest {
         String uri = "/dabe/user2_batch_dry_run";
         MockMvc mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.post(uri)
+                MockMvcRequestBuilders.get(uri)
                         .param("batch_size", String.valueOf(10000000))
                         .accept(MediaType.APPLICATION_JSON)
         ).andReturn();
