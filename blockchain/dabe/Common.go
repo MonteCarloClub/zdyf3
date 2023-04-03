@@ -1,12 +1,12 @@
 package main
 
 import (
+	DecentralizedABE "github.com/MonteCarloClub/dabe/model"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
-	DecentralizedABE "github.com/wjfn/DecentralizedABE2020/model"
+	"io/ioutil"
 	"log"
-        "io/ioutil"
-        "os"
+	"os"
 )
 
 // ===================================================================================
@@ -26,8 +26,8 @@ func (d *DABECC) CommonInvoke(stub shim.ChaincodeStubInterface) pb.Response {
 		return batchDeclareAttr(stub, args)
 	} else if function == "/common/batch" {
 		return d.batch(stub, args)
-	} else if function == "/common/getCipher"{
-		return d.getCipher(stub,args)
+	} else if function == "/common/getCipher" {
+		return d.getCipher(stub, args)
 	}
 
 	return shim.Error("Invalid invoke function name. Expecting \"/common/encrypt\" \"/common/decrypt\"")
@@ -57,32 +57,31 @@ func (d *DABECC) encrypt(stub shim.ChaincodeStubInterface, args []string) pb.Res
 		return shim.Error(err.Error())
 	}
 
-        //将密文保存到本地文件
-        basePath := "encrypt/"+request.UserName
-	path := basePath+"/"+request.FileName
-        if !isExist(basePath) {
+	//将密文保存到本地文件
+	basePath := "encrypt/" + request.UserName
+	path := basePath + "/" + request.FileName
+	if !isExist(basePath) {
 		err := CreateMutiDir(basePath)
-		if err != nil{
+		if err != nil {
 			log.Println(err)
 			return shim.Error(err.Error())
 		}
 	}
 
-
-	file,err:=os.Create(path)
+	file, err := os.Create(path)
 	if err != nil {
 		log.Println(err)
 		return shim.Error(err.Error())
 	}
 	defer file.Close()
-	_,err = file.Write(bytes)
+	_, err = file.Write(bytes)
 	if err != nil {
 		log.Println(err)
 		return shim.Error(err.Error())
 	}
 
 	//返回简化的密文
-	cipherSimple := &CipherSimple{C0:cipher.C0,C1s:cipher.C1s,C2s:cipher.C2s,C3s:cipher.C3s,Policy:cipher.Policy}
+	cipherSimple := &CipherSimple{C0: cipher.C0, C1s: cipher.C1s, C2s: cipher.C2s, C3s: cipher.C3s, Policy: cipher.Policy}
 	bytes, err = DecentralizedABE.Serialize2Bytes(cipherSimple)
 	if err != nil {
 		log.Println(err)
@@ -100,17 +99,17 @@ func (d *DABECC) decrypt(stub shim.ChaincodeStubInterface, args []string) pb.Res
 		return shim.Error(err.Error())
 	}
 
-        //从本地读取密文
-        basePath := "encrypt/"+request.SharedUser
-        path := basePath+"/"+request.FileName
+	//从本地读取密文
+	basePath := "encrypt/" + request.SharedUser
+	path := basePath + "/" + request.FileName
 	if !isExist(basePath) {
-		log.Println("path not exist: "+basePath)
-		return shim.Error("path not exist: "+basePath)
+		log.Println("path not exist: " + basePath)
+		return shim.Error("path not exist: " + basePath)
 	}
 
 	cipherBytes, err := ioutil.ReadFile(path)
 	if err != nil {
-                log.Println(err)
+		log.Println(err)
 		return shim.Error(err.Error())
 	}
 
@@ -141,11 +140,11 @@ func (d *DABECC) getCipher(stub shim.ChaincodeStubInterface, args []string) pb.R
 	}
 
 	//从本地读取密文
-	basePath := "encrypt/"+request.SharedUser
-	path := basePath+"/"+request.FileName
+	basePath := "encrypt/" + request.SharedUser
+	path := basePath + "/" + request.FileName
 	if !isExist(basePath) {
-		log.Println("path not exist: "+basePath)
-		return shim.Error("path not exist: "+basePath)
+		log.Println("path not exist: " + basePath)
+		return shim.Error("path not exist: " + basePath)
 	}
 	cipherBytes, err := ioutil.ReadFile(path)
 	if err != nil {
@@ -154,4 +153,3 @@ func (d *DABECC) getCipher(stub shim.ChaincodeStubInterface, args []string) pb.R
 	}
 	return shim.Success(cipherBytes)
 }
-

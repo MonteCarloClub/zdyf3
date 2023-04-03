@@ -1,9 +1,9 @@
 package main
 
 import (
+	DecentralizedABE "github.com/MonteCarloClub/dabe/model"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
-	DecentralizedABE "github.com/wjfn/DecentralizedABE2020/model"
 	"log"
 	"strings"
 )

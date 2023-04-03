@@ -1,14 +1,14 @@
 package main
 
 import (
+	"encoding/json"
+	DecentralizedABE "github.com/MonteCarloClub/dabe/model"
 	"github.com/Nik-U/pbc"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
-	DecentralizedABE "github.com/wjfn/DecentralizedABE2020/model"
 	"log"
 	"strconv"
 	"strings"
-	"encoding/json"
 )
 
 // ===================================================================================
@@ -244,14 +244,13 @@ func (d *DABECC) create(stub shim.ChaincodeStubInterface, args []string) pb.Resp
 	return shim.Success(bytes)
 }
 
-
 //批量注册用户
 func (d *DABECC) batchCreate(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	log.Println("batch create user")
 	name := args[0]
-	cnt,_ := strconv.Atoi(args[1])
-	for i:=1;i<=cnt;i++{
-		newName:=name+strconv.Itoa(i)
+	cnt, _ := strconv.Atoi(args[1])
+	for i := 1; i <= cnt; i++ {
+		newName := name + strconv.Itoa(i)
 		user := d.Dabe.UserSetup(newName)
 		bytes, err := DecentralizedABE.Serialize2Bytes(user)
 		if err != nil {
@@ -261,12 +260,10 @@ func (d *DABECC) batchCreate(stub shim.ChaincodeStubInterface, args []string) pb
 		if err = stub.PutState("ID:"+newName, bytes); err != nil {
 			return shim.Error(err.Error())
 		}
-		log.Println("user: "+newName)
+		log.Println("user: " + newName)
 	}
 	return shim.Success(nil)
 }
-
-
 
 // ===================================================================================
 // 根据uid查询用户
@@ -288,7 +285,7 @@ func QueryUserByUid(uid string, stub shim.ChaincodeStubInterface) (user *User, e
 }
 
 //根据属性名查属性信息
-func QueryAttrByName(attrName string,stub shim.ChaincodeStubInterface )(attr *Attr, err error) {
+func QueryAttrByName(attrName string, stub shim.ChaincodeStubInterface) (attr *Attr, err error) {
 	bytes, err := stub.GetState("ATTR:" + attrName)
 	if err != nil {
 		return nil, err
@@ -329,7 +326,6 @@ type Attr struct {
 	APK string `json:"apk"`
 }
 
-
 func NewAttr(uid string, attrName string, APK string) *Attr {
 	return &Attr{ObjectType: "attr", Id: uid, AttrName: attrName, APK: APK}
 }
@@ -354,7 +350,7 @@ func SaveUserAttrOnly(attr *Attr, stub shim.ChaincodeStubInterface) (err error) 
 // ===================================================================================
 // 更新用户相关内容
 // ===================================================================================
-func UpdateUserAttr(user *User,stub shim.ChaincodeStubInterface) (err error) {
+func UpdateUserAttr(user *User, stub shim.ChaincodeStubInterface) (err error) {
 	// 更新user
 	userBytes, err := json.Marshal(user)
 	if err != nil {
@@ -366,7 +362,6 @@ func UpdateUserAttr(user *User,stub shim.ChaincodeStubInterface) (err error) {
 	}
 	return
 }
-
 
 // ===================================================================================
 // 创建一个新用户
@@ -384,7 +379,6 @@ func create(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	uid := initRequest.Uid
 	publicKey := initRequest.PublicKey
 	upk := initRequest.UPK
-
 
 	user := NewUser(uid, publicKey, upk)
 	if err := SaveUser(user, stub); err != nil {
@@ -419,6 +413,3 @@ func SaveUser(user *User, stub shim.ChaincodeStubInterface) (err error) {
 	log.Println("save user with uid: " + user.Uid + " success")
 	return
 }
-
-
-
