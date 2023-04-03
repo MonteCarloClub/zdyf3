@@ -5,6 +5,8 @@ import (
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"log"
 	"trustPlatform/constant"
+        "trustPlatform/utils"
+        "fmt"
 )
 
 func init() {
@@ -41,3 +43,19 @@ func QueryAttrBytes(attrName string, stub shim.ChaincodeStubInterface) (attr []b
 	}
 	return
 }
+
+// ===================================================================================
+// 查找通道列表
+// ===================================================================================
+func QueryChannelListBytes(stub shim.ChaincodeStubInterface) (apply [][]byte, err error) {
+	queryString := fmt.Sprintf("{\"selector\":{\"docType\":\"%s\"", constant.Channel)
+	queryString += "}}"
+
+	log.Println(queryString)
+	if apply, err = utils.GetBytesFromDB(stub, queryString); err != nil {
+		return nil, err
+	}
+	return
+}
+
+

@@ -3,7 +3,7 @@ package data
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/go-kratos/kratos/pkg/ecode"
+	//"github.com/go-kratos/kratos/pkg/ecode"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"log"
 	"trustPlatform/constant"
@@ -52,11 +52,6 @@ func QueryUserJsonByUid(uid string, stub shim.ChaincodeStubInterface) (user []by
 func QueryUserByPublicKey(pk string, stub shim.ChaincodeStubInterface) (user *User, err error) {
 	log.Println("query user by publicKey: " + pk)
 	queryString := fmt.Sprintf("{\"selector\":{\"docType\":\"%s\",\"publicKey\":\"%s\"}}", constant.User, pk)
-	log.Println("111111111111111111111111111111111111111")
-	log.Println(queryString)
-	log.Println("2222222222222222222222222222")
-	log.Println(len(pk))
-	log.Println("333333333333333333333333333")
 	resultsIterator, err := stub.GetQueryResult(queryString)
 	if err != nil {
 		return nil, err
@@ -105,7 +100,7 @@ func QueryUserApplyByAllConditions(fromUid, toUid, toOrgId, attrName string, stu
 	} else {
 		toId = toUid
 	}
-	log.Printf("query attr apply to %s from uid %s\n", toId, fromUid)
+	//log.Printf("query attr apply to %s from uid %s\n", toId, fromUid)
 	bytes, err := stub.GetState(constant.AttrApplyPrefix + toId + ":" + fromUid + attrName)
 	if err != nil {
 		return nil, err
@@ -145,8 +140,6 @@ func QueryUserAttrApplyBytes(fromUid, toUid, toOrgId string, status constant.Att
 	return
 }
 
-
-
 // ===================================================================================
 // 查找属性申请
 // ===================================================================================
@@ -168,14 +161,14 @@ func QueryUserAttrApply(fromUid, toUid, toOrgId string, status constant.AttrAppl
 }
 
 // ===================================================================================
-// 查找属性申请
+// 查找共享文件
 // ===================================================================================
 func GetSharedMessage(fromUid, tag string, pageSize int, bookmark string, stub shim.ChaincodeStubInterface) (result []byte, err error) {
 	log.Printf("query shared message from %s with %s\n", fromUid, tag)
-	if fromUid == "" && tag == "" {
-		log.Println("cannot query all message")
-		return nil, ecode.Error(ecode.RequestErr, "cannot query all message")
-	}
+	//if fromUid == "" && tag == "" {
+	//	log.Println("cannot query all message")
+	//	return nil, ecode.Error(ecode.RequestErr, "cannot query all message")
+	//}
 	queryString := fmt.Sprintf("{\"selector\":{\"docType\":\"%s\"", constant.SharedMessage)
 	if fromUid != "" {
 		queryString += fmt.Sprintf(",\"uid\":\"%s\"", fromUid)
@@ -191,3 +184,38 @@ func GetSharedMessage(fromUid, tag string, pageSize int, bookmark string, stub s
 	}
 	return
 }
+
+//根据属性名查属性信息
+func QueryAttrByName(attrName string,stub shim.ChaincodeStubInterface )(attr *Attr, err error) {
+	bytes, err := stub.GetState(constant.AttrPrefix + attrName)
+	if err != nil {
+		return nil, err
+	}
+	if len(bytes) == 0 {
+		return nil, nil
+	}
+
+	if err = json.Unmarshal(bytes, &attr); err != nil {
+		return nil, err
+	}
+	return
+}
+
+// ===================================================================================
+// 查找属性历史
+// ===================================================================================
+func QueryUserAttrHistoryBytes(uid string, stub shim.ChaincodeStubInterface) (apply [][]byte, err error) {
+	log.Printf("query attr history of %s \n", uid)
+	queryString := fmt.Sprintf("{\"selector\":{\"docType\":\"%s\"", constant.AttrHistory)
+	if uid != "" {
+		queryString += fmt.Sprintf(",\"uid\":\"%s\"", uid)
+	}
+	queryString += "}}"
+
+	log.Println(queryString)
+	if apply, err = utils.GetBytesFromDB(stub, queryString); err != nil {
+		return nil, err
+	}
+	return
+}
+

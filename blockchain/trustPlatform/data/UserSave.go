@@ -8,6 +8,7 @@ import (
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"log"
 	"trustPlatform/constant"
+        "trustPlatform/utils"
 )
 
 func init() {
@@ -29,6 +30,33 @@ func SaveUser(user *User, stub shim.ChaincodeStubInterface) (err error) {
 	if err = stub.PutState(constant.IdPrefix+user.Uid, bytes); err != nil {
 		return err
 	}
+
+        //更新用户/机构总数
+	if user.UserType == "user"{
+		if err=utils.UpdateTotalCount(stub,constant.TotalUserCount);err!=nil{
+			return err
+		}
+	}else {
+		if err=utils.UpdateTotalCount(stub,constant.TotalOrgCount);err!=nil{
+			return err
+		}
+	}
+
+        //保存通道信息并更新通道总数
+	if !utils.ExistChannel(user.Channel, stub) {
+                ch := NewChannel(user.Channel)
+		chBytes, err := json.Marshal(ch)
+		if err != nil {
+			return err
+		}
+		if err = stub.PutState(constant.ChannelPrefix+user.Channel, chBytes); err != nil {
+			return err
+		}
+		if err=utils.UpdateTotalCount(stub,constant.TotalChannelCount);err!=nil{
+			return err
+		}
+	}
+
 	log.Println("save user with uid: " + user.Uid + " success")
 	return
 }
@@ -58,9 +86,50 @@ func SaveUserAttr(user *User, attr *Attr, stub shim.ChaincodeStubInterface) (err
 	if err = stub.PutState(constant.AttrPrefix+attr.AttrName, attrBytes); err != nil {
 		return err
 	}
+
+        //更新属性总数
+	if err = utils.UpdateTotalCount(stub,constant.TotalAttrCount);err!=nil{
+		return err
+	}
+
 	log.Printf("save user attr %s with uid %s success\n", attr.AttrName, attr.Id)
 	return
 }
+
+
+// ===================================================================================
+// 保存用户属性
+// ===================================================================================
+func SaveUserAttrOnly(attr *Attr, stub shim.ChaincodeStubInterface) (err error) {
+	// 插入attr
+	attrBytes, err := json.Marshal(attr)
+	if err != nil {
+		return err
+	}
+
+	if err = stub.PutState(constant.AttrPrefix+attr.AttrName, attrBytes); err != nil {
+		return err
+	}
+	log.Printf("save user attr %s with uid %s success\n", attr.AttrName, attr.Id)
+	return
+}
+
+// ===================================================================================
+// 更新用户相关内容
+// ===================================================================================
+func UpdateUserAttr(user *User,stub shim.ChaincodeStubInterface) (err error) {
+	// 更新user
+	userBytes, err := json.Marshal(user)
+	if err != nil {
+		return err
+	}
+
+	if err = stub.PutState(constant.IdPrefix+user.Uid, userBytes); err != nil {
+		return err
+	}
+	return
+}
+
 
 // ===================================================================================
 // 保存用户对属性的申请
@@ -72,7 +141,7 @@ func SaveUserAttrApply(apply *UserApply, stub shim.ChaincodeStubInterface) (err 
 	} else {
 		toId = apply.ToOrgId
 	}
-	log.Printf("save attr apply to %s from uid %s\n", toId, apply.FromUid)
+	//log.Printf("save attr apply to %s from uid %s\n", toId, apply.FromUid)
 
 	applyBytes, err := json.Marshal(apply)
 	if err != nil {
@@ -83,7 +152,7 @@ func SaveUserAttrApply(apply *UserApply, stub shim.ChaincodeStubInterface) (err 
 		return err
 	}
 
-	log.Printf("save attr apply to %s from uid %s success\n", toId, apply.FromUid)
+	//log.Printf("save attr apply to %s from uid %s success\n", toId, apply.FromUid)
 	return
 }
 
@@ -92,7 +161,7 @@ func SaveUserAttrApply(apply *UserApply, stub shim.ChaincodeStubInterface) (err 
 // ===================================================================================
 func SaveSharedMessage(message *SharedMessage, stub shim.ChaincodeStubInterface) (err error) {
 	log.Printf("save shared message from: %s with %s\n", message.Uid, message.Tags)
-        log.Printf("timestamp:%s\n filename:%s\n", message.Timestamp, message.FileName)
+
 	messageBytes, err := json.Marshal(message)
 	if err != nil {
 		return err
@@ -116,3 +185,21 @@ func SaveSharedMessage(message *SharedMessage, stub shim.ChaincodeStubInterface)
 	log.Printf("save shared message from: %s with %s success\n", message.Uid, message.Tags)
 	return
 }
+
+
+// ===================================================================================
+// 保存用户属性的历史信息
+// ===================================================================================
+func SaveUserAttrHistory(history *AttrHistory, stub shim.ChaincodeStubInterface) (err error) {
+	historyBytes, err := json.Marshal(history)
+	if err != nil {
+		return err
+	}
+
+	if err = stub.PutState(constant.AttrHistoryPrefix+history.Uid+":"+history.TimeStamp, historyBytes); err != nil {
+		return err
+	}
+	return
+}
+
+

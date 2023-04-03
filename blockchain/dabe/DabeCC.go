@@ -1,16 +1,16 @@
 package main
 
 import (
-	"github.com/MonteCarloClub/dabe/model"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
+	DecentralizedABE "github.com/wjfn/DecentralizedABE2020/model"
 	"log"
 	"strings"
 )
 
 // 主模块
 type DABECC struct {
-	Dabe *model.DABE
+	Dabe *DecentralizedABE.DABE
 }
 
 func init() {
@@ -35,7 +35,7 @@ func (d *DABECC) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	log.Println("DABECC Init")
 	// example
 	//user.Init(stub)
-	d.Dabe = new(model.DABE)
+	d.Dabe = new(DecentralizedABE.DABE)
 	d.Dabe.GlobalSetup()
 	return shim.Success([]byte("Init success"))
 }
@@ -48,7 +48,7 @@ func (d *DABECC) Init(stub shim.ChaincodeStubInterface) pb.Response {
 func (d *DABECC) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	log.Println("\nDABECC Invoke")
 	if d.Dabe == nil {
-		d.Dabe = new(model.DABE)
+		d.Dabe = new(DecentralizedABE.DABE)
 		d.Dabe.GlobalSetup()
 	}
 	function, _ := stub.GetFunctionAndParameters()

@@ -26,8 +26,8 @@ func QueryCreateOrgApply(orgId string, status ApplyStatus, stub shim.ChaincodeSt
 	}
 	var queryString string
 	if status == Pending {
-		queryString = fmt.Sprintf("{\"selector\":{\"docType\":\"%s\",\"orgId\":\"%s\",\"type\":0,\"status\":{\"$lt\":\"%d\"}}}",
-			constant.OrgApply, orgId, status)
+		queryString = fmt.Sprintf("{\"selector\":{\"docType\":\"%s\",\"orgId\":\"%s\",\"type\":0,\"status\":{\"$lte\":\"%d\"}}}",
+			constant.OrgApply, orgId, Pending)
 	} else {
 		queryString = fmt.Sprintf("{\"selector\":{\"docType\":\"%s\",\"orgId\":\"%s\",\"type\":0,\"status\":%d}}",
 			constant.OrgApply, orgId, status)
@@ -67,8 +67,8 @@ func QueryDeclareOrgAttrApply(attrName string, status ApplyStatus, stub shim.Cha
 	}
 	var queryString string
 	if status == Pending {
-		queryString = fmt.Sprintf("{\"selector\":{\"docType\":\"%s\",\"attrName\":\"%s\",\"type\":1,\"status\":{\"$lt\":\"%d\"}}}",
-			constant.OrgApply, attrName, Success)
+		queryString = fmt.Sprintf("{\"selector\":{\"docType\":\"%s\",\"attrName\":\"%s\",\"type\":1,\"status\":{\"$lte\":\"%d\"}}}",
+			constant.OrgApply, attrName, Pending)
 	} else {
 		queryString = fmt.Sprintf("{\"selector\":{\"docType\":\"%s\",\"attrName\":\"%s\",\"type\":1,\"status\":%d}}",
 			constant.OrgApply, attrName, status)

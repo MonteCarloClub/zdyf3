@@ -16,3 +16,15 @@ type Attr struct {
 func NewAttr(uid string, attrName string, APK string) *Attr {
 	return &Attr{ObjectType: constant.Attr, Id: uid, AttrName: attrName, APK: APK}
 }
+
+type ChannelInfo struct {
+	// couchDB使用的type
+	ObjectType string `json:"docType"`
+	// 通道名
+	ChannelName string `json:"channelName"`
+}
+
+func NewChannel(channelName string) *ChannelInfo {
+	return &ChannelInfo{ObjectType: constant.Channel, ChannelName:channelName}
+}
+

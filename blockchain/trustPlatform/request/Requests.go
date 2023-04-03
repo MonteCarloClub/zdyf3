@@ -16,6 +16,8 @@ type UserInitRequest struct {
 	BaseRequest
 	PublicKey string `json:"publicKey"`
 	UPK       string `json:"upk"`
+        UserType  string `json:"userType"`
+        Channel  string `json:"channel"`
 }
 
 // 用户声明新属性
@@ -102,18 +104,9 @@ type ShareMessageRequest struct {
 	// 加密内容
 	Content string `json:"content"`
         FileName string `json:"fileName"`
-        Ip string `json:"ip"`
-        Location string `json:"location"`
-        Policy string `json:"policy"`
-
-}
-
-//撤销属性申请
-type RevokeAttrApplyRequest struct {
-	BaseRequest
-	ToUid   string  `json:"toUid"`
-	AttrName string `json:"attrName"`
-	Remark   string `json:"remark"`
+        Ip       string `json:"ip"`
+	Location string `json:"location"`
+	Policy   string `json:"policy"`
 }
 
 // 整合请求
@@ -161,3 +154,17 @@ type GetOrgApplyRequest struct {
 	Status   data.ApplyStatus      `json:"status"`
 	Type     constant.OrgApplyType `json:"type"`
 }
+
+// 撤销属性参数
+type RevokeAttrRequest struct {
+	BaseRequest
+	ToUid    string `json:"toUid"`
+	AttrName string `json:"attrName"`
+	Remark   string `json:"remark"`
+}
+
+// 查询属性历史
+type GetAttrHistoryRequest struct {
+	Uid   string                   `json:"uid"`
+}
+

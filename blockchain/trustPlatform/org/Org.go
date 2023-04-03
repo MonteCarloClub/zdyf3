@@ -69,7 +69,10 @@ func declareAttrApply(stub shim.ChaincodeStubInterface, args []string) pb.Respon
 	if err := json.Unmarshal([]byte(requestStr), applyRequest); err != nil {
 		return shim.Error(err.Error())
 	}
-	if err := preCheckRequest(requestStr, applyRequest.Uid, applyRequest.Sign, stub); err != nil {
+	//if err := preCheckRequest(requestStr, applyRequest.Uid, applyRequest.Sign, stub); err != nil {
+	//	return shim.Error(err.Error())
+	//}
+        if err := preCheckRequest2(applyRequest.Uid, stub); err != nil {
 		return shim.Error(err.Error())
 	}
 
@@ -94,7 +97,7 @@ func declareAttrApply(stub shim.ChaincodeStubInterface, args []string) pb.Respon
 		return shim.Error("already has this attr:" + attrName)
 	}
 	// 检查是否存在对相同attrName的Pending apply请求存在，即有效请求
-	apply, err := data.QueryDeclareOrgAttrApply(orgId, data.Pending, stub)
+	apply, err := data.QueryDeclareOrgAttrApply(attrName, data.Pending, stub)
 	if err != nil {
 		log.Println(err.Error())
 		return shim.Error(err.Error())
@@ -106,7 +109,7 @@ func declareAttrApply(stub shim.ChaincodeStubInterface, args []string) pb.Respon
 
 	// 保存
 	newApply := data.NewOrgApply(orgId, uid, org.UidSet, org.T, org.N, constant.DeclareAttr, attrName)
-	if err := data.SaveOrgApply(newApply, stub); err != nil {
+	if err := data.SaveOrgAttrApply(newApply, stub); err != nil {
 		log.Println(err.Error())
 		return shim.Error(err.Error())
 	}
@@ -169,7 +172,10 @@ func mixPartPK(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	if err := json.Unmarshal([]byte(requestStr), mixRequest); err != nil {
 		return shim.Error(err.Error())
 	}
-	if err := preCheckRequest(requestStr, mixRequest.Uid, mixRequest.Sign, stub); err != nil {
+	//if err := preCheckRequest(requestStr, mixRequest.Uid, mixRequest.Sign, stub); err != nil {
+	//	return shim.Error(err.Error())
+	//}
+        if err := preCheckRequest2(mixRequest.Uid, stub); err != nil {
 		return shim.Error(err.Error())
 	}
 
@@ -231,6 +237,11 @@ func mixPartPK(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 			log.Println(err)
 			return shim.Error(err.Error())
 		}
+                //更新机构总数
+                if err = utils.UpdateTotalCount(stub,constant.TotalOrgCount);err!=nil{
+			return shim.Error(err.Error())
+		}
+
 		return shim.Success(nil)
 	} else if sceneType == request.OrgAttr {
 		apply, err := data.QueryDeclareOrgAttrApply(attrName, data.PendingShare, stub)
@@ -275,7 +286,7 @@ func mixPartPK(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 		}
 
 		apply.Status = data.Success
-		if err := data.SaveOrgApply(apply, stub); err != nil {
+		if err := data.SaveOrgAttrApply(apply, stub); err != nil {
 			return shim.Error(err.Error())
 		}
 
@@ -289,6 +300,11 @@ func mixPartPK(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 			log.Println(err)
 			return shim.Error(err.Error())
 		}
+                //更新属性总数
+                if err = utils.UpdateTotalCount(stub,constant.TotalAttrCount);err!=nil{
+			return shim.Error(err.Error())
+		}
+
 		return shim.Success(nil)
 	} else {
 		return shim.Error("type invalid")
@@ -305,7 +321,10 @@ func submitPartPK(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	if err := json.Unmarshal([]byte(requestStr), partPKRequest); err != nil {
 		return shim.Error(err.Error())
 	}
-	if err := preCheckRequest(requestStr, partPKRequest.Uid, partPKRequest.Sign, stub); err != nil {
+	//if err := preCheckRequest(requestStr, partPKRequest.Uid, partPKRequest.Sign, stub); err != nil {
+	//	return shim.Error(err.Error())
+	//}
+        if err := preCheckRequest2(partPKRequest.Uid, stub); err != nil {
 		return shim.Error(err.Error())
 	}
 
@@ -344,9 +363,17 @@ func submitPartPK(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 		return shim.Error(uid + "not active in orgId:" + orgId)
 	}
 	apply.OpkMap[uid] = parkPk
-	if err := data.SaveOrgApply(apply, stub); err != nil {
-		return shim.Error(err.Error())
+
+        if sceneType == request.OrgInit{
+		if err := data.SaveOrgApply(apply, stub); err != nil {
+			return shim.Error(err.Error())
+		}
+	} else {
+		if err := data.SaveOrgAttrApply(apply, stub); err != nil {
+			return shim.Error(err.Error())
+		}
 	}
+
 	return shim.Success(nil)
 }
 
@@ -397,9 +424,13 @@ func createOrgApply(stub shim.ChaincodeStubInterface, args []string) pb.Response
 	if err := json.Unmarshal([]byte(requestStr), applyRequest); err != nil {
 		return shim.Error(err.Error())
 	}
-	if err := preCheckRequest(requestStr, applyRequest.Uid, applyRequest.Sign, stub); err != nil {
+	//if err := preCheckRequest(requestStr, applyRequest.Uid, applyRequest.Sign, stub); err != nil {
+	//	return shim.Error(err.Error())
+	//}
+        if err := preCheckRequest2(applyRequest.Uid, stub); err != nil {
 		return shim.Error(err.Error())
 	}
+
 
 	uid := applyRequest.Uid
 	orgId := applyRequest.OrgId
@@ -446,11 +477,30 @@ func createOrgApply(stub shim.ChaincodeStubInterface, args []string) pb.Response
 // ===================================================================================
 // 检查请求参数并验签
 // ===================================================================================
-func preCheckRequest(requestStr string, uid, sign string, stub shim.ChaincodeStubInterface) error {
-	requestJson, err := utils.GetRequestParamJson([]byte(requestStr))
-	if err != nil {
-		return err
-	}
+//func preCheckRequest(requestStr string, uid, sign string, stub shim.ChaincodeStubInterface) error {
+//	requestJson, err := utils.GetRequestParamJson([]byte(requestStr))
+//	if err != nil {
+//		return err
+//	}
+//	requestUser, err := data.QueryUserByUid(uid, stub)
+//	if err != nil {
+//		return err
+//	}
+//	if requestUser == nil {
+//		log.Println("don't have requestUser with uid " + uid)
+//		return ecode.Error(ecode.RequestErr, "don't have this requestUser")
+//	}
+//	if err = utils.VerifySign(string(requestJson), requestUser.PublicKey, sign); err != nil {
+//		return err
+//	}
+//	return nil
+//}
+
+
+// ===================================================================================
+// 检查请求参数，去除验签
+// ===================================================================================
+func preCheckRequest2(uid string, stub shim.ChaincodeStubInterface) error {
 	requestUser, err := data.QueryUserByUid(uid, stub)
 	if err != nil {
 		return err
@@ -459,11 +509,9 @@ func preCheckRequest(requestStr string, uid, sign string, stub shim.ChaincodeStu
 		log.Println("don't have requestUser with uid " + uid)
 		return ecode.Error(ecode.RequestErr, "don't have this requestUser")
 	}
-	if err = utils.VerifySign(string(requestJson), requestUser.PublicKey, sign); err != nil {
-		return err
-	}
 	return nil
 }
+
 
 // ===================================================================================
 // 用户确认加入组织/声明新属性
@@ -476,7 +524,10 @@ func approveOrgApply(stub shim.ChaincodeStubInterface, args []string) pb.Respons
 	if err := json.Unmarshal([]byte(requestStr), approveRequest); err != nil {
 		return shim.Error(err.Error())
 	}
-	if err := preCheckRequest(requestStr, approveRequest.Uid, approveRequest.Sign, stub); err != nil {
+	//if err := preCheckRequest(requestStr, approveRequest.Uid, approveRequest.Sign, stub); err != nil {
+	//	return shim.Error(err.Error())
+	//}
+        if err := preCheckRequest2(approveRequest.Uid, stub); err != nil {
 		return shim.Error(err.Error())
 	}
 
@@ -516,8 +567,15 @@ func approveOrgApply(stub shim.ChaincodeStubInterface, args []string) pb.Respons
 	if allApprove {
 		apply.Status = data.PendingShare
 	}
-	if err := data.SaveOrgApply(apply, stub); err != nil {
-		return shim.Error(err.Error())
+
+        if attrName == ""{
+		if err := data.SaveOrgApply(apply, stub); err != nil {
+			return shim.Error(err.Error())
+		}
+	} else {
+		if err := data.SaveOrgAttrApply(apply, stub); err != nil {
+			return shim.Error(err.Error())
+		}
 	}
 
 	return shim.Success(nil)
@@ -534,7 +592,10 @@ func shareSecret(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	if err := json.Unmarshal([]byte(requestStr), shareRequest); err != nil {
 		return shim.Error(err.Error())
 	}
-	if err := preCheckRequest(requestStr, shareRequest.Uid, shareRequest.Sign, stub); err != nil {
+	//if err := preCheckRequest(requestStr, shareRequest.Uid, shareRequest.Sign, stub); err != nil {
+	//	return shim.Error(err.Error())
+	//}
+        if err := preCheckRequest2(shareRequest.Uid, stub); err != nil {
 		return shim.Error(err.Error())
 	}
 
@@ -572,8 +633,14 @@ func shareSecret(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 		return shim.Error("not match type")
 	}
 	apply.ShareMap[toUid][fromUid] = share
-	if err := data.SaveOrgApply(apply, stub); err != nil {
-		return shim.Error(err.Error())
+	if applyType == request.OrgInit{
+		if err := data.SaveOrgApply(apply, stub); err != nil {
+			return shim.Error(err.Error())
+		}
+	} else {
+		if err := data.SaveOrgAttrApply(apply, stub); err != nil {
+			return shim.Error(err.Error())
+		}
 	}
 	return shim.Success(nil)
 }

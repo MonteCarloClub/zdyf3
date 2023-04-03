@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
+        "strconv"
 )
 
 func GetBytesFromDB(stub shim.ChaincodeStubInterface, queryString string) ([][]byte, error) {
@@ -96,4 +97,27 @@ func addPaginationMetadataToQueryResults(buffer *bytes.Buffer, responseMetadata 
 	buffer.WriteString("\"}")
 
 	return buffer
+}
+
+
+
+func UpdateTotalCount(stub shim.ChaincodeStubInterface,prefix string )(err error){
+	totalCntByte, err := stub.GetState(prefix)
+	if err != nil {
+		return err
+	}
+	totalCnt:=1
+	if len(totalCntByte) != 0 {
+		str := string(totalCntByte)
+		totalCnt,err = strconv.Atoi(str)
+		if err != nil{
+			return err
+		}
+		totalCnt++
+	}
+	str := strconv.Itoa(totalCnt)
+	if err = stub.PutState(prefix,[]byte(str)); err != nil{
+		return err
+	}
+	return nil
 }

@@ -29,6 +29,27 @@ func SaveOrgApply(apply *OrgApply, stub shim.ChaincodeStubInterface) (err error)
 	return
 }
 
+
+
+// ===================================================================================
+// 保存组织属性申请请求
+// ===================================================================================
+func SaveOrgAttrApply(apply *OrgApply, stub shim.ChaincodeStubInterface) (err error) {
+	log.Println("save org attr apply with oid: " + apply.OrgId)
+	bytes, err := json.Marshal(apply)
+	if err != nil {
+		return ecode.Errorf(ecode.ServerErr, "marshal apply error")
+	}
+
+	if err = stub.PutState(constant.OrgAttrApplyPrefix+apply.OrgId+":"+apply.FromUid, bytes); err != nil {
+		return err
+	}
+	log.Println("save org attr apply with orgId: " + apply.OrgId + " success")
+	return
+}
+
+
+
 // ===================================================================================
 // 保存组织
 // ===================================================================================

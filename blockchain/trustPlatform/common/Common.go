@@ -10,6 +10,7 @@ import (
 	"trustPlatform/data"
 	"trustPlatform/request"
 	"trustPlatform/utils"
+        "trustPlatform/constant"
 )
 
 func init() {
@@ -38,6 +39,16 @@ func Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 		return shareMessage(stub, args)
 	} else if strings.HasPrefix(function, "/common/getMessage") {
 		return getMessage(stub, args)
+	} else if function == "/common/getUserCount" {
+		return getUserCount(stub, args)
+	} else if function == "/common/attrCount" {
+		return getAttrCount(stub, args)
+	} else if function == "/common/getOrgCount" {
+		return getOrgCount(stub, args)
+	} else if function == "/common/getChannelCount" {
+		return getChannelCount(stub, args)
+	} else if function == "/common/getChannelList" {
+		return getChannelList(stub, args)
 	}
 
 	return shim.Error("Invalid invoke function name. Expecting \"/common/getAttr\" ")
@@ -61,13 +72,16 @@ func shareMessage(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	log.Println("enter shareMessage")
 	// 反序列化请求，验签
 	var requestStr = args[0]
-	log.Println(requestStr)
 	shareRequest := new(request.ShareMessageRequest)
 	if err := json.Unmarshal([]byte(requestStr), shareRequest); err != nil {
 		log.Println(err)
 		return shim.Error(err.Error())
 	}
-	if err := preCheckRequest(requestStr, shareRequest.Uid, shareRequest.Sign, stub); err != nil {
+	//if err := preCheckRequest(requestStr, shareRequest.Uid, shareRequest.Sign, stub); err != nil {
+	//	log.Println(err)
+	//	return shim.Error(err.Error())
+	//}
+        if err := preCheckRequest2(shareRequest.Uid, stub); err != nil {
 		log.Println(err)
 		return shim.Error(err.Error())
 	}
@@ -75,7 +89,7 @@ func shareMessage(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 		return shim.Error("too much tags")
 	}
 
-	message := data.NewSharedMessage(shareRequest.Uid, shareRequest.Content, shareRequest.Tags, shareRequest.Timestamp, shareRequest.FileName, shareRequest.Ip, shareRequest.Location, shareRequest.Policy)
+	message := data.NewSharedMessage(shareRequest.Uid, shareRequest.Content, shareRequest.FileName, shareRequest.Timestamp, shareRequest.Tags ,shareRequest.Ip,shareRequest.Location,shareRequest.Policy)
 	if err := data.SaveSharedMessage(message, stub); err != nil {
 		log.Println(err)
 		return shim.Error(err.Error())
@@ -108,12 +122,33 @@ func getMessage(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 // ===================================================================================
 // 检查请求参数并验签
 // ===================================================================================
-func preCheckRequest(requestStr string, uid, sign string, stub shim.ChaincodeStubInterface) error {
-	requestJson, err := utils.GetRequestParamJson([]byte(requestStr))
-	if err != nil {
-		log.Println(err)
-		return err
-	}
+//func preCheckRequest(requestStr string, uid, sign string, stub shim.ChaincodeStubInterface) error {
+//	requestJson, err := utils.GetRequestParamJson([]byte(requestStr))
+//	if err != nil {
+//		log.Println(err)
+//		return err
+//	}
+//	requestUser, err := data.QueryUserByUid(uid, stub)
+//	if err != nil {
+//		log.Println(err)
+//		return err
+//	}
+//	if requestUser == nil {
+//		log.Println("don't have requestUser with uid " + uid)
+//		return ecode.Error(ecode.RequestErr, "don't have this requestUser")
+//	}
+//	if err = utils.VerifySign(string(requestJson), requestUser.PublicKey, sign); err != nil {
+//		log.Println(err)
+//		return err
+//	}
+//	return nil
+//}
+
+
+// ===================================================================================
+// 检查请求参数，去除验签
+// ===================================================================================
+func preCheckRequest2(uid string, stub shim.ChaincodeStubInterface) error {
 	requestUser, err := data.QueryUserByUid(uid, stub)
 	if err != nil {
 		log.Println(err)
@@ -123,9 +158,76 @@ func preCheckRequest(requestStr string, uid, sign string, stub shim.ChaincodeStu
 		log.Println("don't have requestUser with uid " + uid)
 		return ecode.Error(ecode.RequestErr, "don't have this requestUser")
 	}
-	if err = utils.VerifySign(string(requestJson), requestUser.PublicKey, sign); err != nil {
-		log.Println(err)
-		return err
-	}
 	return nil
 }
+
+
+// ===================================================================================
+// 查询用户总数
+// ===================================================================================
+func getUserCount(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+
+	userCntByte, err := stub.GetState(constant.TotalUserCount)
+	if err != nil || len(userCntByte) == 0{
+		return shim.Error("get user count error")
+	}
+	log.Println("user count: "+string(userCntByte))
+	return shim.Success(userCntByte)
+}
+
+// ===================================================================================
+// 查询属性总数
+// ===================================================================================
+func getAttrCount(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+
+	attrCntByte, err := stub.GetState(constant.TotalAttrCount)
+	if err != nil || len(attrCntByte) == 0{
+		return shim.Error("get attr count error")
+	}
+	log.Println("attr count: "+string(attrCntByte))
+	return shim.Success(attrCntByte)
+}
+
+// ===================================================================================
+// 查询机构总数
+// ===================================================================================
+func getOrgCount(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+
+	orgCntByte, err := stub.GetState(constant.TotalOrgCount)
+	if err != nil || len(orgCntByte) == 0{
+		return shim.Error("get org count error")
+	}
+	log.Println("org count: "+string(orgCntByte))
+	return shim.Success(orgCntByte)
+}
+
+// ===================================================================================
+// 查询通道总数
+// ===================================================================================
+func getChannelCount(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+
+	channelCntByte, err := stub.GetState(constant.TotalChannelCount)
+	if err != nil || len(channelCntByte) == 0{
+		return shim.Error("get org count error")
+	}
+	log.Println("org count: "+string(channelCntByte))
+	return shim.Success(channelCntByte)
+}
+
+// ===================================================================================
+// 查询通道列表
+// ===================================================================================
+func getChannelList(stub shim.ChaincodeStubInterface, args []string) pb.Response {
+
+
+	bytesArray, err := data.QueryChannelListBytes(stub)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+	buffer := utils.GetListResponse(bytesArray)
+
+	log.Println(string(buffer.Bytes()))
+	return shim.Success(buffer.Bytes())
+}
+
+

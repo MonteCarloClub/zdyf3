@@ -11,17 +11,21 @@ type User struct {
 	// 用户名
 	Uid string `json:"uid"`
 	// 用户公钥
-	PublicKey string `json:"publicKey"`
+	//PublicKey string `json:"publicKey"`
 	// 声明属性集
 	AttrSet []string `json:"attrSet"`
 	// 用户属性集
 	HoldAttrSet []string `json:"holdAttrSet"`
 	// 用户ABE公钥
 	UPK string `json:"upk"`
+        //用户类型  user or org
+	UserType string `json:"userType"`
+        //用户所在通道
+	Channel string `json:"channel"`
 }
 
-func NewUser(uid string, publicKey string, upk string) *User {
-	return &User{ObjectType: constant.User, Uid: uid, PublicKey: publicKey, UPK: upk}
+func NewUser(uid string, upk string,utype string,channel string) *User {
+	return &User{ObjectType: constant.User, Uid: uid, UPK: upk,UserType:utype,Channel:channel}
 }
 
 type UserApply struct {
@@ -94,24 +98,50 @@ type SharedMessage struct {
 	Tags []string `json:"tags"`
 	// 加密内容
 	Content string `json:"content"`
-	Timestamp string `json:"timestamp"`
-	FileName string `json:"fileName"`
-	Ip string `json:"ip"`
-	Location string `json:"location"`
-	Policy string `json:"policy"`
-
+        FileName string `json:"fileName"`
+        TimeStamp string `json:"timeStamp"`
+        Ip        string `json:"ip"`
+	Location  string `json:"location"`
+	Policy    string `json:"policy"`
 }
 
-func NewSharedMessage(uid, content string, tags []string, timestamp string, fileName string, ip string, location string, policy string) *SharedMessage {
+func NewSharedMessage(uid, content string, fileName string, timeStamp string, tags []string, ip,location,policy string) *SharedMessage {
 	return &SharedMessage{
 		ObjectType: constant.SharedMessage,
 		Uid:        uid,
 		Tags:       tags,
 		Content:    content,
-		Timestamp:  timestamp,
-		FileName:   fileName,
-		Ip:         ip,
+                FileName:   fileName,
+                TimeStamp:  timeStamp,
+                Ip:         ip,
 		Location:   location,
 		Policy:     policy,
+	}
+}
+
+type AttrHistory struct {
+	// couchDB使用的type
+	ObjectType string `json:"docType"`
+
+	Uid  string   `json:"uid"`
+
+	// 授权用户
+	FromUid string `json:"fromUid"`
+
+	AttrName string `json:"attrName"`
+
+	Operation string `json:"operation"`
+
+	TimeStamp string `json:"timeStamp"`
+}
+
+func NewAttrHistory(uid, fromUid string, attrName string, operation string, timeStamp string) *AttrHistory {
+	return &AttrHistory{
+		ObjectType: constant.AttrHistory,
+		Uid:        uid,
+		FromUid:    fromUid,
+		AttrName:   attrName,
+		Operation: operation,
+		TimeStamp:  timeStamp,
 	}
 }

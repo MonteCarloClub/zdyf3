@@ -6,7 +6,7 @@ const (
 	Pending AttrApplyStatus = iota
 	Success
 	Fail
-	Revoke
+        Revoke
 	All
 )
 
