@@ -87,4 +87,4 @@ home/zdyf
 
 ## 部署架构
 
-![structure](README/structure.png)
+![structure](README/structure-3.png)
