@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import axios from 'axios'
 
 /** 文件管理
  * 
@@ -120,8 +121,11 @@ export const fileApi = {
             fileName,
             sharedUser,
         }
-
-        return request({
+        // 下载文件的时候直接返回的是内容，没有状态码
+        // 如果用了全局的 request 示例，则会被定义的响应拦截器视为请求失败，然后 reject 掉
+        // 所以这里用一个新的请求实例，绕过全局的响应拦截器
+        return axios.request({
+            baseURL: process.env.NODE_ENV === "development" ? process.env.VUE_APP_DEV_URL : process.env.VUE_APP_PRO_URL,
             url: '/content/download',
             method: 'get',
             data,

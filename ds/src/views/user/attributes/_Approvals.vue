@@ -24,10 +24,19 @@
             </template>
           </el-table-column>
           <el-table-column show-overflow-tooltip prop="attrName" label="属性名"> </el-table-column>
+          
+          <el-table-column prop="status" label="状态" width="100" align="center">
+            <template slot-scope="scope">
+              <el-tag :type="statusTypes[scope.row.status]" size="small">
+                {{ scope.row.status }}
+              </el-tag>
+            </template>
+          </el-table-column>
+          
           <el-table-column show-overflow-tooltip prop="fromUid" label="申请人"> </el-table-column>
           <el-table-column show-overflow-tooltip prop="remark" label="申请备注"> </el-table-column>
 
-          <el-table-column label="操作" width="250">
+          <el-table-column label="操作" width="250" align="right">
             <template slot-scope="scope">
               <el-button size="mini" type="warning" @click="revoke(scope.row)"> 撤销 </el-button>
               <el-button size="mini" type="success" @click="agree(scope.row, true)">
@@ -36,14 +45,6 @@
               <el-button size="mini" type="danger" @click="agree(scope.row, false)">
                 拒绝
               </el-button>
-            </template>
-          </el-table-column>
-
-          <el-table-column prop="status" label="状态" width="100" align="right">
-            <template slot-scope="scope">
-              <el-tag :type="statusTypes[scope.row.status]" size="small">
-                {{ scope.row.status }}
-              </el-tag>
             </template>
           </el-table-column>
         </el-table>

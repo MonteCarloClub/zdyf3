@@ -7,7 +7,7 @@
     </template>
     <div v-if="APKMap">
       <el-table :data="getAttributes(APKMap)" style="width: 100%">
-        <el-table-column show-overflow-tooltip prop="name" label="属性名"> </el-table-column>
+        <el-table-column show-overflow-tooltip prop="name" label="属性名" width="300"> </el-table-column>
         <el-table-column show-overflow-tooltip prop="value" label="属性公钥"> </el-table-column>
       </el-table>
     </div>
