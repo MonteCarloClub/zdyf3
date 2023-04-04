@@ -18,16 +18,12 @@ public class UUIDTest {
     @Test
     public void test(){
         UUID uuid = UUID.nameUUIDFromBytes("123".getBytes());
-        System.out.println(uuid);
-        System.out.println(uuid.toString().length());
     }
 
     @Test
     public void test2(){
         Date date = new Date();
-        System.out.println(date.toString());
         Calendar calendar = Calendar.getInstance();
-        System.out.println(calendar.getTime().toString());
     }
 
 }

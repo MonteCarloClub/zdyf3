@@ -59,12 +59,10 @@ public class CommonController {
             keysResponse.setPriKey(keysResponse.getPriKey().replace("\n", ""));
             keysResponse.setPubKey(keysResponse.getPubKey().replace("\r\n", ""));
             keysResponse.setPubKey(keysResponse.getPubKey().replace("\n", ""));
-            System.out.println("pubkeypubkey");
-            System.out.println(keysResponse.getPriKey());
+
             String filePath1 = "atp/priKey/" + fileName;
             String filePath2 = "atp/pubKey/" + fileName;
-            System.out.println("ppppppppppppppppppppppppppppppppppppppppppppppp");
-            System.out.println(filePath1);
+
             CCUtils.saveDABEUser(filePath1,keysResponse.getPriKey());
             CCUtils.saveDABEUser(filePath2,keysResponse.getPubKey());
 
@@ -72,7 +70,6 @@ public class CommonController {
 //                StandardCharsets.UTF_8);
 //            FileUtils.write(new File(pubKeyPath + fileName), keysResponse.getPubKey(),
 //                StandardCharsets.UTF_8);
-            System.out.println("88888888888888888888888");
             return Result.okWithData(keysResponse);
         } catch (Exception e) {
             log.warn("generate rsa keys file error", e);

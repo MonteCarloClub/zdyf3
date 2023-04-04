@@ -134,18 +134,18 @@ public class UserController {
 
             com.alibaba.fastjson.JSONObject object = com.alibaba.fastjson.JSONObject.parseObject(cert, Feature.OrderedField);
             com.alibaba.fastjson.JSONObject num = object.getJSONObject("certificate");
-            System.out.println("................................");
-            System.out.println(num);
-            System.out.println("...................................");
+//            System.out.println("................................");
+//            System.out.println(num);
+//            System.out.println("...................................");
             json.put("channel_name", request.getChannel());
             json.put("certificate", num);
             json.put("uid", request.getUserName());
             json.put("timestamp", new Date().toString());
             String message = ""+json+"";
 
-            System.out.println("====================");
-            System.out.println(message);
-            System.out.println("========================");
+//            System.out.println("====================");
+//            System.out.println(message);
+//            System.out.println("========================");
 
 
 
@@ -179,8 +179,7 @@ public class UserController {
 
     @PostMapping("/attr")
     public Result<Object> declareAttr(@RequestBody @Validated DeclareUserAttrRequest request) {
-        System.out.println("rrrrrrrrrrrrrrrrrrrrrrrr");
-        System.out.println(request.toString());
+
         ChaincodeResponse response = attrService.declareUserAttr2(request);
         //对接
         String url = baseUrl + "/creatattr";

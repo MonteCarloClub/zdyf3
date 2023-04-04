@@ -298,15 +298,13 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
             throw new BaseException("generate share in dabe error: " + response2.getMessage());
         }
         DABEUser newUser = JsonProviderHolder.JACKSON.parse(response2.getMessage(), DABEUser.class);
-        System.out.println("CHECKKKKK");
+
         newUser.setPassword(user.getPassword());
         newUser.setUserType(user.getUserType());
         newUser.setChannel(user.getChannel());
         CCUtils.saveDABEUser(userPath + request.getFileName(),
                 JsonProviderHolder.JACKSON.toJsonString(newUser));
-        System.out.println("checkkkkkkkkkkkkkkkkkk");
-        System.out.println(JsonProviderHolder.JACKSON.toJsonString(user));
-        System.out.println(JsonProviderHolder.JACKSON.toJsonString(newUser));
+
 
 
         // 3. plat提交秘密
@@ -396,8 +394,7 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
             log.info("already has part pk");
         } else {
             user = generatePartPk(type, orgName, fileName, attrName, user, privateKey);
-            System.out.println("0000000000000000000000000000");
-            System.out.println(user);
+
 //            user = generatePartPk2(type, orgName, fileName, attrName, user);
         }
 

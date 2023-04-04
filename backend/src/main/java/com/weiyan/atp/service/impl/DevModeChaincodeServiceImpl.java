@@ -76,8 +76,6 @@ public class DevModeChaincodeServiceImpl implements ChaincodeService {
         request.setChaincodeID(cid);
         request.setFcn(function);
         request.setArgs((ArrayList<String>) args);
-        System.out.println("1111111111111111111");
-        System.out.println(request.toString());
         return doQuery(ccType, request);
     }
 
