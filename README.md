@@ -85,3 +85,6 @@ home/zdyf
     +---js
 ```
 
+## 部署架构
+
+![structure](README/structure-3.png)
