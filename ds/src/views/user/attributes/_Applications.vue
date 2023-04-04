@@ -9,7 +9,7 @@
       </template>
       <div v-if="appliedAttrMap">
         <el-table :data="formatAttributes(appliedAttrMap)" style="width: 100%">
-          <el-table-column show-overflow-tooltip prop="name" label="属性名"> </el-table-column>
+          <el-table-column show-overflow-tooltip prop="name" label="属性名" width="300"> </el-table-column>
           <el-table-column show-overflow-tooltip prop="value" label="属性公钥"> </el-table-column>
         </el-table>
       </div>
@@ -134,7 +134,7 @@ export default {
           })
           .catch((e) => {
             this.$message({
-              message: e.message,
+              message: e,
               type: "error",
             });
           })
@@ -156,7 +156,7 @@ export default {
         })
         .catch((e) => {
           this.$message({
-            message: e.message,
+            message: e,
             type: "error",
           });
         });

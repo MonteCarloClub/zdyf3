@@ -2,7 +2,6 @@ import { getters, mutations } from "./store";
 import { userApi } from "../api/user"
 import { attrApi } from "@/api/attributes";
 import { setToken, removeToken, getToken } from '../utils/token'
-import { devLog } from "../utils/log";
 
 // 与全局状态（store/state）有关的业务接口，即会改变全局状态的操作
 export const actions = {
@@ -30,7 +29,7 @@ export const actions = {
     silentLogin() {
         // 从本地持久存储中获得上一次的登录信息
         let token = getToken()
-        devLog(token);
+        // devLog(token);
         if (!token) return Promise.reject("")
         // 尝试登录
         let userInfo = token

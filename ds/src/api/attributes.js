@@ -1,5 +1,4 @@
 import request from '@/utils/request'
-import { localAttrs } from "../mock/attributes"
 
 export const attrApi = {
 
@@ -16,50 +15,33 @@ export const attrApi = {
             attrName: _data.attr,
         }
 
-        return new Promise((resolve, reject) => {
-            request({
-                url: '/dabe/user/attr',
-                method: 'post',
-                data,
-                params: data
-            }).then(response => {
-                // {
-                //     "code":200   200, 成功; 其他，失败
-                //     "msg":"success",  描述
-                //     "data": {
-                //         "appliedAttrMap":{ },
-                //         "privacyAttrMap":{},
-                //         "APKMap":{
-                //             "someone:friend":{"GY":"[369150..., 601530...]"}
-                //         },
-                //         "ASKMap":{
-                //             "someone:friend":{ "Y":"791100..."}
-                //         },
-                //         "EGGAlpha":"[206605..., 320061...]",
-                //         "Alpha":"907358...",
-                //         "GAlpha":"[569334..., 105875...]",
-                //         "Name":"someone",
-                //         "OPKMap":{},
-                //         "OSKMap":{ },
-                //         "Password":"202cb962ac59075b964b07152d234b70",
-                //         "UserType":"org",
-                //         "Channel":"myc"
-                //     }
-                // }
-                if (response.code === 200) {
-                    resolve(response.data)
-                }
-                else {
-                    reject(response)
-                }
-            }).catch(error => {
-                // 调用 Mock 的数据
-                if (error) {
-                    resolve(localAttrs.dabe(_data))
-                }
-                else reject(error)
-            })
+        return request({
+            url: '/dabe/user/attr',
+            method: 'post',
+            data,
+            params: data
         })
+        /**
+         * {
+         *     "appliedAttrMap":{ },
+         *     "privacyAttrMap":{},
+         *     "APKMap":{
+         *         "someone:friend":{"GY":"[369150..., 601530...]"}
+         *     },
+         *     "ASKMap":{
+         *         "someone:friend":{ "Y":"791100..."}
+         *     },
+         *     "EGGAlpha":"[206605..., 320061...]",
+         *     "Alpha":"907358...",
+         *     "GAlpha":"[569334..., 105875...]",
+         *     "Name":"someone",
+         *     "OPKMap":{},
+         *     "OSKMap":{ },
+         *     "Password":"202cb962ac59075b964b07152d234b70",
+         *     "UserType":"org",
+         *     "Channel":"myc"
+         * }
+         */
     },
 
     /**
@@ -75,32 +57,15 @@ export const attrApi = {
             attrName: _data.attr,
         }
 
-        return new Promise((resolve, reject) => {
-            request({
-                url: '/user/attr',
-                method: 'post',
-                data,
-                params: data
-            }).then(response => {
-                // {
-                //     "code":200   200, 成功; 其他，失败
-                //     "msg":"success",  描述
-                //     "data": {}
-                // }
-                if (response.code === 200) {
-                    resolve(response.data)
-                }
-                else {
-                    reject(response)
-                }
-            }).catch(error => {
-                // 调用 Mock 的数据
-                if (error) {
-                    resolve(localAttrs.same(_data))
-                }
-                else reject(error)
-            })
+        return request({
+            url: '/user/attr',
+            method: 'post',
+            data,
+            params: data
         })
+        /**
+         * {}
+         */
     },
 
     /**
@@ -123,26 +88,32 @@ export const attrApi = {
             remark: _data.remark
         }
 
-        return new Promise((resolve, reject) => {
-            request({
-                url: '/user/attr/apply',
-                method: 'post',
-                data
-            }).then(response => {
-                // {
-                //     "code":200   200, 成功; 其他，失败
-                //     "msg":null,  描述
-                //     "data": {}
-                // }
-                // console.log("[api]", response);
-                if (response.code === 200) {
-                    resolve(response.data)
-                }
-                else {
-                    reject(response)
-                }
-            }).catch(reject)
+        return request({
+            url: '/user/attr/apply',
+            method: 'post',
+            data
         })
+        /**
+         * {
+         *     "appliedAttrMap":{ },
+         *     "privacyAttrMap":{},
+         *     "APKMap":{
+         *         "someone:friend":{"GY":"[369150..., 601530...]"}
+         *     },
+         *     "ASKMap":{
+         *         "someone:friend":{ "Y":"791100..."}
+         *     },
+         *     "EGGAlpha":"[206605..., 320061...]",
+         *     "Alpha":"907358...",
+         *     "GAlpha":"[569334..., 105875...]",
+         *     "Name":"someone",
+         *     "OPKMap":{},
+         *     "OSKMap":{ },
+         *     "Password":"202cb962ac59075b964b07152d234b70",
+         *     "UserType":"org",
+         *     "Channel":"myc"
+         * }
+         */
     },
 
     /**
@@ -164,56 +135,45 @@ export const attrApi = {
             status: _data.status
         }
 
-        return new Promise((resolve, reject) => {
-            request({
-                url: '/user/attr/apply',
-                method: 'get',
-                params,
-            }).then(response => {
-                // {
-                //     "code":200   200, 成功; 其他，失败
-                //     "msg":null,  描述
-                //     "data":[
-                //         {
-                //             "fromUid":"someone2",
-                //             "toUid":"someone",
-                //             "toOrgId":"",
-                //             "isPublic":true,
-                //             "attrName":"someone:family",
-                //             "remark":"",
-                //             "n":1,
-                //             "t":1,
-                //             "applyType":"TO_USER",
-                //             "status":"PENDING",
-                //             "approvalMap":{
-                //                 "someone":null
-                //             }
-                //         },
-                //         {
-                //             "fromUid":"someone2",
-                //             "toUid":"someone",
-                //             "toOrgId":"",
-                //             "isPublic":true,
-                //             "attrName":"someone:friend",
-                //             "remark":"",
-                //             "n":1,
-                //             "t":1,
-                //             "applyType":"TO_USER",
-                //             "status":"PENDING",
-                //             "approvalMap":{
-                //                 "someone":null
-                //             }
-                //         }
-                //     ]
-                // }
-                if (response.code === 200) {
-                    resolve(response.data)
-                }
-                else {
-                    reject(response)
-                }
-            }).catch(reject)
+        return request({
+            url: '/user/attr/apply',
+            method: 'get',
+            params,
         })
+        /**
+         * [
+         *     {
+         *         "fromUid":"someone2",
+         *         "toUid":"someone",
+         *         "toOrgId":"",
+         *         "isPublic":true,
+         *         "attrName":"someone:family",
+         *         "remark":"",
+         *         "n":1,
+         *         "t":1,
+         *         "applyType":"TO_USER",
+         *         "status":"PENDING",
+         *         "approvalMap":{
+         *             "someone":null
+         *         }
+         *     },
+         *     {
+         *         "fromUid":"someone2",
+         *         "toUid":"someone",
+         *         "toOrgId":"",
+         *         "isPublic":true,
+         *         "attrName":"someone:friend",
+         *         "remark":"",
+         *         "n":1,
+         *         "t":1,
+         *         "applyType":"TO_USER",
+         *         "status":"PENDING",
+         *         "approvalMap":{
+         *             "someone":null
+         *         }
+         *     }
+         * ]
+         */
     },
 
     /**
@@ -236,25 +196,14 @@ export const attrApi = {
             agree: _data.agree
         }
 
-        return new Promise((resolve, reject) => {
-            request({
-                url: '/user/attr/approval',
-                method: 'post',
-                data,
-            }).then(response => {
-                // {
-                //     "code":200   200, 成功; 其他，失败
-                //     "msg":null,  描述
-                //     "data":null
-                // }
-                if (response.code === 200) {
-                    resolve(response.data)
-                }
-                else {
-                    reject(response)
-                }
-            }).catch(reject)
+        return request({
+            url: '/user/attr/approval',
+            method: 'post',
+            data,
         })
+        /**
+         * void
+         */
     },
 
     /**
@@ -268,43 +217,32 @@ export const attrApi = {
             fileName: user,
         }
 
-        return new Promise((resolve, reject) => {
-            request({
-                url: '/user/attr/sync',
-                method: 'post',
-                data,
-                params: data
-            }).then(response => {
-                // {
-                //     "code":200   200, 成功; 其他，失败
-                //     "msg":null,  描述
-                //     "data": {
-                //         "appliedAttrMap":{
-                //             "someone:family":"[159429..., 572246...]",
-                //             "someone:friend":"[114119..., 477210...]"
-                //         },
-                //         "privacyAttrMap":{},
-                //         "APKMap":{},
-                //         "ASKMap":{},
-                //         "EGGAlpha":"[481866..., 536232...]",
-                //         "Alpha":"126759...",
-                //         "GAlpha":"[158540..., 620270...]",
-                //         "Name":"someone2",
-                //         "OPKMap":{},
-                //         "OSKMap":{},
-                //         "Password":"202cb962ac59075b964b07152d234b70",
-                //         "UserType":"user",
-                //         "Channel":"myc"
-                //     }
-                // }
-                if (response.code === 200) {
-                    resolve(response.data)
-                }
-                else {
-                    reject(response)
-                }
-            }).catch(reject)
+        return request({
+            url: '/user/attr/sync',
+            method: 'post',
+            data,
+            params: data
         })
+        /**
+         * {
+         *     "appliedAttrMap":{
+         *         "someone:family":"[159429..., 572246...]",
+         *         "someone:friend":"[114119..., 477210...]"
+         *     },
+         *     "privacyAttrMap":{},
+         *     "APKMap":{},
+         *     "ASKMap":{},
+         *     "EGGAlpha":"[481866..., 536232...]",
+         *     "Alpha":"126759...",
+         *     "GAlpha":"[158540..., 620270...]",
+         *     "Name":"someone2",
+         *     "OPKMap":{},
+         *     "OSKMap":{},
+         *     "Password":"202cb962ac59075b964b07152d234b70",
+         *     "UserType":"user",
+         *     "Channel":"myc"
+         * }
+         */
     },
 
     /**
@@ -329,26 +267,15 @@ export const attrApi = {
             remark,
         }
 
-        return new Promise((resolve, reject) => {
-            request({
-                url: '/user/attr/revoke',
-                method: 'post',
-                data,
-                params: data
-            }).then(response => {
-                // {
-                //     "code":200,      //200，成功；其他，失败
-                //     "msg":"success", //描述
-                //     "data":null
-                // }
-                if (response.code === 200) {
-                    resolve(response.data)
-                }
-                else {
-                    reject(response)
-                }
-            }).catch(reject)
+        return request({
+            url: '/user/attr/revoke',
+            method: 'post',
+            data,
+            params: data
         })
+        /**
+         * void
+         */
     },
 
     /**
@@ -362,34 +289,23 @@ export const attrApi = {
             userName
         }
 
-        return new Promise((resolve, reject) => {
-            request({
-                url: '/user/attr/history',
-                method: 'post',
-                data,
-                params: data
-            }).then(response => {
-                // {
-                //     "code":200,
-                //     "message":null,
-                //     "data":[
-                //         {
-                //           "uid":"someone2",                // 当前用户
-                //             "fromUid":"someone",           // 操作用户
-                //             "attrName":"someone:family",   // 属性名称
-                //             "operation":"agree"或"revoke", // 操作：授权或撤销
-                //             "timeStamp":"xxx",             // 操作时间
-                //         },
-                //         ...
-                //     ]
-                // }
-                if (response.code === 200) {
-                    resolve(response.data)
-                }
-                else {
-                    reject(response)
-                }
-            }).catch(reject)
+        return request({
+            url: '/user/attr/history',
+            method: 'post',
+            data,
+            params: data
         })
+        /**
+         * [
+         *     {
+         *       "uid":"someone2",                // 当前用户
+         *         "fromUid":"someone",           // 操作用户
+         *         "attrName":"someone:family",   // 属性名称
+         *         "operation":"agree"或"revoke", // 操作：授权或撤销
+         *         "timeStamp":"xxx",             // 操作时间
+         *     },
+         *     ...
+         * ]
+         */
     },
 }

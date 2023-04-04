@@ -81,7 +81,7 @@ export default {
       if (tags.length < 3) {
         Notification.error({
           title: "拒绝",
-          message: "请补充完整的标签",
+          message: "标签数不能少于 3 个",
           duration: 2000,
         });
         return;
@@ -95,17 +95,16 @@ export default {
 
         fileApi
           .encrypt({ file, userName, tags, policy })
-          .then((res) => {
+          .then(() => {
             Message({
               message: "上传成功",
               duration: 5000,
               type: "success",
             });
-            console.log(res);
           })
-          .catch((e) => {
+          .catch((message) => {
             Message({
-              message: e.message,
+              message,
               duration: 5000,
               type: "error",
             });

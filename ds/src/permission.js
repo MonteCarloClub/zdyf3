@@ -17,7 +17,7 @@ const whiteList = [
 ]
 
 // 自动登录
-autoLogin()
+autoLogin().catch(console.log)
 
 router.beforeEach(async (to, from, next) => {
     
