@@ -16,10 +16,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,14 +25,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
 import javax.validation.constraints.NotEmpty;
+
 import com.alibaba.fastjson.JSONObject;
 //import sun.security.util.Debug;
 
@@ -92,6 +89,12 @@ public class DABEServiceImpl implements DABEService {
             log.warn("get user error", e);
             return null;
         }
+    }
+
+    @Override
+    public DABEUser getUser2DryRun(@NotEmpty String fileName, @NotEmpty String password) {
+        // System.out.printf("dry run: user handled, fileName: %s, password: %s",fileName,password);
+        return null;
     }
 
     @Override
