@@ -13,6 +13,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Base64;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 
 import java.io.*;
@@ -40,7 +41,9 @@ import java.io.InputStreamReader;
  */
 @Slf4j
 public class CCUtils {
+
     private CCUtils() {
+
     }
     private static final String HEX = "0123456789abcdef";
 
@@ -85,7 +88,8 @@ public class CCUtils {
         }
         return sb.toString();
     }
-    public static void saveResponse2(String userPath, String fileName, ChaincodeResponse response) {
+
+    public static void saveUser(String dpkiUrl, String userPath, String fileName, ChaincodeResponse response) {
         if (response.getStatus() == Status.FAIL) {
             log.warn("query chaincode error: {}", response.getMessage());
         }
@@ -93,18 +97,13 @@ public class CCUtils {
             String filePath = userPath + fileName;
             //String resource = response.getMessage();
             //Cert cert = JsonProviderHolder.JACKSON.parse(resource, Cert.class);
-            String url = "http://10.176.40.46/dpki/ApplyForABSCertificate?uid=";
-            String jsonString = getStringFromCertAPI(url + fileName);
-//            Calendar calendar = Calendar.getInstance();
-//            calendar.setTime(new Date());
-//            calendar.add(Calendar.MONTH,1);
-//            cert.setExpireDate(calendar.getTime().toString());
-//            String jsonString = JsonProviderHolder.JACKSON.toJsonString(cert);
+            String jsonString = getStringFromCertAPI(dpkiUrl + "/ApplyForABSCertificate?uid=" + fileName);
             saveDABEUser(filePath, jsonString);
         } catch (Exception e) {
             log.warn("create user error", e);
         }
     }
+
 
     public static DABEUser saveResponse(String userPath, String fileName, ChaincodeResponse response) {
         if (response.getStatus() == Status.FAIL) {

@@ -51,6 +51,9 @@ public class DABEServiceImpl implements DABEService {
     @Value("${atp.path.cert}")
     private String certPath;
 
+    @Value("${atp.devMode.dpkiUrl}")
+    private String dpkiUrl;
+
     public DABEServiceImpl(ChaincodeService chaincodeService) {
         this.chaincodeService = chaincodeService;
     }
@@ -72,16 +75,15 @@ public class DABEServiceImpl implements DABEService {
         try {
             String filePath = userPath + fileName;
             String resource = FileUtils.readFileToString(new File(filePath), StandardCharsets.UTF_8);
-            System.out.println(resource);
+
             DABEUser user = JsonProviderHolder.JACKSON.parse(resource, DABEUser.class);
-            System.out.println("sorryyyyyyyy");
+
             String hash = SecurityUtils.md5(password);
-            System.out.println(user.getPassword());
+
             boolean ans = user.getPassword().equals(hash);
-            System.out.println(ans);
-            System.out.println("goodddddd");
+
             if (!user.getPassword().equals(hash)) {
-                System.out.println("qaqaqaqaqaqaq");
+
                 return null;
             }
             return user;
@@ -93,7 +95,6 @@ public class DABEServiceImpl implements DABEService {
 
     @Override
     public DABEUser getUser2DryRun(@NotEmpty String fileName, @NotEmpty String password) {
-        // System.out.printf("dry run: user handled, fileName: %s, password: %s",fileName,password);
         return null;
     }
 
@@ -108,20 +109,15 @@ public class DABEServiceImpl implements DABEService {
 
             String filePath = certPath + fileName;
             String resource = FileUtils.readFileToString(new File(filePath), StandardCharsets.UTF_8);
-            System.out.println(resource);
             JSONObject object = JSONObject.parseObject(resource, Feature.OrderedField);
             String num = object.getJSONObject("certificate").getString("serialNumber");
-            System.out.println(num);
             String certNum = fileName + "-" + cert;
-            System.out.println(certNum);
 
             if (!num.equals(certNum)) {
                 return null;
             }
-            System.out.println(object.toJSONString());
-            //verify certificate
-            String result = verifyABSCert("http://10.176.40.46/dpki/VerifyABSCert", object.toJSONString());
-            System.out.println("verification----------------" + result);
+            // verify certificate
+            String result = verifyABSCert(dpkiUrl + "/VerifyABSCert", object.toJSONString());
             if (!result.equals("True")) {
                 return null;
             }
@@ -136,7 +132,7 @@ public class DABEServiceImpl implements DABEService {
     public DABEUser createUser(@NotEmpty String fileName, @NotEmpty String userName) {
         ChaincodeResponse response = chaincodeService.query(
                 ChaincodeTypeEnum.DABE, "/user/create", new ArrayList<>(Collections.singletonList(userName)));
-        CCUtils.saveResponse2(certPath, fileName, response);
+        CCUtils.saveUser(dpkiUrl, certPath, fileName, response);
         return CCUtils.saveResponse(userPath, fileName, response);
     }
 
@@ -144,7 +140,8 @@ public class DABEServiceImpl implements DABEService {
     public DABEUser createUser(@NotEmpty String fileName, @NotEmpty String userName, @NotEmpty String userType, @NotEmpty String channel, @NotEmpty String password) {
         ChaincodeResponse response = chaincodeService.query(
                 ChaincodeTypeEnum.DABE, "/user/create", new ArrayList<>(Collections.singletonList(userName)));
-        CCUtils.saveResponse2(certPath, fileName, response);
+
+        CCUtils.saveUser(dpkiUrl, certPath, fileName, response);
         return CCUtils.saveResponse(userPath, fileName, userType, channel, password, false, response);
     }
 
@@ -156,8 +153,7 @@ public class DABEServiceImpl implements DABEService {
             return null;
         }
         String userJson = JsonProviderHolder.JACKSON.toJsonString(user);
-        System.out.println("22222222222");
-        System.out.println(userJson);
+
         ChaincodeResponse response = chaincodeService.query(
                 ChaincodeTypeEnum.DABE, "/user/declareAttr",
                 new ArrayList<>(Arrays.asList(userJson, attrName)));
@@ -185,10 +181,8 @@ public class DABEServiceImpl implements DABEService {
         httpPost.setEntity(new StringEntity(JSONBody, StandardCharsets.UTF_8));
         try {
             HttpResponse response = httpClient.execute(httpPost);
-            System.out.println(response.getStatusLine().getStatusCode() + "\n");
             HttpEntity entity = response.getEntity();
             String responseContent = EntityUtils.toString(entity, "UTF-8");
-            System.out.println(responseContent);
             return responseContent;
         } catch (IOException e) {
             e.printStackTrace();

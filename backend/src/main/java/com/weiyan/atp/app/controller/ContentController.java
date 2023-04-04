@@ -156,20 +156,14 @@ public class ContentController {
     @PostMapping("/decryption")
     public Result<String> decryptContent(@RequestBody @Validated DecryptContentRequest request,HttpServletRequest req) {
         String ipAddress = SecurityUtils.getIpAddr(req);
-        System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
-        System.out.println(request.toString());
         request.setIp(ipAddress);
         ChaincodeResponse response = null;
         if(!request.getUserName().equals(request.getSharedUser())){
 
               String filePath = encryptDataPath +request.getSharedUser()+"/"+ request.getFileName();
  //           String filePath = "atp\\data\\enc\\深圳市气象局\\深圳市\\ 深圳市福田区\\ 气象\\ 福田区-气象数据.xlsx";
-            System.out.println("ppppppppppppppppppp");
-            System.out.println(filePath);
             try {
                 String cipher= FileUtils.readFileToString(new File(filePath), StandardCharsets.UTF_8);
-                System.out.println("ccccccccccccccccccccccccccccc");
-                System.out.println(cipher);
                 request.setCipher(cipher);
             } catch (IOException e) {
                 e.printStackTrace();

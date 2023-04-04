@@ -107,8 +107,6 @@ public class AttrServiceImpl implements AttrService {
         DABEUser user = dabeService.getUser(request.getFileName());
         Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
         Preconditions.checkNotNull(user.getName());
-        System.out.println("uuuuuuuuuuuuuuuu");
-        System.out.println(user.toString());
         Preconditions.checkNotNull(user.getApkMap().get(request.getAttrName()), "no attr");
         try{
         String priKey = FileUtils.readFileToString(new File(priKeyPath + request.getFileName()),
@@ -180,7 +178,6 @@ public class AttrServiceImpl implements AttrService {
 
     @Override
     public ChaincodeResponse applyAttr2(ApplyUserAttrRequest request) {
-        System.out.println(request.toString());
         DABEUser user = dabeService.getUser(request.getFileName());
         Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
         Preconditions.checkNotNull(user.getName());
@@ -193,8 +190,6 @@ public class AttrServiceImpl implements AttrService {
 //                .attrName(request.getAttrName())
 //                .remark(request.getRemark())
 //                .build();
-//        System.out.println("testtesttest");
-//        System.out.println(ccRequest.toString());
 //        return chaincodeService.invoke(
 //                ChaincodeTypeEnum.TRUST_PLATFORM, "/user/applyAttr", ccRequest);
         try {
@@ -277,10 +272,8 @@ public class AttrServiceImpl implements AttrService {
     @Override
     public ChaincodeResponse queryAttrApply(String toUid, String toOrgId,
                                             String userName, AttrApplyStatusEnum status) {
-        System.out.println("ooooooooooooooooooooooooo");
-        System.out.println(userName);
-      //  userName = "深圳市气象局";
-      //  status = AttrApplyStatusEnum.PENDING;
+
+
         QueryUserAttrApplyCCRequest ccRequest = QueryUserAttrApplyCCRequest.builder()
             .fromUid(userName)
             .toUid(toUid)
@@ -427,8 +420,7 @@ public class AttrServiceImpl implements AttrService {
 
             response = queryAttrApply(
                 toUid, toOrgId, user.getName(), AttrApplyStatusEnum.SUCCESS);
-            System.out.println("responsessssssssssssssssssssssssssss");
-            System.out.println(response);
+
             if (response.getStatus() == Status.FAIL) {
                 log.warn("query for attr apply failed");
                 throw new BaseException("query for attr apply failed");
@@ -436,7 +428,7 @@ public class AttrServiceImpl implements AttrService {
 
             List<PlatUserAttrApply> successApplies = JsonProviderHolder.JACKSON.parseList(
                 response.getMessage(), PlatUserAttrApply.class);
-            System.out.println(successApplies);
+
             successApplies.stream()
                 .filter(successApply ->
                     (successApply.getIsPublic().equals(Boolean.TRUE)
@@ -490,7 +482,7 @@ public class AttrServiceImpl implements AttrService {
 
             List<PlatUserAttrApply> successApplies = JsonProviderHolder.JACKSON.parseList(
                     response.getMessage(), PlatUserAttrApply.class);
-            System.out.println(successApplies);
+
             successApplies.stream()
                     .filter(successApply ->
                             (successApply.getIsPublic().equals(Boolean.TRUE)
