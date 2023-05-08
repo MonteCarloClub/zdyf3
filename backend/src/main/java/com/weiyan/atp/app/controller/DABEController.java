@@ -64,6 +64,11 @@ public class DABEController {
 
     @PostMapping("/user")
     public Result<DABEUser> createUser(String fileName, String userName, String userType, String password) {
+        System.out.println("user create test");
+        System.out.println(fileName);
+        System.out.println(userName);
+        System.out.println(userType);
+        System.out.println(password);
         return handleUser(dabeService.createUser(fileName, userName, userType, "myc", password));
     }
 

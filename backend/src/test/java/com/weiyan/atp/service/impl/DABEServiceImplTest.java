@@ -1,8 +1,9 @@
 package com.weiyan.atp.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.weiyan.atp.AbeTrustPlatformApplication;
-import com.weiyan.atp.data.request.web.DecryptContentRequest;
+import com.weiyan.atp.data.request.web.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Before;
@@ -38,10 +39,58 @@ class DABEServiceImplTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Slf4j.class);
 
-    @Test
-    void getUser() throws Exception {
 
+    @Test
+    void createUserInone() throws Exception {
+        String uri = "/user/create";
+        CreateUserInOneRequest mockRequest = new CreateUserInOneRequest();
+        mockRequest.setUserName("user101");
+        mockRequest.setPassword("123");
+        mockRequest.setUserType("user");
+        mockRequest.setChannel("fudan");
+
+        MockMvc mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.post(uri)
+                        .content(objectMapper.writeValueAsString(mockRequest))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+        ).andReturn();
+
+        int status = result.getResponse().getStatus();
+        Assert.assertEquals("错误", 200, status);
     }
+
+    @Test
+    void createUserBatch() throws Exception {
+        String uri = "/user/create";
+        int batch_size = 10;
+        CreateUserInOneRequest mockRequest = new CreateUserInOneRequest();
+        String filename = "filename_", password = "password_";
+        long loTimestamp = System.currentTimeMillis();
+        int logStep = batch_size / 10;
+        for (int i = 0; i < batch_size; i++) {
+            mockRequest.setUserName(filename+i);
+            mockRequest.setPassword(password+i);
+            mockRequest.setUserType("user");
+            mockRequest.setChannel("test_createUser_Batch");
+            MockMvc mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+            MvcResult result = mvc.perform(
+                    MockMvcRequestBuilders.post(uri)
+                            .content(objectMapper.writeValueAsString(mockRequest))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON)
+            ).andReturn();
+            if (i > 0 && i % logStep == 0) {
+                long miTimestamp = System.currentTimeMillis();
+                System.out.printf("/createUserBatch: %d user(s) handled in %d ms%n", i, miTimestamp - loTimestamp);
+            }
+        }
+        long hiTimestamp = System.currentTimeMillis();
+        System.out.printf("/createUserBatch: %d user(s) handled in %d ms%n", batch_size, hiTimestamp - loTimestamp);
+    }
+
+
 
     @Test
     void getUser2() throws Exception {
@@ -50,7 +99,7 @@ class DABEServiceImplTest {
         MockMvc mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         MvcResult result = mvc.perform(
                 MockMvcRequestBuilders.post(uri)
-                        .param("fileName", "kris")
+                        .param("fileName", "user100")
                         .param("password", "123")
                         .accept(MediaType.APPLICATION_JSON)
         ).andReturn();
@@ -60,55 +109,80 @@ class DABEServiceImplTest {
     }
 
     @Test
-    void getUser2DryRun() throws Exception {
-        String uri = "/dabe/user2_dry_run";
+    void declareAttr() throws Exception {
+        String uri = "/dabe/user/attr";
+        String attrname = "fudan1:attr5",filename = "fudan1";
         MockMvc mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.get(uri)
-                        .param("filename", "filename")
-                        .param("password", "password")
+                MockMvcRequestBuilders.post(uri)
+                        .param("fileName", filename)
+                        .param("attrName", attrname)
                         .accept(MediaType.APPLICATION_JSON)
         ).andReturn();
-        int status = result.getResponse().getStatus();
-        Assert.assertEquals("/dabe/user2_dry_run: fail", 200, status);
+    }
+
+
+    @Test
+    void declareAttrBatch() throws Exception {
+        String uri = "/dabe/user/attr";
+        int batch_size = 10;
+        String attrname = "Attr_",filename = "filename_";
+        long loTimestamp = System.currentTimeMillis();
+        int logStep = batch_size / 10;
+        for (int i = 0; i < batch_size; i++) {
+            MockMvc mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+            MvcResult result = mvc.perform(
+                    MockMvcRequestBuilders.post(uri)
+                            .param("fileName", filename+i)
+                            .param("attrName", filename+i+":"+attrname+i)
+                            .accept(MediaType.APPLICATION_JSON)
+            ).andReturn();
+            if (i > 0 && i % logStep == 0) {
+                long miTimestamp = System.currentTimeMillis();
+                System.out.printf("/declareAttrBatch: %d user(s) handled in %d ms%n", i, miTimestamp - loTimestamp);
+            }
+        }
+        long hiTimestamp = System.currentTimeMillis();
+        System.out.printf("/declareAttrBatch: %d user(s) handled in %d ms%n", batch_size, hiTimestamp - loTimestamp);
     }
 
     @Test
-    void getUser2BatchDryRun() throws Exception {
-        String uri = "/dabe/user2_batch_dry_run";
+    void ApplyAttr() throws Exception {
+        String uri = "/user/attr/apply";
+        ApplyUserAttrRequest mockRequest = new ApplyUserAttrRequest();
+        mockRequest.setAttrName("filename_3:Attr_3");
+        mockRequest.setFileName("filename_1");
+        mockRequest.setRemark("attr apply");
+        mockRequest.setToOrgName("");
+        mockRequest.setToUserName("filename_3");
         MockMvc mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.get(uri)
-                        .param("batch_size", String.valueOf(10000000))
+                MockMvcRequestBuilders.post(uri)
+                        .content(objectMapper.writeValueAsString(mockRequest))
+                        .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
         ).andReturn();
-        int status = result.getResponse().getStatus();
-        Assert.assertEquals("/dabe/user2_batch_dry_run: fail", 200, status);
     }
 
     @Test
-    void getUser3() {
+    void approveAttrApply() throws Exception {
+        String uri = "/user/attr/approval";
+        ApproveAttrApplyRequest mockRequest = new ApproveAttrApplyRequest();
+        mockRequest.setAttrName("filename_3:Attr_3");
+        mockRequest.setFileName("filename_3");
+        mockRequest.setRemark("tongyi");
+        mockRequest.setToUserName("filename_1");
+        mockRequest.setAgree(true);
+        MockMvc mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.post(uri)
+                        .content(objectMapper.writeValueAsString(mockRequest))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+        ).andReturn();
     }
 
-    @Test
-    void createUser() {
-    }
 
-    @Test
-    void testCreateUser() {
-    }
-
-    @Test
-    void declareAttr() {
-    }
-
-    @Test
-    void approveAttrApply() {
-    }
-
-    @Test
-    void verifyABSCert() {
-    }
 
     @Test
     void DecryptFile() throws Exception {
