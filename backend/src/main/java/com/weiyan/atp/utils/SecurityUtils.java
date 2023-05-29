@@ -241,6 +241,17 @@ public class SecurityUtils {
         }
     }
 
+    public static String SHA256(String origin) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA256");
+            md.update(origin.getBytes("UTF-8"));
+            BigInteger bi = new BigInteger(1, md.digest());
+
+            return bi.toString(16);
+        } catch (Exception e) {
+            return "";
+        }
+    }
 
     public static String getIpAddr(HttpServletRequest request) {
         String ipAddress = null;

@@ -25,6 +25,7 @@ import com.weiyan.atp.service.DABEService;
 import com.weiyan.atp.service.UserRepositoryService;
 import com.weiyan.atp.utils.CCUtils;
 import com.weiyan.atp.utils.JsonProviderHolder;
+import com.weiyan.atp.app.controller.SHA256hash;
 
 import com.weiyan.atp.utils.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -183,9 +184,11 @@ public class ContentServiceImpl implements ContentService {
         }
         log.info("invoke share content to plat success");
 
+
+
         return EncryptionResponse.builder()
                 .cipher(encryptedContent)
-                .cipherHash(SecurityUtils.md5(encryptedContent))
+                .cipherHash(SecurityUtils.SHA256(encryptedContent))
                 .policy(request.getPolicy())
                 .tags(request.getTags())
                 .uid(user.getName())
