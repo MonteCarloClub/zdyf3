@@ -16,6 +16,13 @@
     <name>abe-trust-platform</name>
     <description>ABE TrustPlatform for Spring Boot</description>
 
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -199,17 +206,21 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>io.github.javiercanillas</groupId>
             <artifactId>jackson-masker</artifactId>
             <version>0.9.9</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.ipfs</groupId>
+            <artifactId>java-ipfs-http-client</artifactId>
+            <version>v1.3.3</version>
+        </dependency>
+
+
     </dependencies>
+
+
 
     <build>
         <defaultGoal>compile</defaultGoal>
