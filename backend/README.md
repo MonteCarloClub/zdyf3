@@ -29,27 +29,27 @@ $ sudo nohup java -jar atp-0.0.1-SNAPSHOT.jar 2>&1 &
 下载go-ipfs：
 IPFS官网：https://dist.ipfs.io/
 
-# 1.解压IPFS
+1.解压IPFS
 tar -zxvf go-ipfs_v0.10.0_darwin-arm64.tar.gz
 
 cd go-ipfs
  
-# 2.设置ipfs命令到全局路径PATH中
+2.设置ipfs命令到全局路径PATH中
  
-# 3.初始化IPFS服务
+3.初始化IPFS服务
 ipfs init
  
-# 4.解决跨域问题
+4.解决跨域问题
 ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["PUT", "GET", "POST", "OPTIONS"]'
 ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'
 ipfs config --json API.HTTPHeaders.Access-Control-Allow-Credentials '["true"]'
 ipfs config --json API.HTTPHeaders.Access-Control-Allow-Headers '["Authorization"]'
 ipfs config --json API.HTTPHeaders.Access-Control-Expose-Headers '["Location"]'
 
-# 5.启动ipfs服务
+5.启动ipfs服务
 ipfs daemon
 
-# 6.访问IPFS的web网址，看到网站内容说明IPFS服务搭建成功，可以在设置中对IPFS默认配置做进一步修改
+6.访问IPFS的web网址，看到网站内容说明IPFS服务搭建成功，可以在设置中对IPFS默认配置做进一步修改
 http://127.0.0.1:5001/webui
 
 参考https://blog.csdn.net/yorickjun/article/details/128493789
