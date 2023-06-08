@@ -3,6 +3,7 @@ package com.weiyan.atp.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.weiyan.atp.AbeTrustPlatformApplication;
 import com.weiyan.atp.data.request.web.DecryptContentRequest;
+import com.weiyan.atp.data.request.web.ShareContentRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Before;
@@ -134,4 +135,20 @@ class DABEServiceImplTest {
 //        Assert.assertEquals("错误",200,status);
 
     }
+
+//    @Test
+//    void UploadFile() throws Exception{
+//        String uri = "/content/upload";
+//        ShareContentRequest mockRequest = new ShareContentRequest();
+//        mockRequest.setFileName("深圳市 深圳市福田区 气象 福田区-气象数据.xlsx.xlsx");
+//        mockRequest.setSharedFileName("深圳市 深圳市福田区 气象 福田区-气象数据.xlsx.xlsx");
+//        mockRequest.setTags(Arrays.asList("深圳市", "深圳市福田区", "气象", "福田区-气象数据.xlsx"));
+//        mockRequest.setPlainContent("upload test to ipfs");
+//        mockRequest.setPolicy("A: AND B");
+//        mockRequest.setSharedUser("深圳市气象局");
+//
+//        mockRequest.setUserName("深圳市");
+//
+//        MockMvc mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+//    }
 }

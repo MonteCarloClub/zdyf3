@@ -280,10 +280,10 @@ public class ContentController {
         System.out.println(filename);
 
         //连接mysql
-        String driver = "com.mysql.cj.jdbc.Driver";	//驱动名，默认
-        String url1 = "jdbc:mysql://localhost:3306/zdyf?serverTimezone=GMT&useSSL=false";	//将要访问的数据库名称zdyf
-        String user = "root";	//mysql数据库用户名
-        String password = "123456";	//mysql数据库用户密码
+//        String driver = "com.mysql.cj.jdbc.Driver";	//驱动名，默认
+//        String url1 = "jdbc:mysql://localhost:3306/zdyf?serverTimezone=GMT&useSSL=false";	//将要访问的数据库名称zdyf
+//        String user = "root";	//mysql数据库用户名
+//        String password = "123456";	//mysql数据库用户密码
 
 
         //根据相对路径获取绝对路径
@@ -306,39 +306,39 @@ public class ContentController {
                 StandardCharsets.UTF_8);
 
 
-        try {
-            //加载驱动
-            Class.forName(Driver);
-
-
-            Connection conn = DriverManager.getConnection(mysqlUrl, mysqlUser, mysqlPassword);	//创建connection对象,用来连接数据库
-            if(!conn.isClosed())
-                System.out.println("Succeed!");
-
-
-            //获取时间与文件名哈希作为标识
-            SHA256hash foo = new SHA256hash();
-            String id = foo.getSHA(filename);
-
-            //插入标识与文件路径
-            String sql = "insert into DataId(id,path,permission) values(?,?,?)";
-            java.sql.PreparedStatement pstmt = null;
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, id);
-            pstmt.setString(2, encryptDataPath +request.getFileName()+"/"+ filename);
-            pstmt.setString(3, request.getPolicy());
-
-            boolean row = pstmt.execute();
-            System.out.println(row);
-
-            //释放资源
-            pstmt.close();
-            conn.close();
-
-        }catch(Exception e) {
-            System.out.println("defeat!");
-            System.out.println(e);
-        }
+//        try {
+//            //加载驱动
+//            Class.forName(Driver);
+//
+//
+//            Connection conn = DriverManager.getConnection(mysqlUrl, mysqlUser, mysqlPassword);	//创建connection对象,用来连接数据库
+//            if(!conn.isClosed())
+//                System.out.println("Succeed!");
+//
+//
+//            //获取时间与文件名哈希作为标识
+//            SHA256hash foo = new SHA256hash();
+//            String id = foo.getSHA(filename);
+//
+//            //插入标识与文件路径
+//            String sql = "insert into DataId(id,path,permission) values(?,?,?)";
+//            java.sql.PreparedStatement pstmt = null;
+//            pstmt = conn.prepareStatement(sql);
+//            pstmt.setString(1, id);
+//            pstmt.setString(2, encryptDataPath +request.getFileName()+"/"+ filename);
+//            pstmt.setString(3, request.getPolicy());
+//
+//            boolean row = pstmt.execute();
+//            System.out.println(row);
+//
+//            //释放资源
+//            pstmt.close();
+//            conn.close();
+//
+//        }catch(Exception e) {
+//            System.out.println("defeat!");
+//            System.out.println(e);
+//        }
 
 
         //System.out.println("驱动无法加载不是因为connection refused");

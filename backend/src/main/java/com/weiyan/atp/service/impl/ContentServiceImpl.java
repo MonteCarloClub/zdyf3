@@ -23,10 +23,15 @@ import com.weiyan.atp.service.ChaincodeService;
 import com.weiyan.atp.service.ContentService;
 import com.weiyan.atp.service.DABEService;
 import com.weiyan.atp.service.UserRepositoryService;
+import com.weiyan.atp.service.IpfsService;
 import com.weiyan.atp.utils.CCUtils;
 import com.weiyan.atp.utils.JsonProviderHolder;
+import com.weiyan.atp.app.controller.SHA256hash;
 
 import com.weiyan.atp.utils.SecurityUtils;
+import io.ipfs.api.IPFS;
+import io.ipfs.api.MerkleNode;
+import io.ipfs.api.NamedStreamable;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.io.FileUtils;
@@ -56,6 +61,7 @@ public class ContentServiceImpl implements ContentService {
     private final UserRepositoryService userRepositoryService;
     private final OrgRepositoryServiceImpl orgRepositoryService;
     private final DABEService dabeService;
+    private final IpfsService ipfsService;
 
     @Value("${atp.path.privateKey}")
     private String priKeyPath;
@@ -66,12 +72,14 @@ public class ContentServiceImpl implements ContentService {
     public ContentServiceImpl(ChaincodeService chaincodeService, AttrService attrService,
                               UserRepositoryService userRepositoryService,
                               OrgRepositoryServiceImpl orgRepositoryService,
+                              IpfsServiceImpl ipfsService,
                               DABEService dabeService) {
         this.chaincodeService = chaincodeService;
         this.attrService = attrService;
         this.userRepositoryService = userRepositoryService;
         this.orgRepositoryService = orgRepositoryService;
         this.dabeService = dabeService;
+        this.ipfsService = ipfsService;
     }
 
     /**
@@ -153,6 +161,18 @@ public class ContentServiceImpl implements ContentService {
     @Override
     public EncryptionResponse encContent2(ShareContentRequest request) {
         String encryptedContent = getEncryptedContent(request);
+
+        //上传密文到ipfs
+        byte[] data = encryptedContent.getBytes();
+
+        try {
+            String hash = ipfsService.uploadToIpfs(data);
+            System.out.println("Ipfs hash :" + hash);
+        }catch(IOException e){
+            log.info("IPFS error:", e);
+        }
+
+
         DABEUser user = dabeService.getUser(request.getFileName());
         Preconditions.checkNotNull(user.getName());
         try {
@@ -183,9 +203,11 @@ public class ContentServiceImpl implements ContentService {
         }
         log.info("invoke share content to plat success");
 
+
+
         return EncryptionResponse.builder()
                 .cipher(encryptedContent)
-                .cipherHash(SecurityUtils.md5(encryptedContent))
+                .cipherHash(SecurityUtils.SHA256(encryptedContent))
                 .policy(request.getPolicy())
                 .tags(request.getTags())
                 .uid(user.getName())
