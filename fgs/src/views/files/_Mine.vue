@@ -1,5 +1,5 @@
 <template>
-  <Card title="我的文件">
+  <Card title="文件仓库">
     <FilesTable :files="files" />
   </Card>
 </template>

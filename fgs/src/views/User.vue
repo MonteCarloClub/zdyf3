@@ -27,7 +27,7 @@
           <el-submenu index="files">
             <template slot="title"> <i class="el-icon-document"></i>文件 </template>
             <el-menu-item index="1-1">
-              <router-link slot="title" to="/files"> 我的文件 </router-link>
+              <router-link slot="title" to="/files"> 文件仓库 </router-link>
             </el-menu-item>
             <el-menu-item index="1-2">
               <router-link slot="title" to="/files/upload"> 上传文件 </router-link>
