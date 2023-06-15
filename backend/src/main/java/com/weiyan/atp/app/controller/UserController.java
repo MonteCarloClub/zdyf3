@@ -74,30 +74,30 @@ public class UserController {
             String cert = FileUtils.readFileToString(new File(certPath + request.getFileName()),
                     StandardCharsets.UTF_8);
 
-//            //对接
-//            String url = baseUrl+"/attruser";
-//            HttpClient client = HttpClients.createDefault();
-//            //默认post请求
-//            HttpPost post = new HttpPost(url);
-//            //拼接多参数
-//            JSONObject json = new JSONObject();
-//            try {
-//                json.put("channel_name", channelName);
-//                json.put("certificate",cert);
-//                json.put("uid",request.getFileName());
-//                json.put("timestamp",String.valueOf(System.currentTimeMillis()));
-//                String message = "[" + json + "]";
-//                post.addHeader("Content-type", "application/json; charset=utf-8");
-//                post.setHeader("Accept", "application/json");
-//                post.setEntity(new StringEntity(message, StandardCharsets.UTF_8));
-//                HttpResponse httpResponse = client.execute(post);
-//                HttpEntity entity = httpResponse.getEntity();
-//                System.err.println("状态:" + httpResponse.getStatusLine());
-//                System.err.println("参数:" + EntityUtils.toString(entity));
-//
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
+            //对接
+            String url = baseUrl+"/attruser";
+            HttpClient client = HttpClients.createDefault();
+            //默认post请求
+            HttpPost post = new HttpPost(url);
+            //拼接多参数
+            JSONObject json = new JSONObject();
+            try {
+                json.put("channel_name", channelName);
+                json.put("certificate",cert);
+                json.put("uid",request.getFileName());
+                json.put("timestamp",String.valueOf(System.currentTimeMillis()));
+                String message = "[" + json + "]";
+                post.addHeader("Content-type", "application/json; charset=utf-8");
+                post.setHeader("Accept", "application/json");
+                post.setEntity(new StringEntity(message, StandardCharsets.UTF_8));
+                HttpResponse httpResponse = client.execute(post);
+                HttpEntity entity = httpResponse.getEntity();
+                System.err.println("状态:" + httpResponse.getStatusLine());
+                System.err.println("参数:" + EntityUtils.toString(entity));
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
             return Result.okWithData(response.getResult(str -> str));
         } catch (IOException e) {
