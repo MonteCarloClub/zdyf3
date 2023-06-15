@@ -29,3 +29,8 @@ body {
 .main-content {
     padding: var(--content-padding, 16px);
 }
+
+.el-tooltip__popper {
+    word-break: break-all !important;
+    max-width: 600px !important;
+}
