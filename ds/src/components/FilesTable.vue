@@ -1,7 +1,7 @@
 <template>
   <el-table :data="files">
     <el-table-column show-overflow-tooltip label="文件名" prop="fileName" />
-    <el-table-column show-overflow-tooltip label="密文哈希" prop="cipher" />
+    <!-- <el-table-column show-overflow-tooltip label="密文哈希" prop="cipher" /> -->
     <el-table-column show-overflow-tooltip label="上传者" prop="sharedUser" />
     <el-table-column show-overflow-tooltip label="上传时间" prop="timeStamp" width="250">
       <template slot-scope="scope">
