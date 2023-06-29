@@ -60,10 +60,15 @@ export default {
       fileApi
         .decrypt({ user, cipher, sharedUser, fileName, tags })
         .then(() => {
+          this.$message({
+            message: '解密成功，开始下载',
+            duration: 1000,
+            type: "info",
+          });
           return fileApi
             .download({ fileName, sharedUser })
             .then((_) => {
-              this.saveFile(fileName, _);
+              this.saveFile(fileName, _.data);
             })
             .catch((message) => {
               this.$message({
@@ -75,10 +80,11 @@ export default {
         })
         .catch((e) => {
           this.$message({
-            message: e,
+            message: '解密失败',
             duration: 5000,
             type: "error",
           });
+          console.log(e);
         });
     },
 
@@ -86,10 +92,16 @@ export default {
       const userName = getters.userName();
       const { sharedUser, fileName } = scope;
 
+      this.$message({
+        message: '开始下载',
+        duration: 1000,
+        type: "info",
+      });
+      
       fileApi
         .downloadCipher({ userName, fileName, sharedUser })
         .then((_) => {
-          this.saveFile("cipher_hash_" + fileName, _);
+          this.saveFile("cipher_hash_" + fileName + '.txt', _.data);
         })
         .catch((e) => {
           this.$message({
