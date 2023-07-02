@@ -104,7 +104,7 @@ public class ContentController {
         }
         EncryptionResponse encryptionResponse = contentService.encContent(request);
 
-        //对接
+       // 对接
         String url = baseUrl+"/attrpolicy";
         HttpClient client = HttpClients.createDefault();
         //默认post请求
@@ -123,6 +123,7 @@ public class ContentController {
             json.put("tags",array);
             json.put("timestamp",encryptionResponse.getTimeStamp());
             String message = "[" + json + "]";
+            log.info(message);
             post.addHeader("Content-type", "application/json; charset=utf-8");
             post.setHeader("Accept", "application/json");
             post.setEntity(new StringEntity(message, StandardCharsets.UTF_8));
@@ -154,7 +155,7 @@ public class ContentController {
     }
 
     @PostMapping("/decryption")
-    public Result<String> decryptContent(@RequestBody @Validated DecryptContentRequest request,HttpServletRequest req) {
+    public Result<String> decryptContent(@RequestBody @Validated DecryptContentRequest request,HttpServletRequest req) throws IOException{
         String ipAddress = SecurityUtils.getIpAddr(req);
         request.setIp(ipAddress);
         ChaincodeResponse response = null;
@@ -168,7 +169,9 @@ public class ContentController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            System.out.println("before DC2");
             response = contentService.decryptContent2(request.getCipher(), request.getUserName(), request.getFileName(), request.getSharedUser());
+            System.out.println("after DC2");
         }else{
             response = new ChaincodeResponse();
             response.setStatus(ChaincodeResponse.Status.SUCCESS);
@@ -203,6 +206,7 @@ public class ContentController {
             json.put("timestamp",new Date().toString());
             json.put("result","true");
             String message = "" + json + "";
+            log.info(message);
             post.addHeader("Content-type", "application/json; charset=utf-8");
             post.setHeader("Accept", "application/json");
             post.setEntity(new StringEntity(message, StandardCharsets.UTF_8));
@@ -222,12 +226,17 @@ public class ContentController {
             throw new BaseException("decryption error: " + response.getMessage());
         }
 
-        if(cnt>=5){
-            revokeUserAttr(request.getUserName(),"频繁解密异常");
-            attrService.syncSuccessAttrApply(request.getUserName());
-        }
-        cnt++;
-        return Result.okWithData(null);
+//        if(cnt>=5){
+//            revokeUserAttr(request.getUserName(),"频繁解密异常");
+//            attrService.syncSuccessAttrApply(request.getUserName());
+//        }
+//        cnt++;
+        System.out.println("decrypt messge:");
+        System.out.println(response.getMessage());
+        System.out.println(shareDataPath + request.getUserName() + "/" + request.getFileName());
+//        FileUtils.write(new File(shareDataPath + request.getUserName() + "/" + request.getFileName()), response.getMessage(),
+//                StandardCharsets.UTF_8);
+        return Result.okWithData(response.getMessage());
     }
 
     //@PostMapping("/decryption")
@@ -300,11 +309,12 @@ public class ContentController {
                 StandardCharsets.UTF_8);
         request.setPlainContent(data);
         request.setSharedFileName(filename);
+        System.out.println("before encContent2");
         EncryptionResponse encryptionResponse = contentService.encContent2(request);
-
+        System.out.println("before write");
         FileUtils.write(new File(encryptDataPath +request.getFileName()+"/"+ filename), encryptionResponse.getCipher(),
                 StandardCharsets.UTF_8);
-
+        System.out.println("uploadenc success");
 
 //        try {
 //            //加载驱动
@@ -351,6 +361,7 @@ public class ContentController {
         //拼接多参数
         JSONObject json = new JSONObject();
         JSONArray array = new JSONArray();
+        log.info("上传文件记录至多维数据确权系统！！");
         try {
             json.put("contentHash", SecurityUtils.md5(encryptionResponse.getCipherHash()));
             json.put("policy",request.getPolicy());
@@ -363,6 +374,7 @@ public class ContentController {
             json.put("userIP",request.getIp());
             json.put("timestamp",encryptionResponse.getTimeStamp());
             String message = "" + json + "";
+            log.info(message);
             post.addHeader("Content-type", "application/json; charset=utf-8");
             post.setHeader("Accept", "application/json");
             post.setEntity(new StringEntity(message, StandardCharsets.UTF_8));
@@ -383,6 +395,7 @@ public class ContentController {
             revokeUserAttr(request.getFileName(),"位置异常");
             attrService.syncSuccessAttrApply(request.getFileName());
         }
+        log.info("记录完成！！");
         return Result.success();
     }
 
@@ -452,7 +465,7 @@ public class ContentController {
             request.setUserName(owner);
             request.setRemark(msg);
             ChaincodeResponse chaincodeResponse = attrService.revokeAttr(request);
-            //对接
+//            //对接
             String url = baseUrl+"/addattr";
             HttpClient client = HttpClients.createDefault();
             //默认post请求
@@ -469,6 +482,7 @@ public class ContentController {
                 json.put("attrName",request.getAttrName());
                 json.put("timestamp",new Date().toString());
                 String message = "" + json + "";
+                log.info(message);
                 post.addHeader("Content-type", "application/json; charset=utf-8");
                 post.setHeader("Accept", "application/json");
                 post.setEntity(new StringEntity(message, StandardCharsets.UTF_8));
