@@ -32,10 +32,13 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button v-if="useCert === false" type="text" @click="useCert = true"
-              >使用证书登录</el-button
-            >
-            <el-button v-else type="text" @click="useCert = false">使用密码登录</el-button>
+            或者
+            <el-button v-if="useCert === false" type="text" @click="useCert = true">
+              使用证书登录
+            </el-button>
+            <el-button v-else type="text" @click="useCert = false">
+              使用密码登录
+            </el-button>
           </el-form-item>
 
           <el-form-item>

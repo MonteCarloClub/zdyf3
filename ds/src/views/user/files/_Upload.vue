@@ -103,6 +103,9 @@ export default {
             });
           })
           .catch((message) => {
+            if (message === 'Unknown Error Occurred!') {
+              message = '属性策略格式有误'
+            }
             Message({
               message,
               duration: 5000,

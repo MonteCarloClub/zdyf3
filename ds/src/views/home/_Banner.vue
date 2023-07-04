@@ -131,6 +131,7 @@ button:focus::before {
 }
 
 button::after {
+  pointer-events: none;
   content: "";
   width: 30px;
   height: 30px;

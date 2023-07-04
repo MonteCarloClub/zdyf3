@@ -10,8 +10,8 @@
         </div>
 
         <el-form ref="signupForm" :model="signup" :rules="signupRules">
-          <el-form-item label="所在通道" prop="channel">
-            <el-input v-model="signup.channel" placeholder="请输入用户所在通道"></el-input>
+          <el-form-item label="业务域" prop="channel">
+            <el-input v-model="signup.channel" placeholder="请输入用户所在的业务域"></el-input>
           </el-form-item>
 
           <el-form-item label="用户名" prop="name">
@@ -32,7 +32,6 @@
 
           <el-form-item>
             <el-button
-              :disabled="!agree"
               style="width: 100%"
               type="primary"
               @click="onSignupSubmit"
@@ -42,7 +41,7 @@
             </el-button>
           </el-form-item>
         </el-form>
-        <el-checkbox v-model="agree">我自愿承担使用本系统过程中可能出现的风险</el-checkbox>
+        <!-- <el-checkbox v-model="agree">我自愿承担使用本系统过程中可能出现的风险</el-checkbox> -->
       </el-card>
     </div>
   </div>
@@ -67,7 +66,7 @@ export default {
         name: [{ required: true, trigger: "blur", message: "用户名不能为空" }],
         password: [{ required: true, trigger: "blur", message: "密码不能为空" }],
         role: [{ required: true, trigger: "blur", message: "请勾选用户角色" }],
-        channel: [{ required: true, trigger: "blur", message: "请输入用户所在通道" }],
+        channel: [{ required: true, trigger: "blur", message: "请输入用户所在的业务域" }],
       },
       userRoles: [
         {
