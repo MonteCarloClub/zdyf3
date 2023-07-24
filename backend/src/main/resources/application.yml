@@ -18,7 +18,7 @@ atp:
 #    ordererUrl: grpc://10.177.88.201:7050
     channelName: myc
  #   baseUrl: http://101.201.49.180:8000
-#    baseUrl: http://47.94.164.138:8000
+    baseUrl: http://192.168.3.76:8000
 
   #  dpkiUrl: http://10.131.131.125/dpki
     dpkiUrl: http://192.168.3.53/dpki
