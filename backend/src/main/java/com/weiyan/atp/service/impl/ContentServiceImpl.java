@@ -191,8 +191,10 @@ public class ContentServiceImpl implements ContentService {
                 .build();
 
             CCUtils.sign(shareContentCCRequest, priKey);
+            System.out.println("before ChaincodeResponse");
         ChaincodeResponse response = chaincodeService.invoke(
                 ChaincodeTypeEnum.TRUST_PLATFORM, "/common/shareMessage", shareContentCCRequest);
+        System.out.println("after ChaincodeResponse");
         if (response.isFailed()) {
             log.info("invoke share content to plat error: {}", response.getMessage());
             throw new BaseException("invoke share content to plat error");
