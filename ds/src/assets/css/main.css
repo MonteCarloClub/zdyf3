@@ -12,7 +12,7 @@
 
     --bg-color-0: white;
     --bg-color-1: #d4d4d4;
-    --bg-color-2: #f1f1f2;
+    --bg-color-2: #f3f5f8;
     --bg-color-dark: hsl(210, 8%, 15%);
 }
 
@@ -28,4 +28,9 @@ body {
 
 .main-content {
     padding: var(--content-padding, 16px);
+}
+
+.el-tooltip__popper {
+    word-break: break-all !important;
+    max-width: 600px !important;
 }

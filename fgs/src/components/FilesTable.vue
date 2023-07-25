@@ -1,13 +1,17 @@
 <template>
   <el-table :data="files">
     <el-table-column show-overflow-tooltip label="文件名" prop="fileName" />
-    <el-table-column show-overflow-tooltip label="密文哈希" prop="cipher" />
+    <el-table-column show-overflow-tooltip label="文件索引" prop="cipher">
+      <template slot-scope="scope">
+        {{ `${scope.row.cipher}${scope.row.timeStamp}` }}
+      </template>
+    </el-table-column>
     <el-table-column show-overflow-tooltip label="上传者" prop="sharedUser" />
-    <el-table-column show-overflow-tooltip label="上传时间" prop="timeStamp" width="250">
+    <!-- <el-table-column show-overflow-tooltip label="上传时间" prop="timeStamp" width="250">
       <template slot-scope="scope">
         {{ scope.row.timeStamp }}
       </template>
-    </el-table-column>
+    </el-table-column> -->
     <el-table-column show-overflow-tooltip label="IP" prop="ip" width="130"></el-table-column>
     <el-table-column show-overflow-tooltip label="加密策略" prop="policy" />
     <el-table-column show-overflow-tooltip label="标签" prop="tags">

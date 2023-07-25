@@ -92,7 +92,11 @@ export default {
 
         const userName = getters.userName();
         const policy = this.form.policy;
-
+        Message({
+          message: "开始上传文件",
+          duration: 5000,
+          type: "info",
+        });
         fileApi
           .encrypt({ file, userName, tags, policy })
           .then((res) => {

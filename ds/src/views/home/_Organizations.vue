@@ -21,8 +21,8 @@ export default {
   data() {
     return {
       organizations: [
-        { title: "创建", icon: "create.svg",   desc: "申请成立新组织" },
-        { title: "加入", icon: "join.svg",     desc: "同意加入新组织" },
+        { title: "创建", icon: "create.svg",   desc: "成立新组织" },
+        { title: "加入", icon: "join.svg",     desc: "加入新组织" },
         { title: "属性", icon: "attrs.svg",    desc: "提交part-pk（生成组织 / 组织属性）" },
         { title: "查询", icon: "search.svg",   desc: "查询新增组织 / 组织属性申请" },
         { title: "声明", icon: "declare.svg",  desc: "声明组织新属性" },
@@ -34,7 +34,6 @@ export default {
 </script>
 
 <style scoped>
-
 .grid-cols-3 {
   display: grid;
   grid-template-columns: repeat(3, 33.33%);

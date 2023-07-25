@@ -1,13 +1,15 @@
 <template>
   <Card title="我的属性">
     <template v-slot:op>
-      <el-input size="medium" placeholder="请输入要声明的属性" v-model="newAttr">
-        <el-button slot="append" @click="generateAttr">声明新属性</el-button>
-      </el-input>
+      <div class="input-btn">
+        <el-input size="medium" placeholder="请输入要声明的属性" v-model="newAttr" />
+        <el-button size="medium" type="primary" @click="generateAttr" :loading="creating">声明新属性</el-button>
+      </div>
     </template>
     <div v-if="APKMap">
       <el-table :data="getAttributes(APKMap)" style="width: 100%">
-        <el-table-column show-overflow-tooltip prop="name" label="属性名"> </el-table-column>
+        <el-table-column width="400" show-overflow-tooltip prop="name" label="属性名">
+        </el-table-column>
         <el-table-column show-overflow-tooltip prop="value" label="属性公钥"> </el-table-column>
       </el-table>
     </div>
@@ -34,6 +36,7 @@ export default {
   data() {
     return {
       newAttr: "",
+      creating: false,
     };
   },
 
@@ -51,6 +54,7 @@ export default {
     generateAttr() {
       const { name } = getters.properties(["name", "password"]);
       const attr = `${name}:${this.newAttr}`;
+      this.creating = true;
       actions
         .generate({ name, attr })
         .then(() => {
@@ -65,8 +69,18 @@ export default {
             message: e.message,
             type: "error",
           });
-        });
+        })
+        .finally(() => {
+          this.creating = false;
+        })
     },
   },
 };
 </script>
+
+<style scoped>
+.input-btn {
+  display: flex;
+  gap: 6px;
+}
+</style>

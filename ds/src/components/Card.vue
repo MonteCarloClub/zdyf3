@@ -36,7 +36,6 @@ export default {
 
 .card-head {
   font-weight: 500;
-  line-height: 54px;
-  margin-top: -16px;
+  margin-top: 6px;
 }
 </style>

@@ -149,15 +149,13 @@ export const fileApi = {
             sharedUser,
         }
 
-        return request({
+        return axios.request({
+            baseURL: process.env.NODE_ENV === "development" ? process.env.VUE_APP_DEV_URL : process.env.VUE_APP_PRO_URL,
             url: '/content/cipher',
             method: 'get',
             data,
             params: data,
             responseType: 'blob', // important
         })
-        /**
-         * content 共享文件内容
-         */
     }
 }

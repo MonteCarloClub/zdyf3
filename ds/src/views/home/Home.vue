@@ -47,7 +47,7 @@ section:nth-child(even) {
 }
 
 section:nth-child(odd) {
-  background-color: var(--bg-color-2, #f1f1f2);
+  background-color: var(--bg-color-2, #f3f5f8);
 }
 </style>
 
