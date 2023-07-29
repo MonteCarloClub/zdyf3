@@ -61,6 +61,7 @@ public class ContentServiceImpl implements ContentService {
     private final UserRepositoryService userRepositoryService;
     private final OrgRepositoryServiceImpl orgRepositoryService;
     private final DABEService dabeService;
+
     private final IpfsService ipfsService;
 
     @Value("${atp.path.privateKey}")
@@ -163,14 +164,14 @@ public class ContentServiceImpl implements ContentService {
         String encryptedContent = getEncryptedContent(request);
 
         //上传密文到ipfs
-        byte[] data = encryptedContent.getBytes();
-
-        try {
-            String hash = ipfsService.uploadToIpfs(data);
-            System.out.println("Ipfs hash :" + hash);
-        }catch(IOException e){
-            log.info("IPFS error:", e);
-        }
+//        byte[] data = encryptedContent.getBytes();
+//
+//        try {
+//            String hash = ipfsService.uploadToIpfs(data);
+//            System.out.println("Ipfs hash :" + hash);
+//        }catch(IOException e){
+//            log.info("IPFS error:", e);
+//        }
 
 
         DABEUser user = dabeService.getUser(request.getFileName());

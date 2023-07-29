@@ -19,15 +19,14 @@ import java.io.IOException;
 @Service
 public class IpfsServiceImpl implements IpfsService {
 
+    private final IPFS ipfs;
+
     // ipfs 的服务器地址和端口，与yaml文件中的配置对应
     @Value("${ipfs.config.multi-addr}")
     private String multiAddr;
-
-    private IPFS ipfs;
-
     //@PostConstruct
     public  IpfsServiceImpl() {
-        this.ipfs = new IPFS(multiAddr);
+        this.ipfs = new IPFS("/ip4/127.0.0.1/tcp/5001");
     }
 
     @Override
