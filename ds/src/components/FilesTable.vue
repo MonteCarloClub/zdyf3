@@ -1,9 +1,10 @@
 <template>
-  <el-table :data="files">
+  <div>
+  <el-table :data="showFiles">
     <el-table-column show-overflow-tooltip label="文件名" prop="fileName" />
     <!-- <el-table-column show-overflow-tooltip label="密文哈希" prop="cipher" /> -->
     <el-table-column show-overflow-tooltip label="上传者" prop="sharedUser" />
-    <el-table-column show-overflow-tooltip label="上传时间" prop="timeStamp" width="250">
+    <el-table-column show-overflow-tooltip label="上传时间"  sortable prop="timeStamp" width="250">
       <template slot-scope="scope">
         {{ scope.row.timeStamp }}
       </template>
@@ -32,6 +33,15 @@
       </template>
     </el-table-column>
   </el-table>
+  <el-pagination
+      @current-change="handleCurrentChange"
+      :current-page=currentPage
+  :page-size=pageSize
+  :pager-count="11"
+  layout="prev, pager, next"
+  :total=files.length>
+</el-pagination>
+</div>
 </template>
 
 <script>
@@ -41,6 +51,7 @@ import { getters } from "@/store/store";
 import { FileDownloader } from "@/mixins/Download";
 import { FilterEmpty } from "@/mixins/FilterEmpty";
 import { TimeFormat } from "@/mixins/TimeFormat";
+
 
 export default {
   name: "FilesTable",
@@ -52,8 +63,24 @@ export default {
       default: undefined,
     },
   },
-
+  data() {
+    return{
+      currentPage:1,
+      pageSize:10,
+    }
+    
+  },
+  computed:{
+    showFiles:function(){
+      console.log(this.currentPage.value);
+      return this.files.slice((this.currentPage-1)*this.pageSize,this.currentPage*this.pageSize)
+    }
+  },
   methods: {
+      handleCurrentChange(val) {
+        this.currentPage = val
+        console.log(`当前页: ${this.currentPage}`);
+      },
     decryDownload(scope) {
       const user = getters.userName();
       const { cipher, sharedUser, fileName, tags } = scope;
@@ -112,11 +139,15 @@ export default {
         });
     },
   },
+ 
 };
 </script>
 
 <style scoped>
 .el-tag {
   margin-right: 6px;
+}
+.el-table{
+  
 }
 </style>
