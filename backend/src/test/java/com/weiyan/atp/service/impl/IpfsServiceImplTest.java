@@ -1,6 +1,5 @@
 package com.weiyan.atp.service.impl;
 
-import com.weiyan.atp.service.IpfsService;
 import org.junit.Test;
 
 import org.junit.runner.RunWith;
