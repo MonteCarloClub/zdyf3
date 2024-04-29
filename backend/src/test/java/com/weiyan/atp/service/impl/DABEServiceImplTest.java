@@ -3,7 +3,6 @@ package com.weiyan.atp.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.weiyan.atp.AbeTrustPlatformApplication;
 import com.weiyan.atp.data.request.web.DecryptContentRequest;
-import com.weiyan.atp.data.request.web.ShareContentRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Before;
@@ -13,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -116,11 +116,11 @@ class DABEServiceImplTest {
         String uri = "/content/decryption";
 
         DecryptContentRequest mockRequest = new DecryptContentRequest();
-        mockRequest.setCipher("50f0cb242140e7abbca37f5ff973ab4e");
-        mockRequest.setFileName("深圳市 深圳市福田区 气象 福田区-气象数据.xlsx.xlsx");
+        mockRequest.setCipher("4b3d7bee314e074ff621ebe8d0db5bb0");
+        mockRequest.setFileName("123.docx");
         mockRequest.setSharedUser("深圳市气象局");
-        mockRequest.setTags(Arrays.asList("深圳市", "深圳市福田区", "气象", "福田区-气象数据.xlsx"));
-        mockRequest.setUserName("深圳市");
+        mockRequest.setTags(Arrays.asList("1", "2", "3", "4"));
+        mockRequest.setUserName("深圳市应急局");
 
         MockMvc mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         MvcResult result = mvc.perform(
@@ -132,23 +132,32 @@ class DABEServiceImplTest {
 
 
         int status = result.getResponse().getStatus();
-//        Assert.assertEquals("错误",200,status);
+        System.out.println(status);
 
     }
 
-//    @Test
-//    void UploadFile() throws Exception{
-//        String uri = "/content/upload";
-//        ShareContentRequest mockRequest = new ShareContentRequest();
-//        mockRequest.setFileName("深圳市 深圳市福田区 气象 福田区-气象数据.xlsx.xlsx");
-//        mockRequest.setSharedFileName("深圳市 深圳市福田区 气象 福田区-气象数据.xlsx.xlsx");
-//        mockRequest.setTags(Arrays.asList("深圳市", "深圳市福田区", "气象", "福田区-气象数据.xlsx"));
-//        mockRequest.setPlainContent("upload test to ipfs");
-//        mockRequest.setPolicy("A: AND B");
-//        mockRequest.setSharedUser("深圳市气象局");
-//
-//        mockRequest.setUserName("深圳市");
-//
-//        MockMvc mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-//    }
+    @Test
+    void judge_user_attrs() throws Exception {
+        String uri = "/content/judge_user_attrs";
+
+        DecryptContentRequest mockRequest = new DecryptContentRequest();
+        mockRequest.setCipher("4b3d7bee314e074ff621ebe8d0db5bb0");
+        mockRequest.setFileName("123.docx");
+        mockRequest.setSharedUser("深圳市气象局");
+        mockRequest.setTags(Arrays.asList("1", "2", "3", "4"));
+        mockRequest.setUserName("深圳市交通局");
+//        mockRequest.setUserName("深圳市应急局");
+
+        MockMvc mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.post(uri)
+                        .content(objectMapper.writeValueAsString(mockRequest))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+        ).andReturn();
+        String responseContent = result.getResponse().getContentAsString();
+        System.out.println(responseContent);
+
+
+    }
 }

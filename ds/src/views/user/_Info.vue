@@ -8,7 +8,6 @@
       <el-descriptions-item label="我的角色">
         {{ roleTitles[role]}}
       </el-descriptions-item>
-      <el-descriptions-item label="所在通道">{{ channel }}</el-descriptions-item>
     </el-descriptions>
   </Card>
 </template>

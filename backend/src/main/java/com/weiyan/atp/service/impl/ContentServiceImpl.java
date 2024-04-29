@@ -13,7 +13,6 @@ import com.weiyan.atp.data.request.chaincode.dabe.EncryptContentCCRequest;
 import com.weiyan.atp.data.request.chaincode.plat.QueryContentsCCRequest;
 import com.weiyan.atp.data.request.chaincode.plat.ShareContentCCRequest;
 import com.weiyan.atp.data.request.web.ShareContentRequest;
-import com.weiyan.atp.data.request.web.UploadFileRequest;
 import com.weiyan.atp.data.response.chaincode.plat.BaseListResponse;
 import com.weiyan.atp.data.response.chaincode.plat.ContentResponse;
 import com.weiyan.atp.data.response.intergration.EncryptionResponse;
@@ -23,19 +22,13 @@ import com.weiyan.atp.service.ChaincodeService;
 import com.weiyan.atp.service.ContentService;
 import com.weiyan.atp.service.DABEService;
 import com.weiyan.atp.service.UserRepositoryService;
-import com.weiyan.atp.service.IpfsService;
 import com.weiyan.atp.utils.CCUtils;
 import com.weiyan.atp.utils.JsonProviderHolder;
-import com.weiyan.atp.app.controller.SHA256hash;
 
 import com.weiyan.atp.utils.SecurityUtils;
-import io.ipfs.api.IPFS;
-import io.ipfs.api.MerkleNode;
-import io.ipfs.api.NamedStreamable;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -61,7 +54,7 @@ public class ContentServiceImpl implements ContentService {
     private final UserRepositoryService userRepositoryService;
     private final OrgRepositoryServiceImpl orgRepositoryService;
     private final DABEService dabeService;
-    private final IpfsService ipfsService;
+
 
     @Value("${atp.path.privateKey}")
     private String priKeyPath;
@@ -72,14 +65,12 @@ public class ContentServiceImpl implements ContentService {
     public ContentServiceImpl(ChaincodeService chaincodeService, AttrService attrService,
                               UserRepositoryService userRepositoryService,
                               OrgRepositoryServiceImpl orgRepositoryService,
-                              IpfsServiceImpl ipfsService,
                               DABEService dabeService) {
         this.chaincodeService = chaincodeService;
         this.attrService = attrService;
         this.userRepositoryService = userRepositoryService;
         this.orgRepositoryService = orgRepositoryService;
         this.dabeService = dabeService;
-        this.ipfsService = ipfsService;
     }
 
     /**
@@ -163,14 +154,14 @@ public class ContentServiceImpl implements ContentService {
         String encryptedContent = getEncryptedContent(request);
 
         //上传密文到ipfs
-        byte[] data = encryptedContent.getBytes();
-
-        try {
-            String hash = ipfsService.uploadToIpfs(data);
-            System.out.println("Ipfs hash :" + hash);
-        }catch(IOException e){
-            log.info("IPFS error:", e);
-        }
+//        byte[] data = encryptedContent.getBytes();
+//
+//        try {
+//            String hash = ipfsService.uploadToIpfs(data);
+//            System.out.println("Ipfs hash :" + hash);
+//        }catch(IOException e){
+//            log.info("IPFS error:", e);
+//        }
 
 
         DABEUser user = dabeService.getUser(request.getFileName());
@@ -191,8 +182,10 @@ public class ContentServiceImpl implements ContentService {
                 .build();
 
             CCUtils.sign(shareContentCCRequest, priKey);
+            System.out.println("before ChaincodeResponse");
         ChaincodeResponse response = chaincodeService.invoke(
                 ChaincodeTypeEnum.TRUST_PLATFORM, "/common/shareMessage", shareContentCCRequest);
+        System.out.println("after ChaincodeResponse");
         if (response.isFailed()) {
             log.info("invoke share content to plat error: {}", response.getMessage());
             throw new BaseException("invoke share content to plat error");

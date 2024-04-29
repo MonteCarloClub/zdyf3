@@ -51,8 +51,8 @@ public class DABEServiceImpl implements DABEService {
     @Value("${atp.path.cert}")
     private String certPath;
 
-    @Value("${atp.devMode.dpkiUrl}")
-    private String dpkiUrl;
+//    @Value("${atp.devMode.dpkiUrl}")
+//    private String dpkiUrl;
 
     public DABEServiceImpl(ChaincodeService chaincodeService) {
         this.chaincodeService = chaincodeService;
@@ -117,10 +117,10 @@ public class DABEServiceImpl implements DABEService {
                 return null;
             }
             // verify certificate
-            String result = verifyABSCert(dpkiUrl + "/VerifyABSCert", object.toJSONString());
-            if (!result.equals("True")) {
-                return null;
-            }
+//            String result = verifyABSCert(dpkiUrl + "/VerifyABSCert", object.toJSONString());
+//            if (!result.equals("True")) {
+//                return null;
+//            }
             return user;
         } catch (Exception e) {
             log.warn("get user error", e);
@@ -132,7 +132,7 @@ public class DABEServiceImpl implements DABEService {
     public DABEUser createUser(@NotEmpty String fileName, @NotEmpty String userName) {
         ChaincodeResponse response = chaincodeService.query(
                 ChaincodeTypeEnum.DABE, "/user/create", new ArrayList<>(Collections.singletonList(userName)));
-        CCUtils.saveUser(dpkiUrl, certPath, fileName, response);
+//        CCUtils.saveUser(dpkiUrl, certPath, fileName, response);
         return CCUtils.saveResponse(userPath, fileName, response);
     }
 
@@ -141,7 +141,7 @@ public class DABEServiceImpl implements DABEService {
         ChaincodeResponse response = chaincodeService.query(
                 ChaincodeTypeEnum.DABE, "/user/create", new ArrayList<>(Collections.singletonList(userName)));
 
-        CCUtils.saveUser(dpkiUrl, certPath, fileName, response);
+//        CCUtils.saveUser(dpkiUrl, certPath, fileName, response);
         return CCUtils.saveResponse(userPath, fileName, userType, channel, password, false, response);
     }
 

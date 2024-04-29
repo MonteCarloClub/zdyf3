@@ -61,8 +61,8 @@ public class ContentController {
 
     private final DABEService dabeService;
 
-    @Value("${atp.devMode.baseUrl}")
-    private String baseUrl;
+//    @Value("${atp.devMode.baseUrl}")
+//    private String baseUrl;
 
     @Value("${atp.path.shareData}")
     private String shareDataPath;
@@ -104,7 +104,7 @@ public class ContentController {
         }
         EncryptionResponse encryptionResponse = contentService.encContent(request);
 
-//        //对接
+       // 对接
 //        String url = baseUrl+"/attrpolicy";
 //        HttpClient client = HttpClients.createDefault();
 //        //默认post请求
@@ -123,6 +123,7 @@ public class ContentController {
 //            json.put("tags",array);
 //            json.put("timestamp",encryptionResponse.getTimeStamp());
 //            String message = "[" + json + "]";
+//            log.info(message);
 //            post.addHeader("Content-type", "application/json; charset=utf-8");
 //            post.setHeader("Accept", "application/json");
 //            post.setEntity(new StringEntity(message, StandardCharsets.UTF_8));
@@ -153,8 +154,36 @@ public class ContentController {
         return Result.success();
     }
 
+    @PostMapping("/judge_user_attrs")
+    public Result<String> judge_user_attrs(@RequestBody @Validated DecryptContentRequest request,HttpServletRequest req) throws IOException {
+        String ipAddress = SecurityUtils.getIpAddr(req);
+        request.setIp(ipAddress);
+        ChaincodeResponse response = null;
+        if(!request.getUserName().equals(request.getSharedUser())){
+
+            String filePath = encryptDataPath +request.getSharedUser()+"/"+ request.getFileName();
+            try {
+                String cipher= FileUtils.readFileToString(new File(filePath), StandardCharsets.UTF_8);
+                request.setCipher(cipher);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            response = contentService.decryptContent2(request.getCipher(), request.getUserName(), request.getFileName(), request.getSharedUser());
+        }else{
+            response = new ChaincodeResponse();
+            response.setStatus(ChaincodeResponse.Status.SUCCESS);
+        }
+
+        if(response.isFailed()){
+            return Result.attrsError(response.getMessage());
+      //      throw new BaseException("test error: " + response.getMessage());
+        }
+        return Result.okWithData(response.getMessage());
+    }
+
+
     @PostMapping("/decryption")
-    public Result<String> decryptContent(@RequestBody @Validated DecryptContentRequest request,HttpServletRequest req) {
+    public Result<String> decryptContent(@RequestBody @Validated DecryptContentRequest request,HttpServletRequest req) throws IOException{
         String ipAddress = SecurityUtils.getIpAddr(req);
         request.setIp(ipAddress);
         ChaincodeResponse response = null;
@@ -168,66 +197,76 @@ public class ContentController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            System.out.println("before DC2");
             response = contentService.decryptContent2(request.getCipher(), request.getUserName(), request.getFileName(), request.getSharedUser());
+            System.out.println("after DC2");
         }else{
             response = new ChaincodeResponse();
             response.setStatus(ChaincodeResponse.Status.SUCCESS);
         }
 
         //对接
-        String url = baseUrl+"/share_judgement";
-        HttpClient client = HttpClients.createDefault();
-        //默认post请求
-        HttpPost post = new HttpPost(url);
-        //拼接多参数
-        JSONObject json = new JSONObject();
-        JSONArray array = new JSONArray();
-        try {
-            if(response.isFailed()){
-                json.put("result","false");
-            }else{
-                json.put("result","true");
-            }
-            json.put("contentHash", SecurityUtils.md5(request.getCipher()));
-            String filePath = userPath + request.getUserName();
-            String resource = FileUtils.readFileToString(new File(filePath), StandardCharsets.UTF_8);
-            DABEUser user = JsonProviderHolder.JACKSON.parse(resource, DABEUser.class);
-            json.put("userChannel",user.getChannel());
-            json.put("uid",request.getUserName());
-            json.put("userIP",request.getIp());
-            array.put(request.getTags().get(0));
-            array.put(request.getTags().get(1));
-            array.put(request.getTags().get(2));
-            array.put(request.getTags().get(3));
-            json.put("tags",array);
-            json.put("timestamp",new Date().toString());
-            json.put("result","true");
-            String message = "" + json + "";
-            post.addHeader("Content-type", "application/json; charset=utf-8");
-            post.setHeader("Accept", "application/json");
-            post.setEntity(new StringEntity(message, StandardCharsets.UTF_8));
-            HttpResponse httpResponse = client.execute(post);
-            HttpEntity entity = httpResponse.getEntity();
-            System.err.println("状态:" + httpResponse.getStatusLine());
-            System.err.println("参数:" + EntityUtils.toString(entity));
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        String url = baseUrl+"/share_judgement";
+//        HttpClient client = HttpClients.createDefault();
+//        //默认post请求
+//        HttpPost post = new HttpPost(url);
+//        //拼接多参数
+//        JSONObject json = new JSONObject();
+//        JSONArray array = new JSONArray();
+//        try {
+//            if(response.isFailed()){
+//                json.put("result","false");
+//            }else{
+//                json.put("result","true");
+//            }
+//            json.put("contentHash", SecurityUtils.md5(request.getCipher()));
+//            String filePath = userPath + request.getUserName();
+//            String resource = FileUtils.readFileToString(new File(filePath), StandardCharsets.UTF_8);
+//            DABEUser user = JsonProviderHolder.JACKSON.parse(resource, DABEUser.class);
+//            json.put("userChannel",user.getChannel());
+//            json.put("uid",request.getUserName());
+//            json.put("userIP",request.getIp());
+//            array.put(request.getTags().get(0));
+//            array.put(request.getTags().get(1));
+//            array.put(request.getTags().get(2));
+//            array.put(request.getTags().get(3));
+//            json.put("tags",array);
+//            json.put("timestamp",new Date().toString());
+//            json.put("result","true");
+//            String message = "" + json + "";
+//            log.info(message);
+//            post.addHeader("Content-type", "application/json; charset=utf-8");
+//            post.setHeader("Accept", "application/json");
+//            post.setEntity(new StringEntity(message, StandardCharsets.UTF_8));
+//            HttpResponse httpResponse = client.execute(post);
+//            HttpEntity entity = httpResponse.getEntity();
+//            System.err.println("状态:" + httpResponse.getStatusLine());
+//            System.err.println("参数:" + EntityUtils.toString(entity));
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        } catch (ClientProtocolException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         if(response.isFailed()){
-            throw new BaseException("decryption error: " + response.getMessage());
+            return Result.failWithMessage(404,"test error: " + response.getMessage());
+
+//            throw new BaseException("decryption error: " + response.getMessage());
         }
 
-        if(cnt>=5){
-            revokeUserAttr(request.getUserName(),"频繁解密异常");
-            attrService.syncSuccessAttrApply(request.getUserName());
-        }
-        cnt++;
-        return Result.okWithData(null);
+//        if(cnt>=5){
+//            revokeUserAttr(request.getUserName(),"频繁解密异常");
+//            attrService.syncSuccessAttrApply(request.getUserName());
+//        }
+//        cnt++;
+        System.out.println("decrypt messge:");
+        System.out.println(response.getMessage());
+        System.out.println(shareDataPath + request.getUserName() + "/" + request.getFileName());
+//        FileUtils.write(new File(shareDataPath + request.getUserName() + "/" + request.getFileName()), response.getMessage(),
+//                StandardCharsets.UTF_8);
+        return Result.okWithData(response.getMessage());
     }
 
     //@PostMapping("/decryption")
@@ -300,10 +339,13 @@ public class ContentController {
                 StandardCharsets.UTF_8);
         request.setPlainContent(data);
         request.setSharedFileName(filename);
+        System.out.println("before encContent2");
         EncryptionResponse encryptionResponse = contentService.encContent2(request);
-
+        System.out.println("before write");
         FileUtils.write(new File(encryptDataPath +request.getFileName()+"/"+ filename), encryptionResponse.getCipher(),
                 StandardCharsets.UTF_8);
+        System.out.println("uploadenc success");
+
 
 
 //        try {
@@ -344,45 +386,48 @@ public class ContentController {
         //System.out.println("驱动无法加载不是因为connection refused");
 
         //对接
-        String url = baseUrl+"/attrpolicy";
-        HttpClient client = HttpClients.createDefault();
-        //默认post请求
-        HttpPost post = new HttpPost(url);
-        //拼接多参数
-        JSONObject json = new JSONObject();
-        JSONArray array = new JSONArray();
-        try {
-            json.put("contentHash", SecurityUtils.md5(encryptionResponse.getCipherHash()));
-            json.put("policy",request.getPolicy());
-            json.put("uid",request.getFileName());
-            array.put(request.getTags().get(0));
-            array.put(request.getTags().get(1));
-            array.put(request.getTags().get(2));
-            array.put(request.getTags().get(3));
-            json.put("tags",array);
-            json.put("userIP",request.getIp());
-            json.put("timestamp",encryptionResponse.getTimeStamp());
-            String message = "" + json + "";
-            post.addHeader("Content-type", "application/json; charset=utf-8");
-            post.setHeader("Accept", "application/json");
-            post.setEntity(new StringEntity(message, StandardCharsets.UTF_8));
-            HttpResponse httpResponse = client.execute(post);
-            HttpEntity entity = httpResponse.getEntity();
-            System.err.println("状态:" + httpResponse.getStatusLine());
-            System.err.println("参数:" + EntityUtils.toString(entity));
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        String url = baseUrl+"/attrpolicy";
+//        HttpClient client = HttpClients.createDefault();
+//        //默认post请求
+//        HttpPost post = new HttpPost(url);
+//        //拼接多参数
+//        JSONObject json = new JSONObject();
+//        JSONArray array = new JSONArray();
+//        log.info("上传文件记录至多维数据确权系统！！");
+//        try {
+//            json.put("contentHash", SecurityUtils.md5(encryptionResponse.getCipherHash()));
+//            json.put("policy",request.getPolicy());
+//            json.put("uid",request.getFileName());
+//            array.put(request.getTags().get(0));
+//            array.put(request.getTags().get(1));
+//            array.put(request.getTags().get(2));
+//            array.put(request.getTags().get(3));
+//            json.put("tags",array);
+//            json.put("userIP",request.getIp());
+//            json.put("timestamp",encryptionResponse.getTimeStamp());
+//            String message = "" + json + "";
+//            log.info(message);
+//            post.addHeader("Content-type", "application/json; charset=utf-8");
+//            post.setHeader("Accept", "application/json");
+//            post.setEntity(new StringEntity(message, StandardCharsets.UTF_8));
+//            HttpResponse httpResponse = client.execute(post);
+//            HttpEntity entity = httpResponse.getEntity();
+//            System.err.println("状态:" + httpResponse.getStatusLine());
+//            System.err.println("参数:" + EntityUtils.toString(entity));
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        } catch (ClientProtocolException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         if(request.getTags().get(2).equals("test")){
             revokeUserAttr(request.getFileName(),"位置异常");
             attrService.syncSuccessAttrApply(request.getFileName());
         }
+        log.info("记录完成！！");
         return Result.success();
     }
 
@@ -452,38 +497,39 @@ public class ContentController {
             request.setUserName(owner);
             request.setRemark(msg);
             ChaincodeResponse chaincodeResponse = attrService.revokeAttr(request);
-            //对接
-            String url = baseUrl+"/addattr";
-            HttpClient client = HttpClients.createDefault();
-            //默认post请求
-            HttpPost post = new HttpPost(url);
-            //拼接多参数
-            JSONObject json = new JSONObject();
-            try {
-
-                json.put("result","revocation");
-                json.put("channel_name", user.getChannel());
-                json.put("fromUserName",request.getUserName());
-                //json.put("fromOrgName",request.getToOrgName());
-                json.put("toUserName",request.getToUserName());
-                json.put("attrName",request.getAttrName());
-                json.put("timestamp",new Date().toString());
-                String message = "" + json + "";
-                post.addHeader("Content-type", "application/json; charset=utf-8");
-                post.setHeader("Accept", "application/json");
-                post.setEntity(new StringEntity(message, StandardCharsets.UTF_8));
-                HttpResponse httpResponse = client.execute(post);
-                HttpEntity entity = httpResponse.getEntity();
-                System.err.println("状态:" + httpResponse.getStatusLine());
-                System.err.println("参数:" + EntityUtils.toString(entity));
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            //对接
+//            String url = baseUrl+"/addattr";
+//            HttpClient client = HttpClients.createDefault();
+//            //默认post请求
+//            HttpPost post = new HttpPost(url);
+//            //拼接多参数
+//            JSONObject json = new JSONObject();
+//            try {
+//
+//                json.put("result","revocation");
+//                json.put("channel_name", user.getChannel());
+//                json.put("fromUserName",request.getUserName());
+//                //json.put("fromOrgName",request.getToOrgName());
+//                json.put("toUserName",request.getToUserName());
+//                json.put("attrName",request.getAttrName());
+//                json.put("timestamp",new Date().toString());
+//                String message = "" + json + "";
+//                log.info(message);
+//                post.addHeader("Content-type", "application/json; charset=utf-8");
+//                post.setHeader("Accept", "application/json");
+//                post.setEntity(new StringEntity(message, StandardCharsets.UTF_8));
+//                HttpResponse httpResponse = client.execute(post);
+//                HttpEntity entity = httpResponse.getEntity();
+//                System.err.println("状态:" + httpResponse.getStatusLine());
+//                System.err.println("参数:" + EntityUtils.toString(entity));
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            } catch (ClientProtocolException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         }
     }
 

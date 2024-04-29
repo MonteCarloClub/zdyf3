@@ -1,0 +1,1032 @@
+2023-07-26 10:33:26,259 INFO (StartupInfoLogger.java:55)- Starting AbeTrustPlatformApplication on cdl with PID 97988 (C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes started by Dongliang Cai FDU in C:\Users\90744\Desktop\develop\zdyf3)
+2023-07-26 10:33:26,268 INFO (SpringApplication.java:651)- No active profile set, falling back to default profiles: default
+2023-07-26 10:33:27,078 INFO (TomcatWebServer.java:92)- Tomcat initialized with port(s): 8080 (http)
+2023-07-26 10:33:27,084 INFO (DirectJDKLog.java:173)- Initializing ProtocolHandler ["http-nio-8080"]
+2023-07-26 10:33:27,085 INFO (DirectJDKLog.java:173)- Starting service [Tomcat]
+2023-07-26 10:33:27,085 INFO (DirectJDKLog.java:173)- Starting Servlet engine: [Apache Tomcat/9.0.30]
+2023-07-26 10:33:27,184 INFO (DirectJDKLog.java:173)- Initializing Spring embedded WebApplicationContext
+2023-07-26 10:33:27,185 INFO (ServletWebServerApplicationContext.java:284)- Root WebApplicationContext: initialization completed in 875 ms
+2023-07-26 10:33:27,247 WARN (Config.java:128)- Failed to load any configuration from: config.properties. Using toolkit defaults
+2023-07-26 10:33:29,146 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 5, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 5, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 0 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 10:33:29,151 INFO (Channel.java:1310)- Channel Channel{id: 1, name: myc} eventThread started shutdown: false  thread: null 
+2023-07-26 10:33:29,186 WARN (AbstractApplicationContext.java:558)- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'contentController' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\app\controller\ContentController.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'contentServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\ContentServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 4; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+2023-07-26 10:33:29,188 INFO (DirectJDKLog.java:173)- Stopping service [Tomcat]
+2023-07-26 10:33:29,197 INFO (ConditionEvaluationReportLoggingListener.java:136)- 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2023-07-26 10:33:29,203 ERROR (SpringApplication.java:826)- Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'contentController' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\app\controller\ContentController.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'contentServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\ContentServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 4; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:798)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:228)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1358)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1204)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:879)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:878)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:141)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:747)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1226)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
+	at com.weiyan.atp.AbeTrustPlatformApplication.main(AbeTrustPlatformApplication.java:10)
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'contentServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\ContentServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 4; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:798)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:228)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1358)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1204)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1287)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1207)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:885)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:789)
+	... 19 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1320)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1214)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1287)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1207)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:885)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:789)
+	... 33 common frames omitted
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:216)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:87)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1312)
+	... 45 common frames omitted
+Caused by: java.lang.NullPointerException: null
+	at io.ipfs.multiaddr.MultiAddress.decodeFromString(MultiAddress.java:56)
+	at io.ipfs.multiaddr.MultiAddress.<init>(MultiAddress.java:18)
+	at io.ipfs.api.IPFS.<init>(IPFS.java:53)
+	at com.weiyan.atp.service.impl.IpfsServiceImpl.<init>(IpfsServiceImpl.java:30)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:203)
+	... 47 common frames omitted
+2023-07-26 10:36:36,967 INFO (StartupInfoLogger.java:55)- Starting AbeTrustPlatformApplication on cdl with PID 92756 (C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes started by Dongliang Cai FDU in C:\Users\90744\Desktop\develop\zdyf3)
+2023-07-26 10:36:36,998 INFO (SpringApplication.java:651)- No active profile set, falling back to default profiles: default
+2023-07-26 10:36:37,721 INFO (TomcatWebServer.java:92)- Tomcat initialized with port(s): 8080 (http)
+2023-07-26 10:36:37,726 INFO (DirectJDKLog.java:173)- Initializing ProtocolHandler ["http-nio-8080"]
+2023-07-26 10:36:37,726 INFO (DirectJDKLog.java:173)- Starting service [Tomcat]
+2023-07-26 10:36:37,727 INFO (DirectJDKLog.java:173)- Starting Servlet engine: [Apache Tomcat/9.0.30]
+2023-07-26 10:36:37,822 INFO (DirectJDKLog.java:173)- Initializing Spring embedded WebApplicationContext
+2023-07-26 10:36:37,823 INFO (ServletWebServerApplicationContext.java:284)- Root WebApplicationContext: initialization completed in 801 ms
+2023-07-26 10:36:37,883 WARN (Config.java:128)- Failed to load any configuration from: config.properties. Using toolkit defaults
+2023-07-26 10:36:39,628 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 5, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 5, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 0 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 10:36:39,633 INFO (Channel.java:1310)- Channel Channel{id: 1, name: myc} eventThread started shutdown: false  thread: null 
+2023-07-26 10:36:39,669 WARN (AbstractApplicationContext.java:558)- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'contentController' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\app\controller\ContentController.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'contentServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\ContentServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 4; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+2023-07-26 10:36:39,670 INFO (DirectJDKLog.java:173)- Stopping service [Tomcat]
+2023-07-26 10:36:39,680 INFO (ConditionEvaluationReportLoggingListener.java:136)- 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2023-07-26 10:36:39,686 ERROR (SpringApplication.java:826)- Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'contentController' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\app\controller\ContentController.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'contentServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\ContentServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 4; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:798)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:228)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1358)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1204)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:879)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:878)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:141)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:747)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1226)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
+	at com.weiyan.atp.AbeTrustPlatformApplication.main(AbeTrustPlatformApplication.java:10)
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'contentServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\ContentServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 4; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:798)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:228)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1358)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1204)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1287)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1207)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:885)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:789)
+	... 19 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1320)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1214)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1287)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1207)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:885)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:789)
+	... 33 common frames omitted
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:216)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:87)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1312)
+	... 45 common frames omitted
+Caused by: java.lang.NullPointerException: null
+	at io.ipfs.multiaddr.MultiAddress.decodeFromString(MultiAddress.java:56)
+	at io.ipfs.multiaddr.MultiAddress.<init>(MultiAddress.java:18)
+	at io.ipfs.api.IPFS.<init>(IPFS.java:53)
+	at com.weiyan.atp.service.impl.IpfsServiceImpl.<init>(IpfsServiceImpl.java:30)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:203)
+	... 47 common frames omitted
+2023-07-26 10:38:42,869 INFO (StartupInfoLogger.java:55)- Starting AbeTrustPlatformApplication on cdl with PID 99824 (C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes started by Dongliang Cai FDU in C:\Users\90744\Desktop\develop\zdyf3)
+2023-07-26 10:38:42,871 INFO (SpringApplication.java:651)- No active profile set, falling back to default profiles: default
+2023-07-26 10:38:43,496 INFO (TomcatWebServer.java:92)- Tomcat initialized with port(s): 8080 (http)
+2023-07-26 10:38:43,501 INFO (DirectJDKLog.java:173)- Initializing ProtocolHandler ["http-nio-8080"]
+2023-07-26 10:38:43,501 INFO (DirectJDKLog.java:173)- Starting service [Tomcat]
+2023-07-26 10:38:43,501 INFO (DirectJDKLog.java:173)- Starting Servlet engine: [Apache Tomcat/9.0.30]
+2023-07-26 10:38:43,592 INFO (DirectJDKLog.java:173)- Initializing Spring embedded WebApplicationContext
+2023-07-26 10:38:43,592 INFO (ServletWebServerApplicationContext.java:284)- Root WebApplicationContext: initialization completed in 699 ms
+2023-07-26 10:38:43,651 WARN (Config.java:128)- Failed to load any configuration from: config.properties. Using toolkit defaults
+2023-07-26 10:38:45,293 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 5, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 5, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 0 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 10:38:45,298 INFO (Channel.java:1310)- Channel Channel{id: 1, name: myc} eventThread started shutdown: false  thread: null 
+2023-07-26 10:38:45,355 WARN (AbstractApplicationContext.java:558)- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+2023-07-26 10:38:45,357 INFO (DirectJDKLog.java:173)- Stopping service [Tomcat]
+2023-07-26 10:38:45,366 INFO (ConditionEvaluationReportLoggingListener.java:136)- 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2023-07-26 10:38:45,371 ERROR (SpringApplication.java:826)- Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1320)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1214)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:879)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:878)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:141)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:747)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1226)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
+	at com.weiyan.atp.AbeTrustPlatformApplication.main(AbeTrustPlatformApplication.java:10)
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:216)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:87)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1312)
+	... 17 common frames omitted
+Caused by: java.lang.NullPointerException: null
+	at io.ipfs.multiaddr.MultiAddress.decodeFromString(MultiAddress.java:56)
+	at io.ipfs.multiaddr.MultiAddress.<init>(MultiAddress.java:18)
+	at io.ipfs.api.IPFS.<init>(IPFS.java:53)
+	at com.weiyan.atp.service.impl.IpfsServiceImpl.<init>(IpfsServiceImpl.java:30)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:203)
+	... 19 common frames omitted
+2023-07-26 13:33:52,284 INFO (StartupInfoLogger.java:55)- Starting AbeTrustPlatformApplication on cdl with PID 98888 (C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes started by Dongliang Cai FDU in C:\Users\90744\Desktop\develop\zdyf3)
+2023-07-26 13:33:52,287 INFO (SpringApplication.java:651)- No active profile set, falling back to default profiles: default
+2023-07-26 13:33:53,050 INFO (TomcatWebServer.java:92)- Tomcat initialized with port(s): 8080 (http)
+2023-07-26 13:33:53,055 INFO (DirectJDKLog.java:173)- Initializing ProtocolHandler ["http-nio-8080"]
+2023-07-26 13:33:53,055 INFO (DirectJDKLog.java:173)- Starting service [Tomcat]
+2023-07-26 13:33:53,055 INFO (DirectJDKLog.java:173)- Starting Servlet engine: [Apache Tomcat/9.0.30]
+2023-07-26 13:33:53,145 INFO (DirectJDKLog.java:173)- Initializing Spring embedded WebApplicationContext
+2023-07-26 13:33:53,146 INFO (ServletWebServerApplicationContext.java:284)- Root WebApplicationContext: initialization completed in 834 ms
+2023-07-26 13:33:53,207 WARN (Config.java:128)- Failed to load any configuration from: config.properties. Using toolkit defaults
+2023-07-26 13:34:15,749 ERROR (Channel.java:4525)- Channel Channel{id: 1, name: myc} Sending proposal with transaction: 305c118760459e7c692a4dbdf1e982ceac42871363903c6445f3eeb1db7f1e29 to Peer{ id: 2, name: peer, channelName: myc, url: grpc://10.176.40.46:7051} failed because of: gRPC failure=Status{code=UNAVAILABLE, description=io exception, cause=io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection timed out: no further information: /10.176.40.46:7051
+Caused by: java.net.ConnectException: Connection timed out: no further information
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:716)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:330)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:334)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:702)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:650)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:576)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:493)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:989)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:750)
+}
+java.lang.Exception: io.grpc.StatusRuntimeException: UNAVAILABLE: io exception
+	at org.hyperledger.fabric.sdk.Channel.sendProposalToPeers(Channel.java:4525)
+	at org.hyperledger.fabric.sdk.Channel.getConfigBlock(Channel.java:952)
+	at org.hyperledger.fabric.sdk.Channel.getConfigBlock(Channel.java:918)
+	at org.hyperledger.fabric.sdk.Channel.parseConfigBlock(Channel.java:2045)
+	at org.hyperledger.fabric.sdk.Channel.loadCACertificates(Channel.java:1882)
+	at org.hyperledger.fabric.sdk.Channel.initialize(Channel.java:1267)
+	at com.weiyan.atp.config.DevModeChaincodeConfig.devModeChannel(DevModeChaincodeConfig.java:66)
+	at com.weiyan.atp.config.DevModeChaincodeConfig$$EnhancerBySpringCGLIB$$78c72b29.CGLIB$devModeChannel$2(<generated>)
+	at com.weiyan.atp.config.DevModeChaincodeConfig$$EnhancerBySpringCGLIB$$78c72b29$$FastClassBySpringCGLIB$$1cf17c8.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invokeSuper(MethodProxy.java:244)
+	at org.springframework.context.annotation.ConfigurationClassEnhancer$BeanMethodInterceptor.intercept(ConfigurationClassEnhancer.java:363)
+	at com.weiyan.atp.config.DevModeChaincodeConfig$$EnhancerBySpringCGLIB$$78c72b29.devModeChannel(<generated>)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:154)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:651)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:484)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1338)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1177)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1287)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1207)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:885)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:789)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:228)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1358)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1204)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1287)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1207)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:885)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:789)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:228)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1358)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1204)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1287)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1207)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:885)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:789)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:228)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1358)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1204)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:879)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:878)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:141)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:747)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1226)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
+	at com.weiyan.atp.AbeTrustPlatformApplication.main(AbeTrustPlatformApplication.java:10)
+Caused by: io.grpc.StatusRuntimeException: UNAVAILABLE: io exception
+	at io.grpc.Status.asRuntimeException(Status.java:533)
+	at io.grpc.stub.ClientCalls$UnaryStreamToFuture.onClose(ClientCalls.java:490)
+	at io.grpc.PartialForwardingClientCallListener.onClose(PartialForwardingClientCallListener.java:39)
+	at io.grpc.ForwardingClientCallListener.onClose(ForwardingClientCallListener.java:23)
+	at io.grpc.ForwardingClientCallListener$SimpleForwardingClientCallListener.onClose(ForwardingClientCallListener.java:40)
+	at io.grpc.internal.CensusStatsModule$StatsClientInterceptor$1$1.onClose(CensusStatsModule.java:700)
+	at io.grpc.PartialForwardingClientCallListener.onClose(PartialForwardingClientCallListener.java:39)
+	at io.grpc.ForwardingClientCallListener.onClose(ForwardingClientCallListener.java:23)
+	at io.grpc.ForwardingClientCallListener$SimpleForwardingClientCallListener.onClose(ForwardingClientCallListener.java:40)
+	at io.grpc.internal.CensusTracingModule$TracingClientInterceptor$1$1.onClose(CensusTracingModule.java:399)
+	at io.grpc.internal.ClientCallImpl.closeObserver(ClientCallImpl.java:510)
+	at io.grpc.internal.ClientCallImpl.access$300(ClientCallImpl.java:66)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl.close(ClientCallImpl.java:630)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl.access$700(ClientCallImpl.java:518)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInternal(ClientCallImpl.java:692)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInContext(ClientCallImpl.java:681)
+	at io.grpc.internal.ContextRunnable.run(ContextRunnable.java:37)
+	at io.grpc.internal.SerializingExecutor.run(SerializingExecutor.java:123)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection timed out: no further information: /10.176.40.46:7051
+Caused by: java.net.ConnectException: Connection timed out: no further information
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:716)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:330)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:334)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:702)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:650)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:576)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:493)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:989)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:750)
+2023-07-26 13:34:15,751 WARN (Channel.java:965)- getConfigBlock for channel myc failed with peer peer.  Status FAILURE, details: Channel Channel{id: 1, name: myc} Sending proposal with transaction: 305c118760459e7c692a4dbdf1e982ceac42871363903c6445f3eeb1db7f1e29 to Peer{ id: 2, name: peer, channelName: myc, url: grpc://10.176.40.46:7051} failed because of: gRPC failure=Status{code=UNAVAILABLE, description=io exception, cause=io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection timed out: no further information: /10.176.40.46:7051
+Caused by: java.net.ConnectException: Connection timed out: no further information
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:716)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:330)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:334)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:702)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:650)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:576)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:493)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:989)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:750)
+}
+2023-07-26 13:34:15,752 ERROR (Channel.java:2061)- getConfigBlock for channel myc failed with peer peer.  Status FAILURE, details: Channel Channel{id: 1, name: myc} Sending proposal with transaction: 305c118760459e7c692a4dbdf1e982ceac42871363903c6445f3eeb1db7f1e29 to Peer{ id: 2, name: peer, channelName: myc, url: grpc://10.176.40.46:7051} failed because of: gRPC failure=Status{code=UNAVAILABLE, description=io exception, cause=io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection timed out: no further information: /10.176.40.46:7051
+Caused by: java.net.ConnectException: Connection timed out: no further information
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:716)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:330)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:334)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:702)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:650)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:576)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:493)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:989)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:750)
+}
+org.hyperledger.fabric.sdk.exception.ProposalException: getConfigBlock for channel myc failed with peer peer.  Status FAILURE, details: Channel Channel{id: 1, name: myc} Sending proposal with transaction: 305c118760459e7c692a4dbdf1e982ceac42871363903c6445f3eeb1db7f1e29 to Peer{ id: 2, name: peer, channelName: myc, url: grpc://10.176.40.46:7051} failed because of: gRPC failure=Status{code=UNAVAILABLE, description=io exception, cause=io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection timed out: no further information: /10.176.40.46:7051
+Caused by: java.net.ConnectException: Connection timed out: no further information
+	at sun.nio.ch.SocketChannelImpl.checkConnect(Native Method)
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:716)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:330)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:334)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:702)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:650)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:576)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:493)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:989)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:750)
+}
+	at org.hyperledger.fabric.sdk.Channel.getConfigBlock(Channel.java:963)
+	at org.hyperledger.fabric.sdk.Channel.getConfigBlock(Channel.java:918)
+	at org.hyperledger.fabric.sdk.Channel.parseConfigBlock(Channel.java:2045)
+	at org.hyperledger.fabric.sdk.Channel.loadCACertificates(Channel.java:1882)
+	at org.hyperledger.fabric.sdk.Channel.initialize(Channel.java:1267)
+	at com.weiyan.atp.config.DevModeChaincodeConfig.devModeChannel(DevModeChaincodeConfig.java:66)
+	at com.weiyan.atp.config.DevModeChaincodeConfig$$EnhancerBySpringCGLIB$$78c72b29.CGLIB$devModeChannel$2(<generated>)
+	at com.weiyan.atp.config.DevModeChaincodeConfig$$EnhancerBySpringCGLIB$$78c72b29$$FastClassBySpringCGLIB$$1cf17c8.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invokeSuper(MethodProxy.java:244)
+	at org.springframework.context.annotation.ConfigurationClassEnhancer$BeanMethodInterceptor.intercept(ConfigurationClassEnhancer.java:363)
+	at com.weiyan.atp.config.DevModeChaincodeConfig$$EnhancerBySpringCGLIB$$78c72b29.devModeChannel(<generated>)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:154)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:651)
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:484)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1338)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1177)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1287)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1207)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:885)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:789)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:228)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1358)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1204)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1287)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1207)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:885)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:789)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:228)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1358)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1204)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1287)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1207)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:885)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:789)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:228)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1358)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1204)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:879)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:878)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:141)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:747)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1226)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
+	at com.weiyan.atp.AbeTrustPlatformApplication.main(AbeTrustPlatformApplication.java:10)
+2023-07-26 13:34:15,752 WARN (Channel.java:1269)- Channel myc could not load peer CA certificates from any peers.
+2023-07-26 13:34:20,782 WARN (PeerEventServiceClient.java:339)- PeerEventServiceClient{id: 5, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} Channel myc connect time exceeded for peer eventing service peer, timed out at 5000 ms.
+2023-07-26 13:34:20,788 INFO (Channel.java:1310)- Channel Channel{id: 1, name: myc} eventThread started shutdown: false  thread: null 
+2023-07-26 13:34:20,857 WARN (AbstractApplicationContext.java:558)- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+2023-07-26 13:34:20,860 INFO (DirectJDKLog.java:173)- Stopping service [Tomcat]
+2023-07-26 13:34:20,871 INFO (ConditionEvaluationReportLoggingListener.java:136)- 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2023-07-26 13:34:20,876 ERROR (SpringApplication.java:826)- Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1320)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1214)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:879)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:878)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:141)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:747)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1226)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
+	at com.weiyan.atp.AbeTrustPlatformApplication.main(AbeTrustPlatformApplication.java:10)
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:216)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:87)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1312)
+	... 17 common frames omitted
+Caused by: java.lang.NullPointerException: null
+	at io.ipfs.multiaddr.MultiAddress.decodeFromString(MultiAddress.java:56)
+	at io.ipfs.multiaddr.MultiAddress.<init>(MultiAddress.java:18)
+	at io.ipfs.api.IPFS.<init>(IPFS.java:53)
+	at com.weiyan.atp.service.impl.IpfsServiceImpl.<init>(IpfsServiceImpl.java:30)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:203)
+	... 19 common frames omitted
+2023-07-26 13:38:21,837 INFO (StartupInfoLogger.java:55)- Starting AbeTrustPlatformApplication on cdl with PID 103288 (C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes started by Dongliang Cai FDU in C:\Users\90744\Desktop\develop\zdyf3)
+2023-07-26 13:38:21,840 INFO (SpringApplication.java:651)- No active profile set, falling back to default profiles: default
+2023-07-26 13:38:22,628 INFO (TomcatWebServer.java:92)- Tomcat initialized with port(s): 8080 (http)
+2023-07-26 13:38:22,635 INFO (DirectJDKLog.java:173)- Initializing ProtocolHandler ["http-nio-8080"]
+2023-07-26 13:38:22,635 INFO (DirectJDKLog.java:173)- Starting service [Tomcat]
+2023-07-26 13:38:22,635 INFO (DirectJDKLog.java:173)- Starting Servlet engine: [Apache Tomcat/9.0.30]
+2023-07-26 13:38:22,742 INFO (DirectJDKLog.java:173)- Initializing Spring embedded WebApplicationContext
+2023-07-26 13:38:22,743 INFO (ServletWebServerApplicationContext.java:284)- Root WebApplicationContext: initialization completed in 876 ms
+2023-07-26 13:38:22,807 WARN (Config.java:128)- Failed to load any configuration from: config.properties. Using toolkit defaults
+2023-07-26 13:38:24,890 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 5, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 5, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 0 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 13:38:24,894 INFO (Channel.java:1310)- Channel Channel{id: 1, name: myc} eventThread started shutdown: false  thread: null 
+2023-07-26 13:38:24,954 WARN (AbstractApplicationContext.java:558)- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+2023-07-26 13:38:24,956 INFO (DirectJDKLog.java:173)- Stopping service [Tomcat]
+2023-07-26 13:38:24,967 INFO (ConditionEvaluationReportLoggingListener.java:136)- 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2023-07-26 13:38:24,973 ERROR (SpringApplication.java:826)- Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1320)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1214)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:879)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:878)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:141)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:747)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1226)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
+	at com.weiyan.atp.AbeTrustPlatformApplication.main(AbeTrustPlatformApplication.java:10)
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:216)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:87)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1312)
+	... 17 common frames omitted
+Caused by: java.lang.NullPointerException: null
+	at io.ipfs.multiaddr.MultiAddress.decodeFromString(MultiAddress.java:56)
+	at io.ipfs.multiaddr.MultiAddress.<init>(MultiAddress.java:18)
+	at io.ipfs.api.IPFS.<init>(IPFS.java:53)
+	at com.weiyan.atp.service.impl.IpfsServiceImpl.<init>(IpfsServiceImpl.java:30)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:203)
+	... 19 common frames omitted
+2023-07-26 13:45:21,592 INFO (StartupInfoLogger.java:55)- Starting AbeTrustPlatformApplication on cdl with PID 101828 (C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes started by Dongliang Cai FDU in C:\Users\90744\Desktop\develop\zdyf3)
+2023-07-26 13:45:21,595 INFO (SpringApplication.java:651)- No active profile set, falling back to default profiles: default
+2023-07-26 13:45:22,549 INFO (TomcatWebServer.java:92)- Tomcat initialized with port(s): 8080 (http)
+2023-07-26 13:45:22,560 INFO (DirectJDKLog.java:173)- Initializing ProtocolHandler ["http-nio-8080"]
+2023-07-26 13:45:22,561 INFO (DirectJDKLog.java:173)- Starting service [Tomcat]
+2023-07-26 13:45:22,561 INFO (DirectJDKLog.java:173)- Starting Servlet engine: [Apache Tomcat/9.0.30]
+2023-07-26 13:45:22,701 INFO (DirectJDKLog.java:173)- Initializing Spring embedded WebApplicationContext
+2023-07-26 13:45:22,701 INFO (ServletWebServerApplicationContext.java:284)- Root WebApplicationContext: initialization completed in 1074 ms
+2023-07-26 13:45:22,767 WARN (Config.java:128)- Failed to load any configuration from: config.properties. Using toolkit defaults
+2023-07-26 13:45:24,741 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 5, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 5, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 0 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 13:45:24,747 INFO (Channel.java:1310)- Channel Channel{id: 1, name: myc} eventThread started shutdown: false  thread: null 
+2023-07-26 13:45:24,823 WARN (AbstractApplicationContext.java:558)- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+2023-07-26 13:45:24,826 INFO (DirectJDKLog.java:173)- Stopping service [Tomcat]
+2023-07-26 13:45:24,839 INFO (ConditionEvaluationReportLoggingListener.java:136)- 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2023-07-26 13:45:24,848 ERROR (SpringApplication.java:826)- Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1320)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1214)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:879)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:878)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:141)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:747)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1226)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
+	at com.weiyan.atp.AbeTrustPlatformApplication.main(AbeTrustPlatformApplication.java:10)
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:216)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:87)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1312)
+	... 17 common frames omitted
+Caused by: java.lang.NullPointerException: null
+	at io.ipfs.multiaddr.MultiAddress.decodeFromString(MultiAddress.java:56)
+	at io.ipfs.multiaddr.MultiAddress.<init>(MultiAddress.java:18)
+	at io.ipfs.api.IPFS.<init>(IPFS.java:53)
+	at com.weiyan.atp.service.impl.IpfsServiceImpl.<init>(IpfsServiceImpl.java:30)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:203)
+	... 19 common frames omitted
+2023-07-26 13:47:20,349 INFO (StartupInfoLogger.java:55)- Starting AbeTrustPlatformApplication on cdl with PID 100904 (C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes started by Dongliang Cai FDU in C:\Users\90744\Desktop\develop\zdyf3)
+2023-07-26 13:47:20,351 INFO (SpringApplication.java:651)- No active profile set, falling back to default profiles: default
+2023-07-26 13:47:21,015 INFO (TomcatWebServer.java:92)- Tomcat initialized with port(s): 8080 (http)
+2023-07-26 13:47:21,022 INFO (DirectJDKLog.java:173)- Initializing ProtocolHandler ["http-nio-8080"]
+2023-07-26 13:47:21,022 INFO (DirectJDKLog.java:173)- Starting service [Tomcat]
+2023-07-26 13:47:21,022 INFO (DirectJDKLog.java:173)- Starting Servlet engine: [Apache Tomcat/9.0.30]
+2023-07-26 13:47:21,131 INFO (DirectJDKLog.java:173)- Initializing Spring embedded WebApplicationContext
+2023-07-26 13:47:21,131 INFO (ServletWebServerApplicationContext.java:284)- Root WebApplicationContext: initialization completed in 759 ms
+2023-07-26 13:47:21,192 WARN (Config.java:128)- Failed to load any configuration from: config.properties. Using toolkit defaults
+2023-07-26 13:47:22,943 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 5, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 5, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 0 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 13:47:22,949 INFO (Channel.java:1310)- Channel Channel{id: 1, name: myc} eventThread started shutdown: false  thread: null 
+2023-07-26 13:47:23,006 WARN (AbstractApplicationContext.java:558)- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+2023-07-26 13:47:23,008 INFO (DirectJDKLog.java:173)- Stopping service [Tomcat]
+2023-07-26 13:47:23,018 INFO (ConditionEvaluationReportLoggingListener.java:136)- 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2023-07-26 13:47:23,024 ERROR (SpringApplication.java:826)- Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1320)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1214)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:879)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:878)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:141)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:747)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1226)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
+	at com.weiyan.atp.AbeTrustPlatformApplication.main(AbeTrustPlatformApplication.java:10)
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:216)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:87)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1312)
+	... 17 common frames omitted
+Caused by: java.lang.NullPointerException: null
+	at io.ipfs.multiaddr.MultiAddress.decodeFromString(MultiAddress.java:56)
+	at io.ipfs.multiaddr.MultiAddress.<init>(MultiAddress.java:18)
+	at io.ipfs.api.IPFS.<init>(IPFS.java:53)
+	at com.weiyan.atp.service.impl.IpfsServiceImpl.<init>(IpfsServiceImpl.java:31)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:203)
+	... 19 common frames omitted
+2023-07-26 13:49:44,382 INFO (StartupInfoLogger.java:55)- Starting AbeTrustPlatformApplication on cdl with PID 58932 (C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes started by Dongliang Cai FDU in C:\Users\90744\Desktop\develop\zdyf3)
+2023-07-26 13:49:44,384 INFO (SpringApplication.java:651)- No active profile set, falling back to default profiles: default
+2023-07-26 13:49:45,114 INFO (TomcatWebServer.java:92)- Tomcat initialized with port(s): 8080 (http)
+2023-07-26 13:49:45,120 INFO (DirectJDKLog.java:173)- Initializing ProtocolHandler ["http-nio-8080"]
+2023-07-26 13:49:45,120 INFO (DirectJDKLog.java:173)- Starting service [Tomcat]
+2023-07-26 13:49:45,121 INFO (DirectJDKLog.java:173)- Starting Servlet engine: [Apache Tomcat/9.0.30]
+2023-07-26 13:49:45,219 INFO (DirectJDKLog.java:173)- Initializing Spring embedded WebApplicationContext
+2023-07-26 13:49:45,219 INFO (ServletWebServerApplicationContext.java:284)- Root WebApplicationContext: initialization completed in 809 ms
+2023-07-26 13:49:45,282 WARN (Config.java:128)- Failed to load any configuration from: config.properties. Using toolkit defaults
+2023-07-26 13:49:47,306 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 5, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 5, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 0 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 13:49:47,310 INFO (Channel.java:1310)- Channel Channel{id: 1, name: myc} eventThread started shutdown: false  thread: null 
+2023-07-26 13:49:49,415 WARN (AbstractApplicationContext.java:558)- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.RuntimeException: Couldn't connect to IPFS daemon at http://127.0.0.1:5001/api/v0/version
+ Is IPFS running?
+2023-07-26 13:49:49,417 INFO (DirectJDKLog.java:173)- Stopping service [Tomcat]
+2023-07-26 13:49:49,427 INFO (ConditionEvaluationReportLoggingListener.java:136)- 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2023-07-26 13:49:49,433 ERROR (SpringApplication.java:826)- Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.RuntimeException: Couldn't connect to IPFS daemon at http://127.0.0.1:5001/api/v0/version
+ Is IPFS running?
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1320)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1214)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:879)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:878)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:141)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:747)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1226)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
+	at com.weiyan.atp.AbeTrustPlatformApplication.main(AbeTrustPlatformApplication.java:10)
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.RuntimeException: Couldn't connect to IPFS daemon at http://127.0.0.1:5001/api/v0/version
+ Is IPFS running?
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:216)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:87)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1312)
+	... 17 common frames omitted
+Caused by: java.lang.RuntimeException: Couldn't connect to IPFS daemon at http://127.0.0.1:5001/api/v0/version
+ Is IPFS running?
+	at io.ipfs.api.IPFS.get(IPFS.java:727)
+	at io.ipfs.api.IPFS.retrieve(IPFS.java:687)
+	at io.ipfs.api.IPFS.retrieveAndParse(IPFS.java:649)
+	at io.ipfs.api.IPFS.version(IPFS.java:597)
+	at io.ipfs.api.IPFS.<init>(IPFS.java:81)
+	at io.ipfs.api.IPFS.<init>(IPFS.java:61)
+	at io.ipfs.api.IPFS.<init>(IPFS.java:57)
+	at io.ipfs.api.IPFS.<init>(IPFS.java:53)
+	at com.weiyan.atp.service.impl.IpfsServiceImpl.<init>(IpfsServiceImpl.java:30)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:203)
+	... 19 common frames omitted
+2023-07-26 13:50:53,371 INFO (StartupInfoLogger.java:55)- Starting AbeTrustPlatformApplication on cdl with PID 103200 (C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes started by Dongliang Cai FDU in C:\Users\90744\Desktop\develop\zdyf3)
+2023-07-26 13:50:53,373 INFO (SpringApplication.java:651)- No active profile set, falling back to default profiles: default
+2023-07-26 13:50:54,036 INFO (TomcatWebServer.java:92)- Tomcat initialized with port(s): 8080 (http)
+2023-07-26 13:50:54,043 INFO (DirectJDKLog.java:173)- Initializing ProtocolHandler ["http-nio-8080"]
+2023-07-26 13:50:54,043 INFO (DirectJDKLog.java:173)- Starting service [Tomcat]
+2023-07-26 13:50:54,043 INFO (DirectJDKLog.java:173)- Starting Servlet engine: [Apache Tomcat/9.0.30]
+2023-07-26 13:50:54,137 INFO (DirectJDKLog.java:173)- Initializing Spring embedded WebApplicationContext
+2023-07-26 13:50:54,137 INFO (ServletWebServerApplicationContext.java:284)- Root WebApplicationContext: initialization completed in 741 ms
+2023-07-26 13:50:54,198 WARN (Config.java:128)- Failed to load any configuration from: config.properties. Using toolkit defaults
+2023-07-26 13:50:56,164 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 5, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 5, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 0 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 13:50:56,169 INFO (Channel.java:1310)- Channel Channel{id: 1, name: myc} eventThread started shutdown: false  thread: null 
+2023-07-26 13:50:56,450 WARN (JacksonAutoConfiguration.java:123)- Auto-configuration of Jackson's Joda-Time integration is deprecated in favor of using java.time (JSR-310).
+2023-07-26 13:50:56,505 INFO (ExecutorConfigurationSupport.java:171)- Initializing ExecutorService 'applicationTaskExecutor'
+2023-07-26 13:50:56,576 INFO (WelcomePageHandlerMapping.java:54)- Adding welcome page: class path resource [static/index.html]
+2023-07-26 13:50:56,683 INFO (DirectJDKLog.java:173)- Starting ProtocolHandler ["http-nio-8080"]
+2023-07-26 13:50:56,695 INFO (TomcatWebServer.java:204)- Tomcat started on port(s): 8080 (http) with context path '/abe'
+2023-07-26 13:50:56,697 INFO (StartupInfoLogger.java:61)- Started AbeTrustPlatformApplication in 3.616 seconds (JVM running for 4.517)
+2023-07-26 13:51:07,080 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 15, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 15, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 10 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 13:51:29,261 INFO (DirectJDKLog.java:173)- Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-07-26 13:51:29,262 INFO (FrameworkServlet.java:525)- Initializing Servlet 'dispatcherServlet'
+2023-07-26 13:51:29,267 INFO (FrameworkServlet.java:547)- Completed initialization in 5 ms
+2023-07-26 13:51:33,641 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 25, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 25, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 20 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 13:52:08,067 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 35, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 35, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 30 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 13:52:51,207 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 45, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 45, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 40 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 13:53:42,107 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 55, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 55, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 50 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 13:54:15,920 INFO (ExecutorConfigurationSupport.java:208)- Shutting down ExecutorService 'applicationTaskExecutor'
+2023-07-26 13:54:22,224 INFO (StartupInfoLogger.java:55)- Starting AbeTrustPlatformApplication on cdl with PID 21620 (C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes started by Dongliang Cai FDU in C:\Users\90744\Desktop\develop\zdyf3)
+2023-07-26 13:54:22,226 INFO (SpringApplication.java:651)- No active profile set, falling back to default profiles: default
+2023-07-26 13:54:22,899 INFO (TomcatWebServer.java:92)- Tomcat initialized with port(s): 8080 (http)
+2023-07-26 13:54:22,906 INFO (DirectJDKLog.java:173)- Initializing ProtocolHandler ["http-nio-8080"]
+2023-07-26 13:54:22,906 INFO (DirectJDKLog.java:173)- Starting service [Tomcat]
+2023-07-26 13:54:22,906 INFO (DirectJDKLog.java:173)- Starting Servlet engine: [Apache Tomcat/9.0.30]
+2023-07-26 13:54:23,011 INFO (DirectJDKLog.java:173)- Initializing Spring embedded WebApplicationContext
+2023-07-26 13:54:23,011 INFO (ServletWebServerApplicationContext.java:284)- Root WebApplicationContext: initialization completed in 764 ms
+2023-07-26 13:54:23,076 WARN (Config.java:128)- Failed to load any configuration from: config.properties. Using toolkit defaults
+2023-07-26 13:54:24,854 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 5, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 5, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 0 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 13:54:24,858 INFO (Channel.java:1310)- Channel Channel{id: 1, name: myc} eventThread started shutdown: false  thread: null 
+2023-07-26 13:54:25,112 WARN (JacksonAutoConfiguration.java:123)- Auto-configuration of Jackson's Joda-Time integration is deprecated in favor of using java.time (JSR-310).
+2023-07-26 13:54:25,146 INFO (ExecutorConfigurationSupport.java:171)- Initializing ExecutorService 'applicationTaskExecutor'
+2023-07-26 13:54:25,196 INFO (WelcomePageHandlerMapping.java:54)- Adding welcome page: class path resource [static/index.html]
+2023-07-26 13:54:25,269 INFO (DirectJDKLog.java:173)- Starting ProtocolHandler ["http-nio-8080"]
+2023-07-26 13:54:25,279 INFO (TomcatWebServer.java:204)- Tomcat started on port(s): 8080 (http) with context path '/abe'
+2023-07-26 13:54:25,281 INFO (StartupInfoLogger.java:61)- Started AbeTrustPlatformApplication in 3.398 seconds (JVM running for 4.481)
+2023-07-26 13:54:35,703 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 15, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 15, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 10 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 13:54:56,529 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 25, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 25, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 20 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 13:55:28,555 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 35, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 35, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 30 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 13:56:09,419 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 45, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 45, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 40 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 13:56:59,207 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 55, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 55, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 50 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 13:57:50,731 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 65, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 65, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 60 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 13:58:47,254 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 75, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 75, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 70 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 13:59:39,050 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 85, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 85, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 80 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:00:30,691 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 95, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 95, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 90 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:01:23,392 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 105, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 105, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 100 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:02:15,642 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 115, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 115, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 110 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:03:08,595 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 125, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 125, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 120 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:04:02,229 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 135, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 135, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 130 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:04:57,314 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 145, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 145, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 140 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:05:50,445 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 155, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 155, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 150 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:05:55,799 WARN (PeerEventServiceClient.java:303)- Received error on  PeerEventServiceClient{id: 156, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051}, attempts 151. UNAVAILABLE: Channel shutdownNow invoked
+2023-07-26 14:06:43,936 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 165, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 165, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 160 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:07:36,907 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 175, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 175, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 170 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:08:31,851 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 185, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 185, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 180 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:09:23,850 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 195, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 195, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 190 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:10:16,461 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 205, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 205, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 200 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:11:07,857 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 215, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 215, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 210 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:11:59,810 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 225, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 225, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 220 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:12:51,254 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 235, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 235, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 230 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:13:42,820 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 245, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 245, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 240 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:14:34,153 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 255, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 255, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 250 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:15:25,522 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 265, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 265, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 260 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:16:17,199 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 275, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 275, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 270 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:17:08,555 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 285, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 285, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 280 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:17:59,929 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 295, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 295, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 290 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:18:52,003 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 305, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 305, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 300 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:19:43,305 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 315, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 315, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 310 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:20:08,961 WARN (PeerEventServiceClient.java:339)- PeerEventServiceClient{id: 319, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} Channel myc connect time exceeded for peer eventing service peer, timed out at 5000 ms.
+2023-07-26 14:20:39,777 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 325, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 325, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 320 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:21:34,811 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 335, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 335, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 330 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:22:26,091 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 345, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 345, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 340 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:23:19,656 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 355, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 355, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 350 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:24:11,382 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 365, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 365, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 360 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:25:02,841 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 375, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 375, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 370 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:25:59,095 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 385, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 385, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 380 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:26:53,326 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 395, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 395, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 390 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:27:45,300 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 405, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 405, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 400 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:28:26,897 WARN (PeerEventServiceClient.java:339)- PeerEventServiceClient{id: 412, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} Channel myc connect time exceeded for peer eventing service peer, timed out at 5000 ms.
+2023-07-26 14:28:48,925 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 415, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 415, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 410 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:29:40,451 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 425, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 425, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 420 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:30:21,618 WARN (PeerEventServiceClient.java:339)- PeerEventServiceClient{id: 432, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} Channel myc connect time exceeded for peer eventing service peer, timed out at 5000 ms.
+2023-07-26 14:30:37,228 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 435, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 435, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 430 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:31:29,005 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 445, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 445, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 440 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:32:20,303 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 455, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 455, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 450 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:33:01,972 INFO (ExecutorConfigurationSupport.java:208)- Shutting down ExecutorService 'applicationTaskExecutor'
+2023-07-26 14:33:07,695 INFO (StartupInfoLogger.java:55)- Starting AbeTrustPlatformApplication on cdl with PID 102348 (C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes started by Dongliang Cai FDU in C:\Users\90744\Desktop\develop\zdyf3)
+2023-07-26 14:33:07,698 INFO (SpringApplication.java:651)- No active profile set, falling back to default profiles: default
+2023-07-26 14:33:08,554 INFO (TomcatWebServer.java:92)- Tomcat initialized with port(s): 8080 (http)
+2023-07-26 14:33:08,560 INFO (DirectJDKLog.java:173)- Initializing ProtocolHandler ["http-nio-8080"]
+2023-07-26 14:33:08,561 INFO (DirectJDKLog.java:173)- Starting service [Tomcat]
+2023-07-26 14:33:08,561 INFO (DirectJDKLog.java:173)- Starting Servlet engine: [Apache Tomcat/9.0.30]
+2023-07-26 14:33:08,667 INFO (DirectJDKLog.java:173)- Initializing Spring embedded WebApplicationContext
+2023-07-26 14:33:08,667 INFO (ServletWebServerApplicationContext.java:284)- Root WebApplicationContext: initialization completed in 926 ms
+2023-07-26 14:33:08,740 WARN (Config.java:128)- Failed to load any configuration from: config.properties. Using toolkit defaults
+2023-07-26 14:33:11,178 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 5, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 5, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 0 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:33:11,183 INFO (Channel.java:1310)- Channel Channel{id: 1, name: myc} eventThread started shutdown: false  thread: null 
+2023-07-26 14:33:11,220 WARN (AbstractApplicationContext.java:558)- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'contentController' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\app\controller\ContentController.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'contentServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\ContentServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 4; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+2023-07-26 14:33:11,222 INFO (DirectJDKLog.java:173)- Stopping service [Tomcat]
+2023-07-26 14:33:11,231 INFO (ConditionEvaluationReportLoggingListener.java:136)- 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2023-07-26 14:33:11,238 ERROR (SpringApplication.java:826)- Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'contentController' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\app\controller\ContentController.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'contentServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\ContentServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 4; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:798)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:228)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1358)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1204)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:879)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:878)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:141)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:747)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1226)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
+	at com.weiyan.atp.AbeTrustPlatformApplication.main(AbeTrustPlatformApplication.java:10)
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'contentServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\ContentServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 4; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:798)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:228)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1358)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1204)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1287)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1207)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:885)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:789)
+	... 19 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1320)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1214)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1287)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1207)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:885)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:789)
+	... 33 common frames omitted
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:216)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:87)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1312)
+	... 45 common frames omitted
+Caused by: java.lang.NullPointerException: null
+	at io.ipfs.multiaddr.MultiAddress.decodeFromString(MultiAddress.java:56)
+	at io.ipfs.multiaddr.MultiAddress.<init>(MultiAddress.java:18)
+	at io.ipfs.api.IPFS.<init>(IPFS.java:53)
+	at com.weiyan.atp.service.impl.IpfsServiceImpl.<init>(IpfsServiceImpl.java:30)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:203)
+	... 47 common frames omitted
+2023-07-26 14:34:07,915 INFO (StartupInfoLogger.java:55)- Starting AbeTrustPlatformApplication on cdl with PID 102260 (C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes started by Dongliang Cai FDU in C:\Users\90744\Desktop\develop\zdyf3)
+2023-07-26 14:34:07,917 INFO (SpringApplication.java:651)- No active profile set, falling back to default profiles: default
+2023-07-26 14:34:08,612 INFO (TomcatWebServer.java:92)- Tomcat initialized with port(s): 8080 (http)
+2023-07-26 14:34:08,617 INFO (DirectJDKLog.java:173)- Initializing ProtocolHandler ["http-nio-8080"]
+2023-07-26 14:34:08,618 INFO (DirectJDKLog.java:173)- Starting service [Tomcat]
+2023-07-26 14:34:08,618 INFO (DirectJDKLog.java:173)- Starting Servlet engine: [Apache Tomcat/9.0.30]
+2023-07-26 14:34:08,712 INFO (DirectJDKLog.java:173)- Initializing Spring embedded WebApplicationContext
+2023-07-26 14:34:08,712 INFO (ServletWebServerApplicationContext.java:284)- Root WebApplicationContext: initialization completed in 747 ms
+2023-07-26 14:34:08,763 WARN (Config.java:128)- Failed to load any configuration from: config.properties. Using toolkit defaults
+2023-07-26 14:34:10,617 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 5, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 5, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 0 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:34:10,622 INFO (Channel.java:1310)- Channel Channel{id: 1, name: myc} eventThread started shutdown: false  thread: null 
+2023-07-26 14:34:10,678 WARN (AbstractApplicationContext.java:558)- Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'contentController' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\app\controller\ContentController.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'contentServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\ContentServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 4; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+2023-07-26 14:34:10,681 INFO (DirectJDKLog.java:173)- Stopping service [Tomcat]
+2023-07-26 14:34:10,693 INFO (ConditionEvaluationReportLoggingListener.java:136)- 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2023-07-26 14:34:10,700 ERROR (SpringApplication.java:826)- Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'contentController' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\app\controller\ContentController.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'contentServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\ContentServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 4; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:798)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:228)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1358)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1204)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:879)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:878)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:141)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:747)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1226)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
+	at com.weiyan.atp.AbeTrustPlatformApplication.main(AbeTrustPlatformApplication.java:10)
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'contentServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\ContentServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 4; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:798)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:228)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1358)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1204)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1287)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1207)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:885)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:789)
+	... 19 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'ipfsServiceImpl' defined in file [C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes\com\weiyan\atp\service\impl\IpfsServiceImpl.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1320)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1214)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1287)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1207)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:885)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:789)
+	... 33 common frames omitted
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.weiyan.atp.service.impl.IpfsServiceImpl]: Constructor threw exception; nested exception is java.lang.NullPointerException
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:216)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:87)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1312)
+	... 45 common frames omitted
+Caused by: java.lang.NullPointerException: null
+	at io.ipfs.multiaddr.MultiAddress.decodeFromString(MultiAddress.java:56)
+	at io.ipfs.multiaddr.MultiAddress.<init>(MultiAddress.java:18)
+	at io.ipfs.api.IPFS.<init>(IPFS.java:53)
+	at com.weiyan.atp.service.impl.IpfsServiceImpl.<init>(IpfsServiceImpl.java:29)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:203)
+	... 47 common frames omitted
+2023-07-26 14:34:29,169 INFO (StartupInfoLogger.java:55)- Starting AbeTrustPlatformApplication on cdl with PID 88400 (C:\Users\90744\Desktop\develop\zdyf3\backend\target\classes started by Dongliang Cai FDU in C:\Users\90744\Desktop\develop\zdyf3)
+2023-07-26 14:34:29,171 INFO (SpringApplication.java:651)- No active profile set, falling back to default profiles: default
+2023-07-26 14:34:29,802 INFO (TomcatWebServer.java:92)- Tomcat initialized with port(s): 8080 (http)
+2023-07-26 14:34:29,807 INFO (DirectJDKLog.java:173)- Initializing ProtocolHandler ["http-nio-8080"]
+2023-07-26 14:34:29,807 INFO (DirectJDKLog.java:173)- Starting service [Tomcat]
+2023-07-26 14:34:29,807 INFO (DirectJDKLog.java:173)- Starting Servlet engine: [Apache Tomcat/9.0.30]
+2023-07-26 14:34:29,903 INFO (DirectJDKLog.java:173)- Initializing Spring embedded WebApplicationContext
+2023-07-26 14:34:29,903 INFO (ServletWebServerApplicationContext.java:284)- Root WebApplicationContext: initialization completed in 711 ms
+2023-07-26 14:34:29,964 WARN (Config.java:128)- Failed to load any configuration from: config.properties. Using toolkit defaults
+2023-07-26 14:34:31,677 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 5, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 5, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 0 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:34:31,684 INFO (Channel.java:1310)- Channel Channel{id: 1, name: myc} eventThread started shutdown: false  thread: null 
+2023-07-26 14:34:31,969 WARN (JacksonAutoConfiguration.java:123)- Auto-configuration of Jackson's Joda-Time integration is deprecated in favor of using java.time (JSR-310).
+2023-07-26 14:34:32,001 INFO (ExecutorConfigurationSupport.java:171)- Initializing ExecutorService 'applicationTaskExecutor'
+2023-07-26 14:34:32,056 INFO (WelcomePageHandlerMapping.java:54)- Adding welcome page: class path resource [static/index.html]
+2023-07-26 14:34:32,138 INFO (DirectJDKLog.java:173)- Starting ProtocolHandler ["http-nio-8080"]
+2023-07-26 14:34:32,146 INFO (TomcatWebServer.java:204)- Tomcat started on port(s): 8080 (http) with context path '/abe'
+2023-07-26 14:34:32,148 INFO (StartupInfoLogger.java:61)- Started AbeTrustPlatformApplication in 3.274 seconds (JVM running for 4.409)
+2023-07-26 14:34:42,569 WARN (PeerEventServiceClient.java:246)- PeerEventServiceClient{id: 15, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} PeerEventServiceClient{id: 15, channel: myc, peerName: peer, url: grpc://10.176.40.46:7051} attempts 10 Status returned failure code 400 (BAD_REQUEST) during peer service event registration
+2023-07-26 14:34:47,367 INFO (ExecutorConfigurationSupport.java:208)- Shutting down ExecutorService 'applicationTaskExecutor'
