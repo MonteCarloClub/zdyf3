@@ -31,14 +31,25 @@ public class Result<T> {
             .build();
     }
 
-    public static <T> Result<T> failWithMessage(int code, String message) {
+    public static <T> Result<T> ResultWithMessage(String message) {
         return Result.<T>builder()
-            .code(code)
+            .code(400)
             .message(message)
             .build();
     }
 
+    public static <T> Result<T> failWithMessage(int code, String message) {
+        return Result.<T>builder()
+                .code(code)
+                .message(message)
+                .build();
+    }
+
     public static <T> Result<T> internalError(String message) {
         return failWithMessage(500, message);
+    }
+
+    public static <T> Result<T>  attrsError(String message){
+        return failWithMessage(400,message);
     }
 }

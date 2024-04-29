@@ -175,7 +175,8 @@ public class ContentController {
         }
 
         if(response.isFailed()){
-            throw new BaseException("The user does not have the attribute set to decrypt the target file: " + response.getMessage());
+            return Result.attrsError(response.getMessage());
+      //      throw new BaseException("test error: " + response.getMessage());
         }
         return Result.okWithData(response.getMessage());
     }
@@ -250,7 +251,9 @@ public class ContentController {
 //            e.printStackTrace();
 //        }
         if(response.isFailed()){
-            throw new BaseException("decryption error: " + response.getMessage());
+            return Result.failWithMessage(404,"test error: " + response.getMessage());
+
+//            throw new BaseException("decryption error: " + response.getMessage());
         }
 
 //        if(cnt>=5){
