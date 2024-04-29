@@ -154,6 +154,33 @@ public class ContentController {
         return Result.success();
     }
 
+    @PostMapping("/judge_user_attrs")
+    public Result<String> judge_user_attrs(@RequestBody @Validated DecryptContentRequest request,HttpServletRequest req) throws IOException {
+        String ipAddress = SecurityUtils.getIpAddr(req);
+        request.setIp(ipAddress);
+        ChaincodeResponse response = null;
+        if(!request.getUserName().equals(request.getSharedUser())){
+
+            String filePath = encryptDataPath +request.getSharedUser()+"/"+ request.getFileName();
+            try {
+                String cipher= FileUtils.readFileToString(new File(filePath), StandardCharsets.UTF_8);
+                request.setCipher(cipher);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            response = contentService.decryptContent2(request.getCipher(), request.getUserName(), request.getFileName(), request.getSharedUser());
+        }else{
+            response = new ChaincodeResponse();
+            response.setStatus(ChaincodeResponse.Status.SUCCESS);
+        }
+
+        if(response.isFailed()){
+            throw new BaseException("The user does not have the attribute set to decrypt the target file: " + response.getMessage());
+        }
+        return Result.okWithData(response.getMessage());
+    }
+
+
     @PostMapping("/decryption")
     public Result<String> decryptContent(@RequestBody @Validated DecryptContentRequest request,HttpServletRequest req) throws IOException{
         String ipAddress = SecurityUtils.getIpAddr(req);
