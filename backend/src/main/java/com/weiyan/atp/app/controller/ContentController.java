@@ -318,11 +318,11 @@ public class ContentController {
         String filename = file.getOriginalFilename();
         System.out.println(filename);
 
-        //连接mysql
-//        String driver = "com.mysql.cj.jdbc.Driver";	//驱动名，默认
-//        String url1 = "jdbc:mysql://localhost:3306/zdyf?serverTimezone=GMT&useSSL=false";	//将要访问的数据库名称zdyf
-//        String user = "root";	//mysql数据库用户名
-//        String password = "123456";	//mysql数据库用户密码
+        //连接gbase
+        String driver = "com.gbase.jdbc.Driver";	//驱动名，默认
+        String url1 = "jdbc:gbase://xxxx:5258/xx";	//将要访问的数据库名称dabe
+        String user = "";	//gbase数据库用户名
+        String password = "";	//gbase数据库用户密码
 
 
         //根据相对路径获取绝对路径

@@ -30,11 +30,21 @@ spring:
       max-file-size: -1
       max-request-size: -1
 
+#  datasource:
+#    url: jdbc:mysql://192.168.3.78:3306/zdyf?serverTimezone=GMT&useSSL=false
+#    username: root
+#    password: 123456
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+
   datasource:
-    url: jdbc:mysql://192.168.3.78:3306/zdyf?serverTimezone=GMT&useSSL=false
-    username: root
-    password: 123456
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      type: com.gbase.jdbc.jdbc2.optional.GBaseDataSource
+        # gbase驱动
+      driver-class-name: com.gbase.jdbc.Driver
+        # 5258 是gbase的默认端口
+      url: jdbc:gbase://xxxx:5258/xx
+      username: xxxx
+      password: xxxx
 server:
   servlet:
     context-path: /abe
