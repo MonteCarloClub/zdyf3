@@ -7,8 +7,8 @@ atp:
   devMode:
     peerName: peer
     ordererName: orderer
-    peerUrl: grpc://192.168.3.78:7051
-    ordererUrl: grpc://192.168.3.78:7050
+    peerUrl: grpc://180.167.127.16:7051
+    ordererUrl: grpc://180.167.127.16:7050
     channelName: myc
 #    baseUrl: http://47.94.164.138:8000
 
@@ -42,9 +42,10 @@ spring:
         # gbase驱动
       driver-class-name: com.gbase.jdbc.Driver
         # 5258 是gbase的默认端口
-      url: jdbc:gbase://xxxx:5258/xx
-      username: xxxx
-      password: xxxx
+      url: jdbc:gbase://180.167.127.16:5258
+      username: gaussdb
+      password: Root@123
+
 server:
   servlet:
     context-path: /abe
