@@ -217,17 +217,18 @@
             <version>v1.3.3</version>
         </dependency>
 
-        <!-- gbase -->
+
         <dependency>
-            <groupId>com.gbase.jdbc</groupId>
-            <artifactId>gbase-connector-java</artifactId>
-            <scope>system</scope>
-            <version>8.3.81.53-build52.8-bin</version>
-            <systemPath>${project.basedir}/libs/gbase-connector-java-8.3.81.53-build52.8-bin.jar</systemPath>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.3</version>
         </dependency>
 
 
+
     </dependencies>
+
+
 
 
 
@@ -246,16 +247,6 @@
                     <include>**/*</include>
                 </includes>
                 <filtering>false</filtering>
-            </resource>
-            <resource>
-                <directory>src/mai/resource</directory>
-            </resource>
-            <resource>
-                <directory>lib</directory>
-                <targetPath>BOOT-INF/lib/</targetPath>
-                <includes>
-                    <include>**/*.jar</include>
-                </includes>
             </resource>
         </resources>
 

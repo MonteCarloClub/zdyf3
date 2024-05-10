@@ -37,14 +37,12 @@ spring:
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 
   datasource:
-    druid:
-      type: com.gbase.jdbc.jdbc2.optional.GBaseDataSource
-        # gbase驱动
-      driver-class-name: com.gbase.jdbc.Driver
-        # 5258 是gbase的默认端口
-      url: jdbc:gbase://180.167.127.16:5258
-      username: gaussdb
-      password: Root@123
+    # gbase驱动
+    driver-class-name: org.postgresql.Driver
+    # 15432 是gbase的默认端口
+    url: jdbc:postgresql://180.167.127.16:15432/postgres
+    username: gaussdb
+    password: Root@123
 
 server:
   servlet:

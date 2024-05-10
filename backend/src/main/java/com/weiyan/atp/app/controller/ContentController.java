@@ -43,6 +43,8 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
 
 /**
@@ -76,16 +78,16 @@ public class ContentController {
     @Value("${atp.path.dabeUser}")
     private String userPath;
 
-    @Value("${spring.datasource.druid.url}")
+    @Value("${spring.datasource.url}")
     private String gbaseUrl;
 
-    @Value("${spring.datasource.druid.username}")
+    @Value("${spring.datasource.username}")
     private String gbaseUser;
 
-    @Value("${spring.datasource.druid.password}")
+    @Value("${spring.datasource.password}")
     private String gbasePassword;
 
-    @Value("${spring.datasource.druid.driver-class-name}")
+    @Value("${spring.datasource.driver-class-name}")
     private String Driver;
 
     private static int cnt = 0;
@@ -346,41 +348,62 @@ public class ContentController {
 
 
         try {
-            //加载驱动
-            Class.forName(Driver);
+            Class.forName(Driver);  //加载驱动。
+        }catch( Exception e ){
+            e.printStackTrace();
+            return null;
+        }
 
-
-            Connection conn = DriverManager.getConnection(gbaseUrl, gbaseUser, gbasePassword);	//创建connection对象,用来连接数据库
-            if(!conn.isClosed())
-                System.out.println("Succeed!");
-
+        try {
+            //创建连接。
+            Connection conn = DriverManager.getConnection(gbaseUrl, gbaseUser, gbasePassword);
+            System.out.println("Connection succeed!");
 
             //获取时间与文件名哈希作为标识
             SHA256hash foo = new SHA256hash();
             String id = foo.getSHA(filename);
 
+
             //插入标识与文件路径
-            String sql = "insert into DataId(id,path,permission) values(?,?,?)";
+            String sql = "insert into DataId(data_id,path,permission) values(?,?,?)";
             java.sql.PreparedStatement pstmt = null;
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, id);
-            pstmt.setString(2, encryptDataPath +request.getFileName()+"/"+ filename);
-            pstmt.setString(3, request.getPolicy());
 
-            boolean row = pstmt.execute();
-            System.out.println(row);
-
-            //释放资源
-            pstmt.close();
-            conn.close();
-
-        }catch(Exception e) {
-            System.out.println("gbase fail!!!!!");
-            System.out.println(e);
+            try {
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setString(1, id);
+                pstmt.setString(2, encryptDataPath +request.getFileName()+"/"+ filename);
+                pstmt.setString(3, request.getPolicy());
+                int i = pstmt.executeUpdate();
+                if (i>0) {
+                    System.out.println("添加成功");
+                }else{
+                    System.out.println("添加失败");
+                }
+            }catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }finally{
+                try {
+                    conn.close();
+                    pstmt.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
 
-        System.out.println("驱动无法加载不是因为connection refused");
+
+
+
+//        }catch(Exception e) {
+//            System.out.println("gbase fail!!!!!");
+//            System.out.println(e);
+//        }
+
+
+//        System.out.println("驱动无法加载不是因为connection refused");
 
         //对接
 //        String url = baseUrl+"/attrpolicy";

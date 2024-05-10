@@ -55,11 +55,6 @@ public class UserController {
     @Value("${atp.devMode.channelName}")
     private String channelName;
 
-    @Value("${atp.path.cert}")
-    private String certPath;
-
-//    @Value("${atp.devMode.baseUrl}")
-//    private String baseUrl;
 
     public UserController(UserRepositoryService userRepositoryService, AttrService attrService, DABEService dabeService) {
         this.userRepositoryService = userRepositoryService;
@@ -69,12 +64,9 @@ public class UserController {
 
     @PostMapping("/")
     public Result<Object> createUser(@RequestBody @Validated CreateUserRequest request) {
-        try {
-            ChaincodeResponse response = userRepositoryService.createUser(request);
-            String cert = FileUtils.readFileToString(new File(certPath + request.getFileName()),
-                    StandardCharsets.UTF_8);
+        ChaincodeResponse response = userRepositoryService.createUser(request);
 
-            //对接
+        //对接
 //            String url = baseUrl+"/attruser";
 //            HttpClient client = HttpClients.createDefault();
 //            //默认post请求
@@ -99,26 +91,13 @@ public class UserController {
 //            } catch (JSONException e) {
 //                e.printStackTrace();
 //            }
-            return Result.okWithData(response.getResult(str -> str));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return Result.okWithData(response.getResult(str -> str));
     }
 
     @PostMapping("/create")
     public Result<Object> createUserInOne(@RequestBody @Validated CreateUserInOneRequest request) {
         dabeService.createUser(request.getUserName(), request.getUserName(), request.getUserType(), request.getChannel(), request.getPassword());
         ChaincodeResponse response = userRepositoryService.createUserInOne(request.getUserName(), request.getUserType(), request.getChannel());
-        String cert = "";
-        try {
-            cert = FileUtils.readFileToString(new File(certPath + request.getUserName()),
-                    StandardCharsets.UTF_8);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
 
         //对接
 //        try {
@@ -152,8 +131,7 @@ public class UserController {
 //            e.printStackTrace();
 //        }
 
-        //return Result.okWithData(response.getResult(str->str));
-        return Result.okWithData(com.alibaba.fastjson.JSONObject.parseObject(cert));
+        return Result.okWithData(response.getResult(str->str));
     }
 
     @GetMapping("/")
