@@ -3,7 +3,9 @@ package com.weiyan.atp.app.controller;
 import com.alibaba.fastjson.parser.Feature;
 import com.weiyan.atp.constant.AttrApplyStatusEnum;
 import com.weiyan.atp.constant.BaseException;
+import com.weiyan.atp.constant.ChaincodeTypeEnum;
 import com.weiyan.atp.data.bean.*;
+import com.weiyan.atp.data.request.chaincode.plat.QueryUserCCRequest;
 import com.weiyan.atp.data.request.web.*;
 import com.weiyan.atp.data.response.intergration.ApplyAttrResponse;
 import com.weiyan.atp.data.response.intergration.CreateUserResponse;
@@ -36,6 +38,14 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 
 /**
@@ -96,8 +106,36 @@ public class UserController {
 
     @PostMapping("/create")
     public Result<Object> createUserInOne(@RequestBody @Validated CreateUserInOneRequest request) {
+        // 检查user是否已经创建，若已经创建则报错，否则正常创建
+//        String url = COUCHDB_URL + "/" + DATABASE_NAME + "/" + documentId;
+        String url = "http://180.167.127.16:5984/_utils/#database/myc_plat/ID:" + request.getUserName();
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpGet checkUserRequest = new HttpGet(url);
+            HttpResponse response = httpClient.execute(checkUserRequest);
+            int statusCode = response.getStatusLine().getStatusCode();
+            if (statusCode == 200) {
+                // Document exists
+                return Result.internalError("User Already Exists");
+            } else if (statusCode == 404) {
+                // Document does not exist
+                // 即用户尚未创建，则正常创建用户即可
+                ;
+            } else {
+                // Handle other status codes if needed
+                System.out.println("Unexpected response status: " + statusCode);
+                return Result.internalError("Unexpected response status: " + statusCode);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.internalError(e.getMessage());
+        }
+
+        System.out.println("[br] User does not exists, start creating user...");
+        System.out.println("[br] invoke dabeService.createUser()");
         dabeService.createUser(request.getUserName(), request.getUserName(), request.getUserType(), request.getChannel(), request.getPassword());
+        System.out.println("[br] dabeService.createUser() finished, invoke ChaincodeResponse response =...");
         ChaincodeResponse response = userRepositoryService.createUserInOne(request.getUserName(), request.getUserType(), request.getChannel());
+        System.out.println("[br] got chaincode response: {}" + response);
 
         //对接
 //        try {

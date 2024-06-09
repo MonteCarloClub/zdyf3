@@ -138,10 +138,12 @@ public class DABEServiceImpl implements DABEService {
 
     @Override
     public DABEUser createUser(@NotEmpty String fileName, @NotEmpty String userName, @NotEmpty String userType, @NotEmpty String channel, @NotEmpty String password) {
+        System.out.println("[br][br] In createUser method. invoke ChaincodeResponse response=...");
         ChaincodeResponse response = chaincodeService.query(
                 ChaincodeTypeEnum.DABE, "/user/create", new ArrayList<>(Collections.singletonList(userName)));
 
 //        CCUtils.saveUser(dpkiUrl, certPath, fileName, response);
+        System.out.println("[br][br] In createUser method. got chaincode response: {}" + response);
         return CCUtils.saveResponse(userPath, fileName, userType, channel, password, false, response);
     }
 
