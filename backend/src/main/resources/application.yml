@@ -10,9 +10,9 @@ atp:
     peerUrl: grpc://180.167.127.16:7051
     ordererUrl: grpc://180.167.127.16:7050
     channelName: myc
-#    baseUrl: http://47.94.164.138:8000
+#    baseUrl: http://47.94.164.138:8000 # 和华科对接
 
-#    dpkiUrl: http://10.176.40.47/dpki
+#    dpkiUrl: http://10.176.40.47/dpki  # 课题二(dpki)的
 
   path:
     dabeUser: atp/user/
@@ -30,13 +30,13 @@ spring:
       max-file-size: -1
       max-request-size: -1
 
-#  datasource:
+#  datasource:    # 我们zdyf的
 #    url: jdbc:mysql://192.168.3.78:3306/zdyf?serverTimezone=GMT&useSSL=false
 #    username: root
 #    password: 123456
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 
-  datasource:
+  datasource:   # 浦东项目的，改用gbase数据库
     # gbase驱动
     driver-class-name: org.postgresql.Driver
     # 15432 是gbase的默认端口
