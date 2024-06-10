@@ -108,7 +108,8 @@ public class UserController {
     public Result<Object> createUserInOne(@RequestBody @Validated CreateUserInOneRequest request) {
         // 检查user是否已经创建，若已经创建则报错，否则正常创建
 //        String url = COUCHDB_URL + "/" + DATABASE_NAME + "/" + documentId;
-        String url = "http://180.167.127.16:5984/_utils/#database/myc_plat/ID:" + request.getUserName();
+        String url = "http://180.167.127.16:5984/myc_plat/ID:" + request.getUserName();
+        System.out.println("[br]检查注册的user是否已经存在：" + url);
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpGet checkUserRequest = new HttpGet(url);
             HttpResponse response = httpClient.execute(checkUserRequest);
