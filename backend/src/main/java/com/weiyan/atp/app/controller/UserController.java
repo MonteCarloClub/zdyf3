@@ -75,30 +75,30 @@ public class UserController {
                     StandardCharsets.UTF_8);
 
             //对接
-            String url = baseUrl+"/attruser";
-            HttpClient client = HttpClients.createDefault();
-            //默认post请求
-            HttpPost post = new HttpPost(url);
-            //拼接多参数
-            JSONObject json = new JSONObject();
-            try {
-                json.put("channel_name", channelName);
-                json.put("certificate",cert);
-                json.put("uid",request.getFileName());
-                json.put("timestamp",String.valueOf(System.currentTimeMillis()));
-                String message = "[" + json + "]";
-                log.info(message);
-                post.addHeader("Content-type", "application/json; charset=utf-8");
-                post.setHeader("Accept", "application/json");
-                post.setEntity(new StringEntity(message, StandardCharsets.UTF_8));
-                HttpResponse httpResponse = client.execute(post);
-                HttpEntity entity = httpResponse.getEntity();
-                System.err.println("状态:" + httpResponse.getStatusLine());
-                System.err.println("参数:" + EntityUtils.toString(entity));
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+//            String url = baseUrl+"/attruser";
+//            HttpClient client = HttpClients.createDefault();
+//            //默认post请求
+//            HttpPost post = new HttpPost(url);
+//            //拼接多参数
+//            JSONObject json = new JSONObject();
+//            try {
+//                json.put("channel_name", channelName);
+//                json.put("certificate",cert);
+//                json.put("uid",request.getFileName());
+//                json.put("timestamp",String.valueOf(System.currentTimeMillis()));
+//                String message = "[" + json + "]";
+//                log.info(message);
+//                post.addHeader("Content-type", "application/json; charset=utf-8");
+//                post.setHeader("Accept", "application/json");
+//                post.setEntity(new StringEntity(message, StandardCharsets.UTF_8));
+//                HttpResponse httpResponse = client.execute(post);
+//                HttpEntity entity = httpResponse.getEntity();
+//                System.err.println("状态:" + httpResponse.getStatusLine());
+//                System.err.println("参数:" + EntityUtils.toString(entity));
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
             return Result.okWithData(response.getResult(str -> str));
         } catch (IOException e) {
             e.printStackTrace();
@@ -121,36 +121,36 @@ public class UserController {
         }
 
         //对接
-        try {
-            String url = baseUrl + "/attruser";
-            AsyncHttpClient asyncHttpClient = new DefaultAsyncHttpClient(new DefaultAsyncHttpClientConfig.Builder()
-                    .setConnectTimeout(10000)
-                    .setRequestTimeout(10000)
-                    .build());
-            //默认post请求
-            HttpPost post = new HttpPost(url);
-            //拼接多参数
-            JSONObject json = new JSONObject();
-
-            com.alibaba.fastjson.JSONObject object = com.alibaba.fastjson.JSONObject.parseObject(cert, Feature.OrderedField);
-            com.alibaba.fastjson.JSONObject num = object.getJSONObject("certificate");
-
-            json.put("channel_name", request.getChannel());
-            json.put("certificate", num);
-            json.put("uid", request.getUserName());
-            json.put("timestamp", new Date().toString());
-            String message = ""+json+"";
-            log.info(message);
-
-            RequestBuilder builder = new RequestBuilder();
-            builder.setUrl(url);
-            builder.addHeader("Content-type", "application/json; charset=utf-8");
-            builder.addHeader("Accept", "application/json");
-            builder.setBody(message);
-            asyncHttpClient.executeRequest(builder.build());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            String url = baseUrl + "/attruser";
+//            AsyncHttpClient asyncHttpClient = new DefaultAsyncHttpClient(new DefaultAsyncHttpClientConfig.Builder()
+//                    .setConnectTimeout(10000)
+//                    .setRequestTimeout(10000)
+//                    .build());
+//            //默认post请求
+//            HttpPost post = new HttpPost(url);
+//            //拼接多参数
+//            JSONObject json = new JSONObject();
+//
+//            com.alibaba.fastjson.JSONObject object = com.alibaba.fastjson.JSONObject.parseObject(cert, Feature.OrderedField);
+//            com.alibaba.fastjson.JSONObject num = object.getJSONObject("certificate");
+//
+//            json.put("channel_name", request.getChannel());
+//            json.put("certificate", num);
+//            json.put("uid", request.getUserName());
+//            json.put("timestamp", new Date().toString());
+//            String message = ""+json+"";
+//            log.info(message);
+//
+//            RequestBuilder builder = new RequestBuilder();
+//            builder.setUrl(url);
+//            builder.addHeader("Content-type", "application/json; charset=utf-8");
+//            builder.addHeader("Accept", "application/json");
+//            builder.setBody(message);
+//            asyncHttpClient.executeRequest(builder.build());
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
 
         //return Result.okWithData(response.getResult(str->str));
         return Result.okWithData(com.alibaba.fastjson.JSONObject.parseObject(cert));
@@ -169,41 +169,41 @@ public class UserController {
 
         ChaincodeResponse response = attrService.declareUserAttr2(request);
         //对接
-        String url = baseUrl + "/creatattr";
-        HttpClient client = HttpClients.createDefault();
-        //默认post请求
-        HttpPost post = new HttpPost(url);
-        //拼接多参数
-        JSONObject json = new JSONObject();
-        try {
-            if (response.isFailed()) {
-                json.put("result", "false");
-            } else {
-                json.put("result", "true");
-            }
-            DABEUser user = dabeService.getUser(request.getFileName());
-            json.put("channelName", user.getChannel());
-            json.put("attrName", request.getAttrName());
-            json.put("userName", request.getFileName());
-            json.put("timestamp", new Date().toString());
-            json.put("result","true");
-            String message = "" + json + "";
-            log.info(message);
-            post.addHeader("Content-type", "application/json; charset=utf-8");
-            post.setHeader("Accept", "application/json");
-            post.setEntity(new StringEntity(message, StandardCharsets.UTF_8));
-            HttpResponse httpResponse = client.execute(post);
-            HttpEntity entity = httpResponse.getEntity();
-            System.err.println("状态:" + httpResponse.getStatusLine());
-            System.err.println("参数:" + EntityUtils.toString(entity));
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        String url = baseUrl + "/creatattr";
+//        HttpClient client = HttpClients.createDefault();
+//        //默认post请求
+//        HttpPost post = new HttpPost(url);
+//        //拼接多参数
+//        JSONObject json = new JSONObject();
+//        try {
+//            if (response.isFailed()) {
+//                json.put("result", "false");
+//            } else {
+//                json.put("result", "true");
+//            }
+//            DABEUser user = dabeService.getUser(request.getFileName());
+//            json.put("channelName", user.getChannel());
+//            json.put("attrName", request.getAttrName());
+//            json.put("userName", request.getFileName());
+//            json.put("timestamp", new Date().toString());
+//            json.put("result","true");
+//            String message = "" + json + "";
+//            log.info(message);
+//            post.addHeader("Content-type", "application/json; charset=utf-8");
+//            post.setHeader("Accept", "application/json");
+//            post.setEntity(new StringEntity(message, StandardCharsets.UTF_8));
+//            HttpResponse httpResponse = client.execute(post);
+//            HttpEntity entity = httpResponse.getEntity();
+//            System.err.println("状态:" + httpResponse.getStatusLine());
+//            System.err.println("参数:" + EntityUtils.toString(entity));
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        } catch (ClientProtocolException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         return response.getResult(str -> str);
     }
 
@@ -232,38 +232,38 @@ public class UserController {
         DABEUser user = dabeService.getUser(request.getUserName());
 
 //        //对接
-        String url = baseUrl + "/addattr";
-        HttpClient client = HttpClients.createDefault();
-        //默认post请求
-        HttpPost post = new HttpPost(url);
-        //拼接多参数
-        JSONObject json = new JSONObject();
-        try {
-
-            json.put("result", "revocation");
-            json.put("channel_name", user.getChannel());
-            json.put("fromUserName", request.getUserName());
-            //json.put("fromOrgName",request.getToOrgName());
-            json.put("toUserName", request.getToUserName());
-            json.put("attrName", request.getAttrName());
-            json.put("timestamp", new Date().toString());
-            String message = "" + json + "";
-            log.info(message);
-            post.addHeader("Content-type", "application/json; charset=utf-8");
-            post.setHeader("Accept", "application/json");
-            post.setEntity(new StringEntity(message, StandardCharsets.UTF_8));
-            HttpResponse httpResponse = client.execute(post);
-            HttpEntity entity = httpResponse.getEntity();
-            System.err.println("状态:" + httpResponse.getStatusLine());
-            System.err.println("参数:" + EntityUtils.toString(entity));
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        String url = baseUrl + "/addattr";
+//        HttpClient client = HttpClients.createDefault();
+//        //默认post请求
+//        HttpPost post = new HttpPost(url);
+//        //拼接多参数
+//        JSONObject json = new JSONObject();
+//        try {
+//
+//            json.put("result", "revocation");
+//            json.put("channel_name", user.getChannel());
+//            json.put("fromUserName", request.getUserName());
+//            //json.put("fromOrgName",request.getToOrgName());
+//            json.put("toUserName", request.getToUserName());
+//            json.put("attrName", request.getAttrName());
+//            json.put("timestamp", new Date().toString());
+//            String message = "" + json + "";
+//            log.info(message);
+//            post.addHeader("Content-type", "application/json; charset=utf-8");
+//            post.setHeader("Accept", "application/json");
+//            post.setEntity(new StringEntity(message, StandardCharsets.UTF_8));
+//            HttpResponse httpResponse = client.execute(post);
+//            HttpEntity entity = httpResponse.getEntity();
+//            System.err.println("状态:" + httpResponse.getStatusLine());
+//            System.err.println("参数:" + EntityUtils.toString(entity));
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        } catch (ClientProtocolException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         return Result.okWithData(chaincodeResponse.getResult(str -> str));
     }
 
@@ -315,42 +315,42 @@ public class UserController {
         ChaincodeResponse response = attrService.approveAttrApply2(request);
         DABEUser applyUser = dabeService.getUser(request.getToUserName());
 //        //对接
-        String url = baseUrl + "/addattr";
-        HttpClient client = HttpClients.createDefault();
-        //默认post请求
-        HttpPost post = new HttpPost(url);
-        //拼接多参数
-        JSONObject json = new JSONObject();
-        try {
-            if (response.isFailed()) {
-                json.put("result", "false");
-            } else {
-                json.put("result", "true");
-            }
-            json.put("channel_name", applyUser.getChannel());
-            json.put("fromUserName", request.getFileName());
-            //json.put("fromOrgName",request.getToOrgName());
-            json.put("toUserName", request.getToUserName());
-            json.put("attrName", request.getAttrName());
-            json.put("timestamp", new Date().toString());
-            json.put("result","true");
-            String message = "" + json + "";
-            log.info(message);
-            post.addHeader("Content-type", "application/json; charset=utf-8");
-            post.setHeader("Accept", "application/json");
-            post.setEntity(new StringEntity(message, StandardCharsets.UTF_8));
-            HttpResponse httpResponse = client.execute(post);
-            HttpEntity entity = httpResponse.getEntity();
-            System.err.println("状态:" + httpResponse.getStatusLine());
-            System.err.println("参数:" + EntityUtils.toString(entity));
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        String url = baseUrl + "/addattr";
+//        HttpClient client = HttpClients.createDefault();
+//        //默认post请求
+//        HttpPost post = new HttpPost(url);
+//        //拼接多参数
+//        JSONObject json = new JSONObject();
+//        try {
+//            if (response.isFailed()) {
+//                json.put("result", "false");
+//            } else {
+//                json.put("result", "true");
+//            }
+//            json.put("channel_name", applyUser.getChannel());
+//            json.put("fromUserName", request.getFileName());
+//            //json.put("fromOrgName",request.getToOrgName());
+//            json.put("toUserName", request.getToUserName());
+//            json.put("attrName", request.getAttrName());
+//            json.put("timestamp", new Date().toString());
+//            json.put("result","true");
+//            String message = "" + json + "";
+//            log.info(message);
+//            post.addHeader("Content-type", "application/json; charset=utf-8");
+//            post.setHeader("Accept", "application/json");
+//            post.setEntity(new StringEntity(message, StandardCharsets.UTF_8));
+//            HttpResponse httpResponse = client.execute(post);
+//            HttpEntity entity = httpResponse.getEntity();
+//            System.err.println("状态:" + httpResponse.getStatusLine());
+//            System.err.println("参数:" + EntityUtils.toString(entity));
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        } catch (ClientProtocolException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         return response.getResult(str -> str);
     }
