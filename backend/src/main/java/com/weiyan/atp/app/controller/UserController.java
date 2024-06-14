@@ -58,8 +58,8 @@ public class UserController {
     @Value("${atp.path.cert}")
     private String certPath;
 
-    @Value("${atp.devMode.baseUrl}")
-    private String baseUrl;
+//    @Value("${atp.devMode.baseUrl}")
+//    private String baseUrl;
 
     public UserController(UserRepositoryService userRepositoryService, AttrService attrService, DABEService dabeService) {
         this.userRepositoryService = userRepositoryService;

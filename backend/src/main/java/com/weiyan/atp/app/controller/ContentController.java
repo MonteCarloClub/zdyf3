@@ -61,8 +61,8 @@ public class ContentController {
 
     private final DABEService dabeService;
 
-    @Value("${atp.devMode.baseUrl}")
-    private String baseUrl;
+//    @Value("${atp.devMode.baseUrl}")
+//    private String baseUrl;
 
     @Value("${atp.path.shareData}")
     private String shareDataPath;
