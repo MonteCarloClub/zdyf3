@@ -3,7 +3,7 @@ module github.com/BlockchainLabFudan/2020-Winter-vacation-homework/dabe
 go 1.18
 
 require (
-	github.com/MonteCarloClub/dabe v1.2.0-alpha.1
+	github.com/MonteCarloClub/dabe v1.2.0-beta.1
 	github.com/Nik-U/pbc v0.0.0-20181205041846-3e516ca0c5d6
 	github.com/hyperledger/fabric v1.4.4
 )

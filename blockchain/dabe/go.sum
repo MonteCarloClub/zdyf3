@@ -24,8 +24,8 @@ github.com/Microsoft/go-winio v0.4.15-0.20200113171025-3fe6c5262873 h1:93nQ7k53G
 github.com/Microsoft/go-winio v0.4.15-0.20200113171025-3fe6c5262873/go.mod h1:tTuCMEN+UleMWgg9dVx4Hu52b1bJo+59jBh3ajtinzw=
 github.com/Microsoft/hcsshim v0.8.7 h1:ptnOoufxGSzauVTsdE+wMYnCWA301PdoN4xg5oRdZpg=
 github.com/Microsoft/hcsshim v0.8.7/go.mod h1:OHd7sQqRFrYd3RmSgbgji+ctCwkbq2wbEYNSzOYtcBQ=
-github.com/MonteCarloClub/dabe v1.2.0-alpha.1 h1:ZPoJhsbzHwE0HzcSp3PdXENXnw3XN1zP8saMgVL7Nmw=
-github.com/MonteCarloClub/dabe v1.2.0-alpha.1/go.mod h1:m87opS9OyKxrRquZZmvkcfAHRu5SGW1328fxYX6Ldvk=
+github.com/MonteCarloClub/dabe v1.2.0-beta.1 h1:IjrkjRgeqxlFCIT6EMPiijfqRYTIkoti4PYsVBrTSrA=
+github.com/MonteCarloClub/dabe v1.2.0-beta.1/go.mod h1:m87opS9OyKxrRquZZmvkcfAHRu5SGW1328fxYX6Ldvk=
 github.com/Nik-U/pbc v0.0.0-20181205041846-3e516ca0c5d6 h1:GU/vL5sj0IgGYEOIIAJ1HDI9dgqT0gJXkhXINri7Otc=
 github.com/Nik-U/pbc v0.0.0-20181205041846-3e516ca0c5d6/go.mod h1:Zt2U1SemYWNGXqS1fDiZC7u74nsJTAnWK5WVgvI8OAs=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
