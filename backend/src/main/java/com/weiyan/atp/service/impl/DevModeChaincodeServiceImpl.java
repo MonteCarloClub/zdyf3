@@ -66,6 +66,7 @@ public class DevModeChaincodeServiceImpl implements ChaincodeService {
         request.setChaincodeID(cid);
         request.setFcn(function);
         request.setArgs(JsonProviderHolder.JACKSON.toJsonString(arg));
+        System.out.println("[br][br][br] In ChaincodeResponse query()... Ready to invoke doQuery()");
         return doQuery(ccType, request);
     }
 
@@ -103,8 +104,10 @@ public class DevModeChaincodeServiceImpl implements ChaincodeService {
     }
 
     private ChaincodeResponse doQuery(ChaincodeTypeEnum ccType, QueryByChaincodeRequest request) {
+        System.out.println("[br][br][br] In doQuery()");
         try {
             Collection<ProposalResponse> responses = channel.queryByChaincode(request);
+            System.out.println("[br][br][br] In doQuery(), channel.queryByChaincode() response:" + responses);
             if (CollectionUtils.isEmpty(responses)) {
                 throw new BaseException("no response");
             }
