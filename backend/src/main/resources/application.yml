@@ -31,6 +31,7 @@ atp:
     shareData: atp/data/
     encryptData: atp/data/enc/
     cipherData: atp/data/cipher/
+    dbRecordData: atp/data/dbRecord/
 
 
 spring:
