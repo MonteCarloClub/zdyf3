@@ -151,6 +151,7 @@ public class ContentServiceImpl implements ContentService {
 
     @Override
     public EncryptionResponse encContent2(ShareContentRequest request) {
+        System.out.println("[br][br]in ContentServiceImpl.encContent2()");
         String encryptedContent = getEncryptedContent(request);
 
         //上传密文到ipfs
@@ -167,6 +168,7 @@ public class ContentServiceImpl implements ContentService {
         DABEUser user = dabeService.getUser(request.getFileName());
         Preconditions.checkNotNull(user.getName());
         try {
+            System.out.println("[br][br]in ContentServiceImpl.encContent2(): try{...}");
             String priKey = FileUtils.readFileToString(
                     new File(priKeyPath + request.getFileName()),
                     StandardCharsets.UTF_8);
@@ -271,6 +273,7 @@ public class ContentServiceImpl implements ContentService {
     }
 
     private String getEncryptedContent(ShareContentRequest request) {
+        System.out.println("[br][br]in ContentServiceImpl.getEncryptedContent()");
         EncryptContentCCRequest ccRequest = EncryptContentCCRequest.builder()
             .plainContent(request.getPlainContent())
             .policy(request.getPolicy())
@@ -280,9 +283,12 @@ public class ContentServiceImpl implements ContentService {
                 request.getPolicy(), attrService, userRepositoryService, orgRepositoryService))
             .build();
 
+//        System.out.println("[br][br]in ContentServiceImpl.getEncryptedContent(): ccRequest:" + ccRequest.toString());
         ChaincodeResponse response =
             chaincodeService.query(ChaincodeTypeEnum.DABE, "/common/encrypt", ccRequest);
+        System.out.println("[br][br]in ContentServiceImpl.getEncryptedContent(): response:" + response);
         if (response.isFailed()) {
+//            System.out.println("[br][br]in ContentServiceImpl.getEncryptedContent(): response.isFailed()");
             log.info("query for encrypt error: {}", response.getMessage());
             throw new BaseException("query for encrypt error: " + response.getMessage());
         }

@@ -305,6 +305,7 @@ public class ContentController {
 
     @PostMapping("/upload")
     public Result<Object> upload(@ModelAttribute @Validated ShareContentRequest request,HttpServletRequest req) throws IOException {
+        System.out.println("[br]in ContentController.upload()");
         MultipartFile file = request.getFile();
         if(file.isEmpty()){
             return Result.internalError("file is empty");

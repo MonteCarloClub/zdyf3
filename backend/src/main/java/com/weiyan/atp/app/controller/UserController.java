@@ -65,6 +65,9 @@ public class UserController {
     @Value("${atp.devMode.channelName}")
     private String channelName;
 
+    @Value("${atp.devMode.couchdbUrl}")
+    private String couchdbUrl;
+
 
     public UserController(UserRepositoryService userRepositoryService, AttrService attrService, DABEService dabeService) {
         this.userRepositoryService = userRepositoryService;
@@ -74,6 +77,7 @@ public class UserController {
 
     @PostMapping("/")
     public Result<Object> createUser(@RequestBody @Validated CreateUserRequest request) {
+        System.out.println("[br] in UserController.createUser()");
         ChaincodeResponse response = userRepositoryService.createUser(request);
 
         //对接
@@ -106,9 +110,23 @@ public class UserController {
 
     @PostMapping("/create")
     public Result<Object> createUserInOne(@RequestBody @Validated CreateUserInOneRequest request) {
-        // 检查user是否已经创建，若已经创建则报错，否则正常创建
+        System.out.println("[br] in UserController.createUserInOne()");
+        // [br]检查user是否已经创建，若已经创建则报错，否则正常创建
+        // TODO：[br]这个原本是检查本地文件？还是没有检查？
+        // 似乎是没有检查，也就是说已经存在的用户还能再注册一遍。但是根据代码逻辑看，已经注册的用户再次注册
+        // 原有的各种信息就都没了，相当于变成一个全新的空用户了。
+        // 这里有两个问题：
+        // 1.我现在是从区块链的数据库里检查用户是否已存在，是不是改成从本地文件里检查更好？【目前代码的逻辑是这样，
+        //      所有的用户、属性、文件等信息都保存在本地atp文件夹里。且区块链上似乎只起到记录用户信息等作用，所以
+        //      如果本地不存在，即使链上已经存在该用户，直接重新创建用户也会把链上用户覆盖】
+        // 2.如果某用户被重新创建了，链上原有的该用户请求、审批属性、上传文件等操作的记录，应该还在【吧？需要检查一下】，
+        //      这和该用户当前是空号有冲突。而且，用户重新创建后，upk,usk都会改变，原来的用户信息也无法再使用或更改了
+        //      【相当于原来的用户信息被清空了，但是他曾经的活动记录还在】
+        //      【那么似乎更好的逻辑是，每次后端启动时，都先从链上重新获取当前所有用户的信息和活动记录？这样本地文件就和
+        //      区块链上信息保持一致了】
+
 //        String url = COUCHDB_URL + "/" + DATABASE_NAME + "/" + documentId;
-        String url = "http://180.167.127.16:5984/myc_plat/ID:" + request.getUserName();
+        String url = couchdbUrl + "/myc_plat/ID:" + request.getUserName();
         System.out.println("[br]检查注册的user是否已经存在：" + url);
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpGet checkUserRequest = new HttpGet(url);
@@ -183,6 +201,7 @@ public class UserController {
 
     @PostMapping("/attr")
     public Result<Object> declareAttr(@RequestBody @Validated DeclareUserAttrRequest request) {
+        System.out.println("[br] in UserController.declareAttr()");
 
         ChaincodeResponse response = attrService.declareUserAttr2(request);
         //对接
@@ -235,6 +254,7 @@ public class UserController {
      */
     @PostMapping("/attr/apply")
     public Result<Object> applyAttr(@RequestBody @Validated ApplyUserAttrRequest request) {
+        System.out.println("[br] in UserController.applyAttr()");
         ChaincodeResponse chaincodeResponse = attrService.applyAttr2(request);
 
         return Result.okWithData(chaincodeResponse.getResult(str -> str));
@@ -245,6 +265,7 @@ public class UserController {
      */
     @PostMapping("/attr/revoke")
     public Result<Object> revokeAttr(@RequestBody @Validated RevokeUserAttrRequest request) {
+        System.out.println("[br] in UserController.revokeAttr()");
         ChaincodeResponse chaincodeResponse = attrService.revokeAttr(request);
         DABEUser user = dabeService.getUser(request.getUserName());
 
@@ -313,6 +334,7 @@ public class UserController {
     @GetMapping("/attr/apply")
     public Result<Object> queryAttrApply(String toId, Integer type, String userName,
                                          String status) {
+        System.out.println("[br] in UserController.queryAttrApply()");
         System.out.println("1111111111111111111");
         if (type != 0 && type != 1) {
             throw new BaseException("wrong type");
@@ -329,6 +351,7 @@ public class UserController {
      */
     @PostMapping("/attr/approval")
     public Result<Object> approveAttrApply(@RequestBody @Validated ApproveAttrApplyRequest request) {
+        System.out.println("[br] in UserController.approveAttrApply()");
         ChaincodeResponse response = attrService.approveAttrApply2(request);
         DABEUser applyUser = dabeService.getUser(request.getToUserName());
 //        //对接

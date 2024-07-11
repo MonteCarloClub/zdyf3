@@ -69,11 +69,13 @@ public class EncryptContentCCRequest {
     public static Map<String, Authority> buildAuthorityMap(String policy, AttrService attrService,
                                                            UserRepositoryService userService,
                                                            OrgRepositoryService orgService) {
+        System.out.println("[br][br][br] in EncryptContentCCRequest.buildAuthorityMap()");
         Matcher matcher = Pattern.compile(PATTERN).matcher(policy);
         List<String> attrNames = new ArrayList<>();
         while (matcher.find()) {
             attrNames.add(matcher.group());
         }
+        System.out.println("[br][br][br] in EncryptContentCCRequest.buildAuthorityMap(): attrNames = " + attrNames);
         Map<String, String> attr2UserOrOrg = attrNames.stream()
             .collect(Collectors.toMap(
                 attrName -> attrName,
@@ -101,11 +103,13 @@ public class EncryptContentCCRequest {
                         .apkMap(new HashMap<>())
                         .build();
                 }));
+        System.out.println("[br][br][br] in EncryptContentCCRequest.buildAuthorityMap(): authorityMap = " + authorityMap);
         attrNames.forEach(attrName -> {
             PlatAttr platAttr = attrService.queryAttrByName(attrName);
             authorityMap.get(attr2UserOrOrg.get(attrName)).getApkMap()
                 .put(attrName, APK.builder().gy(platAttr.getApk()).build());
         });
+        System.out.println("[br][br][br] in EncryptContentCCRequest.buildAuthorityMap(): authorityMap(before return) = " + authorityMap);
         return authorityMap;
     }
 }

@@ -105,6 +105,7 @@ public class DevModeChaincodeServiceImpl implements ChaincodeService {
 
     private ChaincodeResponse doQuery(ChaincodeTypeEnum ccType, QueryByChaincodeRequest request) {
         System.out.println("[br][br][br] In doQuery()");
+        System.out.println("[br][br][br] In doQuery(). QueryByChaincodeRequest is " + request);
         try {
             Collection<ProposalResponse> responses = channel.queryByChaincode(request);
             System.out.println("[br][br][br] In doQuery(), channel.queryByChaincode() response:" + responses);

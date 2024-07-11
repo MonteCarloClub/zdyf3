@@ -104,9 +104,12 @@ public class AttrServiceImpl implements AttrService {
 
     @Override
     public ChaincodeResponse declareUserAttr2(DeclareUserAttrRequest request) {
+        System.out.println("[br][br] in AttrServiceImpl.declareUserAttr2()");
+        System.out.println("[br][br] to declare: attrName = " + request.getAttrName());
         DABEUser user = dabeService.getUser(request.getFileName());
         Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
         Preconditions.checkNotNull(user.getName());
+        System.out.println("[br][br] 'user.getApkMap().get(request.getAttrName())'=" + user.getApkMap().get(request.getAttrName()));
         Preconditions.checkNotNull(user.getApkMap().get(request.getAttrName()), "no attr");
         try{
         String priKey = FileUtils.readFileToString(new File(priKeyPath + request.getFileName()),
@@ -353,6 +356,7 @@ public class AttrServiceImpl implements AttrService {
 
     @Override
     public ChaincodeResponse approveAttrApply2(ApproveAttrApplyRequest request) {
+        System.out.println("[br][br]in AttrServiceImpl.approveAttrApply2()");
         DABEUser user = dabeService.getUser(request.getFileName());
         Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
         Preconditions.checkNotNull(user.getName());
@@ -368,6 +372,7 @@ public class AttrServiceImpl implements AttrService {
             }
 
             // 如果同意需要给秘密
+            System.out.println("[br][br]]n AttrServiceImpl, approveAttrApply2(), check 'agree' field: request.agree=" + request.getAgree());
             String secret = null;
             if (request.getAgree().equals(Boolean.TRUE)) {
                 ChaincodeResponse res1 = dabeService.approveAttrApply(
@@ -376,7 +381,14 @@ public class AttrServiceImpl implements AttrService {
                     throw new BaseException("get secret failed");
                 }
                 secret = res1.getMessage();
+                System.out.println("[br][br]in AttrServiceImpl, approveAttrApply2(), print secret");
+                System.out.println("[br][br]secret:" + secret);
             }
+            // [br]TODO：这里是不是应该写到本地文件里？atp/user/{username}文件的appliedAttrMap字段
+            // TODO:不用写。是在同步属性那里写的。所以，申请了属性以后，必须点一下同步属性。
+            // TODO:假设u1申请u2的属性，u2同意，此时u2再撤销是撤销不掉的，需要u1在前端点一下同步属性，同步完了以后，u1才能用这个属性解密
+            // TODO:u2也才能撤销这个属性
+            // TODO:这个设计不太好吧。感觉实际应用的话需要改一下。。。
 
             ApproveAttrApplyCCRequest ccRequest = ApproveAttrApplyCCRequest.builder()
                     .uid(user.getName())
