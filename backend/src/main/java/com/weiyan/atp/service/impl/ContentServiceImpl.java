@@ -23,7 +23,7 @@ import com.weiyan.atp.service.ChaincodeService;
 import com.weiyan.atp.service.ContentService;
 import com.weiyan.atp.service.DABEService;
 import com.weiyan.atp.service.UserRepositoryService;
-import com.weiyan.atp.service.IpfsService;
+//import com.weiyan.atp.service.IpfsService;
 import com.weiyan.atp.utils.CCUtils;
 import com.weiyan.atp.utils.JsonProviderHolder;
 import com.weiyan.atp.app.controller.SHA256hash;
@@ -62,7 +62,7 @@ public class ContentServiceImpl implements ContentService {
     private final OrgRepositoryServiceImpl orgRepositoryService;
     private final DABEService dabeService;
 
-    private final IpfsService ipfsService;
+//    private final IpfsService ipfsService;
 
     @Value("${atp.path.privateKey}")
     private String priKeyPath;
@@ -73,14 +73,14 @@ public class ContentServiceImpl implements ContentService {
     public ContentServiceImpl(ChaincodeService chaincodeService, AttrService attrService,
                               UserRepositoryService userRepositoryService,
                               OrgRepositoryServiceImpl orgRepositoryService,
-                              IpfsServiceImpl ipfsService,
+//                              IpfsServiceImpl ipfsService,
                               DABEService dabeService) {
         this.chaincodeService = chaincodeService;
         this.attrService = attrService;
         this.userRepositoryService = userRepositoryService;
         this.orgRepositoryService = orgRepositoryService;
         this.dabeService = dabeService;
-        this.ipfsService = ipfsService;
+//        this.ipfsService = ipfsService;
     }
 
     /**

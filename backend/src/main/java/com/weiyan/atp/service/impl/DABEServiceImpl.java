@@ -51,8 +51,8 @@ public class DABEServiceImpl implements DABEService {
     @Value("${atp.path.cert}")
     private String certPath;
 
-    @Value("${atp.devMode.dpkiUrl}")
-    private String dpkiUrl;
+//    @Value("${atp.devMode.dpkiUrl}")
+//    private String dpkiUrl;
 
     public DABEServiceImpl(ChaincodeService chaincodeService) {
         this.chaincodeService = chaincodeService;
@@ -98,41 +98,44 @@ public class DABEServiceImpl implements DABEService {
         return null;
     }
 
+    // [br]这个是用证书登录系统的操作，我们不用证书，把它改成返回null
     @Override
     public DABEUser getUser3(@NotEmpty String fileName, @NotEmpty String cert) {
-        try {
-
-            String filePath1 = userPath + fileName;
-            String resource1 = FileUtils.readFileToString(new File(filePath1), StandardCharsets.UTF_8);
-            DABEUser user = JsonProviderHolder.JACKSON.parse(resource1, DABEUser.class);
-
-
-            String filePath = certPath + fileName;
-            String resource = FileUtils.readFileToString(new File(filePath), StandardCharsets.UTF_8);
-            JSONObject object = JSONObject.parseObject(resource, Feature.OrderedField);
-            String num = object.getJSONObject("certificate").getString("serialNumber");
-            String certNum = fileName + "-" + cert;
-
-            if (!num.equals(certNum)) {
-                return null;
-            }
-            // verify certificate
-            String result = verifyABSCert(dpkiUrl + "/VerifyABSCert", object.toJSONString());
-            if (!result.equals("True")) {
-                return null;
-            }
-            return user;
-        } catch (Exception e) {
-            log.warn("get user error", e);
-            return null;
-        }
+        return null;
+//        try {
+//
+//            String filePath1 = userPath + fileName;
+//            String resource1 = FileUtils.readFileToString(new File(filePath1), StandardCharsets.UTF_8);
+//            DABEUser user = JsonProviderHolder.JACKSON.parse(resource1, DABEUser.class);
+//
+//
+//            String filePath = certPath + fileName;
+//            String resource = FileUtils.readFileToString(new File(filePath), StandardCharsets.UTF_8);
+//            JSONObject object = JSONObject.parseObject(resource, Feature.OrderedField);
+//            String num = object.getJSONObject("certificate").getString("serialNumber");
+//            String certNum = fileName + "-" + cert;
+//
+//            if (!num.equals(certNum)) {
+//                return null;
+//            }
+//            // verify certificate
+//            String result = verifyABSCert(dpkiUrl + "/VerifyABSCert", object.toJSONString());
+//            if (!result.equals("True")) {
+//                return null;
+//            }
+//            return user;
+//        } catch (Exception e) {
+//            log.warn("get user error", e);
+//            return null;
+//        }
     }
 
     @Override
     public DABEUser createUser(@NotEmpty String fileName, @NotEmpty String userName) {
         ChaincodeResponse response = chaincodeService.query(
                 ChaincodeTypeEnum.DABE, "/user/create", new ArrayList<>(Collections.singletonList(userName)));
-        CCUtils.saveUser(dpkiUrl, certPath, fileName, response);
+        // [br]删掉这个saveUser，它是存证书相关内容的
+//        CCUtils.saveUser(dpkiUrl, certPath, fileName, response);
         return CCUtils.saveResponse(userPath, fileName, response);
     }
 
@@ -141,7 +144,8 @@ public class DABEServiceImpl implements DABEService {
         ChaincodeResponse response = chaincodeService.query(
                 ChaincodeTypeEnum.DABE, "/user/create", new ArrayList<>(Collections.singletonList(userName)));
 
-        CCUtils.saveUser(dpkiUrl, certPath, fileName, response);
+        // [br]删掉这个saveUser，它是存证书相关内容的
+//        CCUtils.saveUser(dpkiUrl, certPath, fileName, response);
         return CCUtils.saveResponse(userPath, fileName, userType, channel, password, false, response);
     }
 

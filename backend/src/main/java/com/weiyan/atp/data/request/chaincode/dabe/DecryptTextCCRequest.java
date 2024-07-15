@@ -30,11 +30,15 @@ public class DecryptTextCCRequest {
     private String userID;  // 发起解密请求的用户id
     @JsonProperty("AttrMap")
     private Map<String, String> attrMap;    // TODO：userID用户的属性列表？为什么是match(cipher)？密文里难道有属性？
+    @JsonProperty("SharedUser")
+    private String caseID;    // 密文的上传者。我们这里用caseId作为SharedUser
+    @JsonProperty("FileName")
+    private String fieldName;    // 密文文件名。我们这里用fieldName作为FileName
 
     @JsonIgnore
-//    private static final String PATTERN = "[a-zA-Z0-9\u4e00-\u9f5a]+:[a-zA-Z0-9\u4e00-\u9fa5]+";    // TODO：这里只支持大小写字母、数字和汉字。要支持下划线、符号等特殊字符的话，需要修改
+    private static final String PATTERN = "[a-zA-Z0-9\u4e00-\u9f5a]+:[a-zA-Z0-9\u4e00-\u9fa5]+";    // TODO：这里只支持大小写字母、数字和汉字。要支持下划线、符号等特殊字符的话，需要修改
     //private static final String PATTERN = "[a-zA-Z0-9]+:[a-zA-Z0-9]+";
-    private static final String PATTERN = "[\\w\u4e00-\u9f5a]+:[\\w\u4e00-\u9f5a]+";    // 匹配大小写字母、数字、下划线、基本汉字
+//    private static final String PATTERN = "[\\w\u4e00-\u9f5a]+:[\\w\u4e00-\u9f5a]+";    // 匹配大小写字母、数字、下划线、基本汉字 TODO:还是改回去了，和属性申请那边一致，防止出奇怪的错误
 
     public static Map<String, String> buildAttrMap(String cipherText, String userID,
                                                    DABEService dabeService) {

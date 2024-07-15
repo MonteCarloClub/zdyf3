@@ -7,6 +7,7 @@ import com.weiyan.atp.data.bean.ChaincodeResponse;
 import com.weiyan.atp.data.bean.DABEUser;
 import com.weiyan.atp.data.request.chaincode.dabe.DecryptContentCCRequest;
 import com.weiyan.atp.data.request.chaincode.dabe.DecryptTextCCRequest;
+import com.weiyan.atp.data.request.chaincode.dabe.EncryptContentCCRequest;
 import com.weiyan.atp.data.request.chaincode.dabe.EncryptTextCCRequest;
 import com.weiyan.atp.data.request.chaincode.plat.ShareContentCCRequest;
 import com.weiyan.atp.data.request.web.DecryptTextRequest;
@@ -42,7 +43,7 @@ public class TextServiceImpl implements TextService {
     private final OrgRepositoryServiceImpl orgRepositoryService;
     private final DABEService dabeService;
 
-    private final IpfsService ipfsService;
+//    private final IpfsService ipfsService;
 
     @Value("${atp.path.privateKey}")
     private String priKeyPath;
@@ -50,14 +51,14 @@ public class TextServiceImpl implements TextService {
     public TextServiceImpl(ChaincodeService chaincodeService, AttrService attrService,
                               UserRepositoryService userRepositoryService,
                               OrgRepositoryServiceImpl orgRepositoryService,
-                              IpfsServiceImpl ipfsService,
+//                              IpfsServiceImpl ipfsService,
                               DABEService dabeService) {
         this.chaincodeService = chaincodeService;
         this.attrService = attrService;
         this.userRepositoryService = userRepositoryService;
         this.orgRepositoryService = orgRepositoryService;
         this.dabeService = dabeService;
-        this.ipfsService = ipfsService;
+//        this.ipfsService = ipfsService;
     }
 
     @Override
@@ -68,13 +69,16 @@ public class TextServiceImpl implements TextService {
                 .plainText(request.getText())
                 .policy(request.getPolicy())
                 .userID(request.getUserID())
+                .caseID(request.getCaseID())
+                .fieldName(request.getText())
                 .authorityMap(EncryptTextCCRequest.buildAuthorityMap(
                         request.getPolicy(), attrService, userRepositoryService, orgRepositoryService))
                 .build();
+        log.info("in TextServiceImpl.encrypt(): EncryptTextCCRequest: " + ccRequest);
         ChaincodeResponse ccResponse =
                 chaincodeService.query(ChaincodeTypeEnum.DABE, "/common/encrypt", ccRequest);
         if (ccResponse.isFailed()) {
-            log.info("TextService: [chaincode DABE] query for encrypt error: {}", ccResponse.getMessage());
+            log.error("TextService: [chaincode DABE] query for encrypt error: {}", ccResponse.getMessage());
             throw new BaseException("TextService: [chaincode DABE] query for encrypt error: " + ccResponse.getMessage());
         }
 
@@ -90,18 +94,26 @@ public class TextServiceImpl implements TextService {
         DecryptTextCCRequest ccRequest = DecryptTextCCRequest.builder()
                 .cipherText(request.getCipherText())
                 .userID(request.getUserID())
+                .caseID(request.getCaseID())
+                .fieldName(request.getFieldName())
                 .attrMap(DecryptTextCCRequest.buildAttrMap(
                         request.getCipherText(), request.getUserID(), dabeService))
                 .build();
+        log.info("in TextServiceImpl.decrypt(): DecryptTextCCRequest: " + ccRequest);
         ChaincodeResponse ccResponse =
                 chaincodeService.query(ChaincodeTypeEnum.DABE, "/common/decrypt", ccRequest);
         if (ccResponse.isFailed()) {
-            log.info("TextService: [chaincode DABE] query for decrypt error: {}", ccResponse.getMessage());
-            throw new BaseException("TextService: [chaincode DABE] query for decrypt error: " + ccResponse.getMessage());
+            if (!ccResponse.getMessage().startsWith("User attrs not satisfy the policy:")) {
+                log.error("TextService: [chaincode DABE] query for decrypt error: {}", ccResponse.getMessage());
+                throw new BaseException("TextService: [chaincode DABE] query for decrypt error: " + ccResponse.getMessage());
+            } else {
+                return DecryptTextResponse.builder().success(false).build();
+            }
         }
 
         return DecryptTextResponse.builder()
-                .plainText(ccResponse.getMessage())
+//                .plainText(ccResponse.getMessage())
+                .success(true)
                 .build();
     }
 }

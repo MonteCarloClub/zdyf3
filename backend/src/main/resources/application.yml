@@ -10,18 +10,20 @@ atp:
 #    peerUrl: grpc://192.168.31.128:7051
 #    peerUrl: grpc://8.133.190.119:7051
 #    peerUrl: grpc://127.0.0.1:7051
-    peerUrl: grpc://10.176.40.29:7051
+#    peerUrl: grpc://10.176.40.29:7051
+    peerUrl: grpc://10.176.40.69:7051
 #    peerUrl: grpc://10.177.88.201:7051
 #    ordererUrl: grpc://192.168.31.128:7050
 #    ordererUrl: grpc://8.133.190.119:7050
-    ordererUrl: grpc://10.176.40.29:7050
+#    ordererUrl: grpc://10.176.40.29:7050
+    ordererUrl: grpc://10.176.40.69:7050
 #    ordererUrl: grpc://10.177.88.201:7050
     channelName: myc
  #   baseUrl: http://101.201.49.180:8000
   #  baseUrl: http://10.176.40.27:8000
 
   #  dpkiUrl: http://10.131.131.125/dpki
-    dpkiUrl: http://10.176.40.27/dpki
+#    dpkiUrl: http://10.176.40.27/dpki  #【br:暂时注释掉】
 
   path:
     dabeUser: atp/user/
@@ -50,8 +52,8 @@ server:
   servlet:
     context-path: /abe
 
-
-ipfs:
-  config:
-    multi-addr: /ip4/127.0.0.1/tcp/5001
+#【br:暂时注释掉，下面3行】
+#ipfs:
+#  config:
+#    multi-addr: /ip4/127.0.0.1/tcp/5001
 

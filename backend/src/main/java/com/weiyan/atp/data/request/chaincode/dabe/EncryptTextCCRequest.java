@@ -33,6 +33,9 @@ import java.util.stream.Collectors;
  * @date 2024-06-20
  */
 // 参照EncryptContentCCRequest写的。去掉了fileName（因为我们不需要上传文件，没有文件名），把userName改成了userID，因为是请求者的用户id
+// 检查了docker里的dabe合约代码，跟这个zdyf文件夹里的不一样！那个dabe的encrypt函数，也需要FileName和UserName的，
+// 其中FileName是密文文件名（按照系统原本的设计，就是对应上传的文件的文件名）；UserName是用户名，即上传文件的用户
+// 在我们华山医院项目的加密密文场景中，我们就改为，FileName是数据库的病例CaseID，UserName是该病例数据上传者的UserID
 @Data
 @Builder
 @NoArgsConstructor
@@ -48,6 +51,11 @@ public class EncryptTextCCRequest {
     @JsonProperty("UserID")
     private String userID;   // 发起请求的用户的id
 
+    @JsonProperty("UserName")
+    private String caseID;  // 病例id
+    @JsonProperty("FileName")
+    private String fieldName;    // 我们目前的设计里，就是把字段名作为明文进行加密，所以这个fieldName和plainText是一样的
+
     @Data
     @Builder
     @NoArgsConstructor
@@ -60,7 +68,8 @@ public class EncryptTextCCRequest {
     }
 
     @JsonIgnore
-    private static final String PATTERN = "[\\w\u4e00-\u9f5a]+:[\\w\u4e00-\u9f5a]+";    // 匹配大小写字母、数字、下划线、基本汉字
+    private static final String PATTERN = "[a-zA-Z0-9\u4e00-\u9f5a]+:[a-zA-Z0-9\u4e00-\u9fa5]+";
+//    private static final String PATTERN = "[\\w\u4e00-\u9f5a]+:[\\w\u4e00-\u9f5a]+";    // 匹配大小写字母、数字、下划线、基本汉字
     //private static final String PATTERN = "[a-zA-Z0-9]+:[a-zA-Z0-9]+";
 
     public static Map<String, Authority> buildAuthorityMap(String policy, AttrService attrService,

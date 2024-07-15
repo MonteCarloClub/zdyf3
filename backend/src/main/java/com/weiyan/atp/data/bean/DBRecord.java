@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +41,12 @@ public class DBRecord {
     }
 
     public DBRecord(String caseID, Map<String, String> policies, String ownerID) {
+        System.out.println("[br]:in DBRecord building function.");
+        System.out.println("[br]:in DBRecord building function. caseID: "+caseID);
+        System.out.println("[br]:in DBRecord building function. policies: "+policies);
+        System.out.println("[br]:in DBRecord building function. ownerID: "+ownerID);
         this.caseID = caseID;
+        this.fields = new ArrayList<>();
         for (String key : policies.keySet()) {
             DBField dbField = DBField.builder()
                     .name(key)
@@ -49,6 +55,7 @@ public class DBRecord {
             this.fields.add(dbField);
         }
         this.ownerID = ownerID;
+        System.out.println("[br]:in DBRecord building function. this DBRecord:" + this.toString());
     }
 
 }

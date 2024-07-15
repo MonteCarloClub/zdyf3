@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.weiyan.atp.data.bean.DBRecord;
 import com.weiyan.atp.data.bean.Result;
-import com.weiyan.atp.data.request.web.DecryptTextRequest;
-import com.weiyan.atp.data.request.web.EncryptTextRequest;
-import com.weiyan.atp.data.request.web.ShareContentRequest;
+import com.weiyan.atp.data.request.web.*;
 import com.weiyan.atp.data.response.intergration.DecryptTextResponse;
 import com.weiyan.atp.data.response.intergration.EncryptTextResponse;
 import com.weiyan.atp.data.response.intergration.EncryptionResponse;
@@ -17,10 +15,8 @@ import com.weiyan.atp.service.TextService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -93,13 +89,17 @@ public class DBRecordController {
 
     @PostMapping("/add")
 //    public void addEntry(String caseID, String[] fields, String[] policies) throws IOException {
-    public Result<Object> addDBRecord(String caseID, Map<String, String> policies, String userID) throws IOException {
+    public Result<Object> addDBRecord(@RequestBody @Validated AddDBRecordRequest webRequest) throws IOException {
+        log.info("[in DBRecordController.addDBRecord()]");
+        log.info("webRequest: {}", webRequest);
         // userID是向系统中添加这条病例数据的用户（一般是系统管理员？）
-        DBRecord dbRecord = new DBRecord(caseID, policies, userID);
+        DBRecord dbRecord = new DBRecord(webRequest.getCaseID(), webRequest.getPolicies(), webRequest.getUserID());
+        System.out.println("[br] "+dbRecord);
         // 对case的每个字段(field)用其策略加密，密文存储到dbRecord.field.ct里
         for (DBRecord.DBField field : dbRecord.getFields()) {
             // 构建EncryptMessageCCRequest, 提交到链上进行加密，然后得到密文放到field.cipherText里
-            EncryptTextRequest request = new EncryptTextRequest(field.getName(), field.getPolicy(), userID);
+            System.out.println("[br],in for："+field.getName());
+            EncryptTextRequest request = new EncryptTextRequest(field.getName(), field.getPolicy(), webRequest.getUserID(), webRequest.getCaseID());
             EncryptTextResponse response = textService.encrypt(request);
             field.setCipherText(response.getCipherText());
         }
@@ -112,7 +112,7 @@ public class DBRecordController {
             String json = mapper.writeValueAsString(dbRecord);
             log.info("addDBRecord: converted dbRecord to json: {}", json);
             // json写入文件
-            File file = new File(new File(dbRecordDataPath).getAbsolutePath() +"/"+ caseID);
+            File file = new File(new File(dbRecordDataPath).getAbsolutePath() +"/"+ webRequest.getCaseID());
             FileUtils.writeStringToFile(file, json, StandardCharsets.UTF_8);    // 文件不存在时会自动创建
             log.info("addDBRecord: write record(json) to file: {}", file.getPath());
         } catch (IOException e) {
@@ -124,9 +124,9 @@ public class DBRecordController {
 
     @PostMapping("/query")
 //    public List<String> queryDBRecord(String userID, String caseID) throws IOException {
-    public Result<Object> queryDBRecord(String userID, String caseID) throws IOException {
+    public Result<Object> queryDBRecord(@RequestBody @Validated QueryDBRecordRequest webRequest) throws IOException {
         // 从文件名为caseID的文件中读出json内容，对每一个字段(field)的密文进行解密。返回解密成功的那些字段
-        File file = new File(new File(dbRecordDataPath).getAbsolutePath() +"/"+ caseID);
+        File file = new File(new File(dbRecordDataPath).getAbsolutePath() +"/"+ webRequest.getCaseID());
 
         ObjectMapper mapper = new ObjectMapper();
         DBRecord dbRecord;
@@ -140,13 +140,14 @@ public class DBRecordController {
         List<String> accessibleFields = new ArrayList<>();
         for (DBRecord.DBField field : dbRecord.getFields()) {
             // 逐个解密，把能够解密的字段返回
-            DecryptTextRequest request = new DecryptTextRequest(field.getCipherText(), userID);
+            DecryptTextRequest request = new DecryptTextRequest(field.getCipherText(), webRequest.getUserID(), webRequest.getCaseID(), field.getName());
             DecryptTextResponse response = textService.decrypt(request);
-            if (response.getPlainText().equals(field.getName())) {
+            if (response.isSuccess()) {
                 accessibleFields.add(field.getName());
             }
         }
 
         return Result.okWithData(accessibleFields);
+//        return accessibleFields;
     }
 }
