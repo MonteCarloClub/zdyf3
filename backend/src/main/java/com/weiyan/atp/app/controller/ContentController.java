@@ -16,6 +16,7 @@ import com.weiyan.atp.utils.JsonProviderHolder;
 import com.weiyan.atp.utils.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -352,12 +353,19 @@ public class ContentController {
         if (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdir();
         }
-        FileUtils.copyInputStreamToFile(file.getInputStream(), dest);
-        //file.transferTo(dest);
-        //FileCopyUtils.copy(file.getInputStream(),new FileOutputStream(dest));
-        String data = FileUtils.readFileToString(
-                dest,
-                StandardCharsets.UTF_8);
+
+        // [br]原来的代码：先把文件写到本地，再读进来，送到链上加密
+//        FileUtils.copyInputStreamToFile(file.getInputStream(), dest);
+//        //file.transferTo(dest);
+//        //FileCopyUtils.copy(file.getInputStream(),new FileOutputStream(dest));
+//        String data = FileUtils.readFileToString(
+//                dest,
+//                StandardCharsets.UTF_8);
+
+        // [br]改成直接读文件成data。写到本地的操作，要等到所有逻辑都完成，函数返回前，最后做
+        String data = IOUtils.toString(file.getInputStream(), StandardCharsets.UTF_8);
+
+
         request.setPlainContent(data);      // [br]这里的data是读取的完整的上传文件
         request.setSharedFileName(filename);
         System.out.println("before encContent2");
@@ -469,6 +477,9 @@ public class ContentController {
 //            revokeUserAttr(request.getFileName(),"位置异常");
 //            attrService.syncSuccessAttrApply(request.getFileName());
 //        }
+        // [br]最后再把文件写到本地
+        FileUtils.copyInputStreamToFile(file.getInputStream(), dest);
+
         log.info("记录完成！！");
 //        return Result.success();
         // [br]按照蓝象的要求，修改接口，额外返回cipher数据

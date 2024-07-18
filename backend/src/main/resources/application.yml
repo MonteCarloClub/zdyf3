@@ -26,6 +26,7 @@ atp:
     encryptData: atp/data/enc/
     cipherData: atp/data/cipher/
 
+  # TODO:注意，这个pattern如果修改，还要在EncryptContentCCRequest, DecryptContentCCRequest, ShareContentRequest里同时改！
   pattern:
     name: "[a-zA-Z0-9\u4e00-\u9fa5]+"
     attr: "[a-zA-Z0-9\u4e00-\u9f5a]+:[a-zA-Z0-9\u4e00-\u9fa5]+"
