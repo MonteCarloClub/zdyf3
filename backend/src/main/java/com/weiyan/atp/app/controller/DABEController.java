@@ -6,7 +6,12 @@ import com.weiyan.atp.service.DABEService;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.w3c.dom.Attr;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author : 魏延thor
@@ -18,6 +23,9 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin//支持跨域访问
 public class DABEController {
     private final DABEService dabeService;
+
+    @Value("${atp.pattern.attr}")
+    private String AttrPattern;
 
     public DABEController(DABEService dabeService) {
         this.dabeService = dabeService;
@@ -69,6 +77,16 @@ public class DABEController {
 
     @PostMapping("/user/attr")
     public Result<DABEUser> declareAttr(String fileName, String attrName) {
+        // [br]增加：属性名要符合apt.pattern.attr的格式
+        System.out.println("[br]in DABEController.declareAttr(): AttrPattern = " + AttrPattern);
+        if (!Pattern.matches(AttrPattern, attrName)) {
+            return Result.internalError("属性名不合法："+attrName+"（应该由大小写字母、数字或汉字组成）");
+        }
+        // [br]增加：检查属性名中不能出现"AND"和"OR"，否则加解密会出问题
+        Matcher matcher = Pattern.compile("(AND)|(OR)").matcher(attrName);
+        if (matcher.find()) {
+            return Result.internalError("属性名不能包含\"AND\"和\"OR\"字样");
+        }
         return handleUser(dabeService.declareAttr(fileName, attrName));
     }
 

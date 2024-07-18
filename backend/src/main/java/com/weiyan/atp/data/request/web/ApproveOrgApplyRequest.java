@@ -1,5 +1,6 @@
 package com.weiyan.atp.data.request.web;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotEmpty;
  * @since : 2020/6/16
  * 同意加入组织/声明组织属性
  */
+@Builder
 @Data
 public class ApproveOrgApplyRequest {
     @NotEmpty

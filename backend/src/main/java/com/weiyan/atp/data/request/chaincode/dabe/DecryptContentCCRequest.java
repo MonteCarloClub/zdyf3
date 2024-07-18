@@ -6,6 +6,7 @@ import com.weiyan.atp.data.bean.DABEUser;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +33,9 @@ public class DecryptContentCCRequest {
     @JsonProperty("SharedUser")
     private String sharedUser;
 
-    @JsonIgnore
+//    @JsonIgnore
+//    @Value("${atp.pattern.attr}")
+//    private String PATTERN;
     private static final String PATTERN = "[a-zA-Z0-9\u4e00-\u9f5a]+:[a-zA-Z0-9\u4e00-\u9fa5]+";
     //private static final String PATTERN = "[a-zA-Z0-9]+:[a-zA-Z0-9]+";
 

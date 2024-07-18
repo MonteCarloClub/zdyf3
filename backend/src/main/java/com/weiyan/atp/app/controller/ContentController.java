@@ -16,6 +16,7 @@ import com.weiyan.atp.utils.JsonProviderHolder;
 import com.weiyan.atp.utils.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -41,8 +42,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.*;
 import java.util.Date;
 
 /**
@@ -223,7 +223,9 @@ public class ContentController {
 //            e.printStackTrace();
 //        }
         if(response.isFailed()){
-            throw new BaseException("decryption error: " + response.getMessage());
+            return Result.failWithMessage(404,"test error: " + response.getMessage());
+
+//            throw new BaseException("decryption error: " + response.getMessage());
         }
 
 //        if(cnt>=5){
@@ -273,6 +275,18 @@ public class ContentController {
 
     @PostMapping("/upload")
     public Result<Object> upload(@ModelAttribute @Validated ShareContentRequest request,HttpServletRequest req) throws IOException {
+        System.out.println("[br]in ContentController.upload()");
+        // [br]增加检查：request.policy必须是((A AND B) OR C)类似的形式，即必须有括号
+        // 否则，现在的设计可以成功上传，但是不能成功解密。这就不对了
+        // 在ShareContentRequest这个对象里实现
+        Result<Object> result = request.policyIsValid();
+        System.out.println("===================================\n[br]in /abe/content/list, request.policyIsValid():" + result.toString() + "\n===================================");
+        if (result.getCode() != 200) {
+            // 策略表达式不合法，直接返回
+            System.out.println("[br]in ContentController.upload(), policy is not valid: " + result.getMessage());
+//            return Result.internalError("policy is not valid");
+            return result;
+        }
         MultipartFile file = request.getFile();
         if(file.isEmpty()){
             return Result.internalError("file is empty");
@@ -297,20 +311,39 @@ public class ContentController {
 
         //根据相对路径获取绝对路径
         File dest = new File(new File(shareDataPath).getAbsolutePath()+ "/" + request.getFileName()+"/"+filename);
+        // [br]增加：检查是否已经有同名文件，同名文件不允许上传，必须不同名【因为同名文件只保存一份，永远都是以最新上传的策略为准的】
+        // 方法是，检查本地文件atp/data/enc/{username}/{filename}文件是否存在
+//        File encFile = new File(encryptDataPath + request.getFileName() + "/" + request.getSharedFileName());
+//        System.out.println("[br]in ContentController.upload(): encFile.getAbsolutePath() = " + encFile.getAbsolutePath());
+        System.out.println("[br]in ContentController.upload(): dest.getAbsolutePath() = " + dest.getAbsolutePath());
+        if (dest.exists()) {
+            // 说明该文件的encrypt文件（和cipher那里的密文还不太一样，encrypt里好像只是一些加密的基本信息C0,C1s之类的，没有包含文件加密的完整密文，cipher里则含有完整的密文信息）
+            // 已经存在，说明该用户已经上传过该文件
+            System.out.println("[br] in ContentController.upload(): 用户" + request.getFileName() + "已经上传过文件" + request.getSharedFileName());
+            return Result.internalError("您已经上传过该文件，请勿重复上传");
+        }
+        // [br]增加到此结束，下面是原有代码
         System.out.println(dest.getPath());
         if (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdir();
         }
-        FileUtils.copyInputStreamToFile(file.getInputStream(), dest);
-        //file.transferTo(dest);
-        //FileCopyUtils.copy(file.getInputStream(),new FileOutputStream(dest));
-        String data = FileUtils.readFileToString(
-                dest,
-                StandardCharsets.UTF_8);
-        request.setPlainContent(data);
+
+
+        // [br]原来的代码：先把文件写到本地，再读进来，送到链上加密
+//        FileUtils.copyInputStreamToFile(file.getInputStream(), dest);
+//        //file.transferTo(dest);
+//        //FileCopyUtils.copy(file.getInputStream(),new FileOutputStream(dest));
+//        String data = FileUtils.readFileToString(
+//                dest,
+//                StandardCharsets.UTF_8);
+
+        // [br]改成直接读文件成data。写到本地的操作，要等到所有逻辑都完成，函数返回前，最后做
+        String data = IOUtils.toString(file.getInputStream(), StandardCharsets.UTF_8);
+
+        request.setPlainContent(data);      // [br]这里的data是读取的完整的上传文件
         request.setSharedFileName(filename);
         System.out.println("before encContent2");
-        EncryptionResponse encryptionResponse = contentService.encContent2(request);
+        EncryptionResponse encryptionResponse = contentService.encContent2(request);    // [br]此时，返回的encryptionResponse的.cipher，是对上传的完整文件的加密后完整的密文的简化版本（可见contentService.encContent()函数内的注释，那里解释了为什么是简化版本）
         System.out.println("before write");
         FileUtils.write(new File(encryptDataPath +request.getFileName()+"/"+ filename), encryptionResponse.getCipher(),
                 StandardCharsets.UTF_8);
@@ -393,10 +426,14 @@ public class ContentController {
 //            e.printStackTrace();
 //        }
 
-        if(request.getTags().get(2).equals("test")){
-            revokeUserAttr(request.getFileName(),"位置异常");
-            attrService.syncSuccessAttrApply(request.getFileName());
-        }
+//        if(request.getTags().get(2).equals("test")){
+//            revokeUserAttr(request.getFileName(),"位置异常");
+//            attrService.syncSuccessAttrApply(request.getFileName());
+//        }
+
+        // [br]最后再把文件写到本地
+        FileUtils.copyInputStreamToFile(file.getInputStream(), dest);
+
         log.info("记录完成！！");
         return Result.success();
     }
@@ -427,6 +464,9 @@ public class ContentController {
     //下载密文
     @GetMapping("/cipher")
     public  void cipher(String userName,String fileName, String sharedUser,HttpServletRequest request, HttpServletResponse response) throws Exception {
+        // [br]这里是用contentService.getCipher获得密文。它调用的是dabe合约的Common.go里的getCipher函数。这个函数是从dabe的本地文件里直接读出来密文返回的
+        // [br]那么，dabe的本地密文是何时保存进去的？为什么它比plat那边返回的cipher内容更多？
+        // [br]在upload()函数里。调用了contentService.encContent2()，这个函数里又调用了getEncryptedContent()，它调用了dabe的/common/encrypt
         ChaincodeResponse resp = contentService.getCipher(userName, fileName, sharedUser);
         if(resp.isFailed()){
             throw new BaseException("download cipher error: " + resp.getMessage());

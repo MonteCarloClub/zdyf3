@@ -41,4 +41,7 @@ public class Result<T> {
     public static <T> Result<T> internalError(String message) {
         return failWithMessage(500, message);
     }
+    public static <T> Result<T> ResultWithMessage(String message) {
+        return failWithMessage(400, message);
+    }
 }

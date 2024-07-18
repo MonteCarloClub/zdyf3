@@ -70,6 +70,12 @@ public class AttrServiceImpl implements AttrService {
         ChaincodeResponse response = chaincodeService.query(ChaincodeTypeEnum.TRUST_PLATFORM,
             "/common/getAttr", new ArrayList<>(Collections.singletonList(attrName)));
         if (response.isFailed()) {
+            System.out.println("[br]in AttrServiceImpl.queryAttrByName(): " + "response is failed ");
+            throw new BaseException("no attr exists for " + attrName);
+        }
+        if (response.getMessage().isEmpty()) {
+            // 说明没查到这个属性？
+            System.out.println("[br]in AttrServiceImpl.queryAttrByName(): " + "response.getMessage() is empty");
             throw new BaseException("no attr exists for " + attrName);
         }
         return JsonProviderHolder.JACKSON.parse(response.getMessage(), PlatAttr.class);
@@ -104,9 +110,12 @@ public class AttrServiceImpl implements AttrService {
 
     @Override
     public ChaincodeResponse declareUserAttr2(DeclareUserAttrRequest request) {
+        System.out.println("[br][br] in AttrServiceImpl.declareUserAttr2()");
+        System.out.println("[br][br] to declare: attrName = " + request.getAttrName());
         DABEUser user = dabeService.getUser(request.getFileName());
         Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
         Preconditions.checkNotNull(user.getName());
+        System.out.println("[br][br] 'user.getApkMap().get(request.getAttrName())'=" + user.getApkMap().get(request.getAttrName()));
         Preconditions.checkNotNull(user.getApkMap().get(request.getAttrName()), "no attr");
         try{
         String priKey = FileUtils.readFileToString(new File(priKeyPath + request.getFileName()),
@@ -353,6 +362,7 @@ public class AttrServiceImpl implements AttrService {
 
     @Override
     public ChaincodeResponse approveAttrApply2(ApproveAttrApplyRequest request) {
+        System.out.println("[br][br]in AttrServiceImpl.approveAttrApply2()");
         DABEUser user = dabeService.getUser(request.getFileName());
         Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
         Preconditions.checkNotNull(user.getName());
@@ -368,6 +378,7 @@ public class AttrServiceImpl implements AttrService {
             }
 
             // 如果同意需要给秘密
+            System.out.println("[br][br]]n AttrServiceImpl, approveAttrApply2(), check 'agree' field: request.agree=" + request.getAgree());
             String secret = null;
             if (request.getAgree().equals(Boolean.TRUE)) {
                 ChaincodeResponse res1 = dabeService.approveAttrApply(
@@ -376,6 +387,8 @@ public class AttrServiceImpl implements AttrService {
                     throw new BaseException("get secret failed");
                 }
                 secret = res1.getMessage();
+                System.out.println("[br][br]in AttrServiceImpl, approveAttrApply2(), print secret");
+                System.out.println("[br][br]secret:" + secret);
             }
 
             ApproveAttrApplyCCRequest ccRequest = ApproveAttrApplyCCRequest.builder()

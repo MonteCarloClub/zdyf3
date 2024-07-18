@@ -141,11 +141,13 @@ public class DABEServiceImpl implements DABEService {
 
     @Override
     public DABEUser createUser(@NotEmpty String fileName, @NotEmpty String userName, @NotEmpty String userType, @NotEmpty String channel, @NotEmpty String password) {
+        System.out.println("[br][br] In createUser method. invoke ChaincodeResponse response=...");
         ChaincodeResponse response = chaincodeService.query(
                 ChaincodeTypeEnum.DABE, "/user/create", new ArrayList<>(Collections.singletonList(userName)));
 
         // [br]删掉这个saveUser，它是存证书相关内容的
 //        CCUtils.saveUser(dpkiUrl, certPath, fileName, response);
+        System.out.println("[br][br] In createUser method. got chaincode response: {}" + response);
         return CCUtils.saveResponse(userPath, fileName, userType, channel, password, false, response);
     }
 

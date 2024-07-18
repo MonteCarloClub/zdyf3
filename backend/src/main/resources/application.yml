@@ -7,23 +7,13 @@ atp:
   devMode:
     peerName: peer
     ordererName: orderer
-#    peerUrl: grpc://192.168.31.128:7051
-#    peerUrl: grpc://8.133.190.119:7051
-#    peerUrl: grpc://127.0.0.1:7051
-#    peerUrl: grpc://10.176.40.29:7051
-    peerUrl: grpc://10.176.40.69:7051
-#    peerUrl: grpc://10.177.88.201:7051
-#    ordererUrl: grpc://192.168.31.128:7050
-#    ordererUrl: grpc://8.133.190.119:7050
-#    ordererUrl: grpc://10.176.40.29:7050
-    ordererUrl: grpc://10.176.40.69:7050
-#    ordererUrl: grpc://10.177.88.201:7050
+    peerUrl: grpc://10.176.40.68:7051
+    ordererUrl: grpc://10.176.40.68:7050
     channelName: myc
- #   baseUrl: http://101.201.49.180:8000
-  #  baseUrl: http://10.176.40.27:8000
+#    baseUrl: http://47.94.164.138:8000 # 和华科对接
 
-  #  dpkiUrl: http://10.131.131.125/dpki
-#    dpkiUrl: http://10.176.40.27/dpki  #【br:暂时注释掉】
+#    dpkiUrl: http://10.176.40.47/dpki  # 课题二(dpki)的
+    couchdbUrl: http://10.176.40.68:5984
 
   path:
     dabeUser: atp/user/
@@ -35,6 +25,12 @@ atp:
     cipherData: atp/data/cipher/
     dbRecordData: atp/data/dbRecord/
 
+  # TODO:注意，这个pattern如果修改，还要在EncryptContentCCRequest, DecryptContentCCRequest, ShareContentRequest里同时改！
+  pattern:
+    name: "[a-zA-Z0-9\u4e00-\u9fa5]+"
+    attr: "[a-zA-Z0-9\u4e00-\u9f5a]+:[a-zA-Z0-9\u4e00-\u9fa5]+"
+
+
 
 spring:
   servlet:
@@ -43,8 +39,8 @@ spring:
       max-request-size: -1
 
   datasource:
-    url: jdbc:mysql://192.168.3.78:3306/zdyf?serverTimezone=GMT&useSSL=false
 #    url: jdbc:mysql://192.168.3.78:3306/zdyf?serverTimezone=GMT&useSSL=false
+    url: jdbc:mysql://10.176.40.68:3306/zdyf?serverTimezone=GMT&useSSL=false
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
