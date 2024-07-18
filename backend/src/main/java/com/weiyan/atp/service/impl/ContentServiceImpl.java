@@ -152,7 +152,9 @@ public class ContentServiceImpl implements ContentService {
     @Override
     public EncryptionResponse encContent2(ShareContentRequest request) {
         System.out.println("[br][br]in ContentServiceImpl.encContent2()");
-        String encryptedContent = getEncryptedContent(request);
+        String encryptedContent = getEncryptedContent(request);     // [br]getEncryptedContent函数，是调用dabe的/common/encrypt对上传的文件（request内有文件的全部数据）完整加密，
+            // 得到的完整密文被dabe合约保存在dabe的本地文件里，而返回给调用者的（dabe的/common/encrypt函数的返回值）只有简化后的密文【详见dabe合约的Common.go里encrypt()函数】
+            // 我理解这个简化的密文，应该就是给了一些密文的配置信息（C0,C1s,C2s,C3s,Policy），没有具体的密文信息(CipherText)
 
         //上传密文到ipfs
 //        byte[] data = encryptedContent.getBytes();
@@ -175,7 +177,7 @@ public class ContentServiceImpl implements ContentService {
         ShareContentCCRequest shareContentCCRequest = ShareContentCCRequest.builder()
                 .uid(user.getName())
                 .tags(request.getTags())
-               // .content(encryptedContent)
+               // .content(encryptedContent)    //[br]这里把content注释掉了，那么传到plat合约上/common/shareMessage函数的content内容就是空串。也就是说，plat只是记录了xx用户传了名为xx的文件，对文件内容(content，不管是明文还是密文)没有任何记录
                 .timestamp(new Date().toString())
                 .fileName(request.getSharedFileName())
                 .ip(request.getIp())

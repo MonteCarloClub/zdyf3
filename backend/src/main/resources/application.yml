@@ -9,13 +9,13 @@ atp:
     ordererName: orderer
 #    peerUrl: grpc://180.167.127.16:7051
 #    ordererUrl: grpc://180.167.127.16:7050
-    peerUrl: grpc://10.176.40.70:7051
-    ordererUrl: grpc://10.176.40.70:7050
+    peerUrl: grpc://10.176.40.69:7051
+    ordererUrl: grpc://10.176.40.69:7050
     channelName: myc
 #    baseUrl: http://47.94.164.138:8000 # 和华科对接
 
 #    dpkiUrl: http://10.176.40.47/dpki  # 课题二(dpki)的
-    couchdbUrl: http://10.176.40.70:5984
+    couchdbUrl: http://10.176.40.69:5984
 
   path:
     dabeUser: atp/user/
@@ -25,6 +25,11 @@ atp:
     shareData: atp/data/
     encryptData: atp/data/enc/
     cipherData: atp/data/cipher/
+
+  pattern:
+    name: "[a-zA-Z0-9\u4e00-\u9fa5]+"
+    attr: "[a-zA-Z0-9\u4e00-\u9f5a]+:[a-zA-Z0-9\u4e00-\u9fa5]+"
+
 
 
 spring:
@@ -44,7 +49,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     # 15432 是gbase的默认端口
 #    url: jdbc:postgresql://180.167.127.16:15432/postgres
-    url: jdbc:postgresql://10.176.40.70:15432/postgres
+    url: jdbc:postgresql://10.176.40.69:15432/postgres
     username: gaussdb
     password: Root@123
 

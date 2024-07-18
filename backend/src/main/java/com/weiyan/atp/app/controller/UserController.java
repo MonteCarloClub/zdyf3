@@ -1,6 +1,8 @@
 package com.weiyan.atp.app.controller;
 
 import com.alibaba.fastjson.parser.Feature;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.weiyan.atp.constant.AttrApplyStatusEnum;
 import com.weiyan.atp.constant.BaseException;
 import com.weiyan.atp.constant.ChaincodeTypeEnum;
@@ -38,6 +40,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -68,6 +72,8 @@ public class UserController {
     @Value("${atp.devMode.couchdbUrl}")
     private String couchdbUrl;
 
+    @Value("${atp.pattern.name}")
+    private String NamePattern;
 
     public UserController(UserRepositoryService userRepositoryService, AttrService attrService, DABEService dabeService) {
         this.userRepositoryService = userRepositoryService;
@@ -78,6 +84,16 @@ public class UserController {
     @PostMapping("/")
     public Result<Object> createUser(@RequestBody @Validated CreateUserRequest request) {
         System.out.println("[br] in UserController.createUser()");
+        System.out.println("[br] in UserController.createUser(): NamePattern: " + NamePattern);
+        // [br]增加：用户名要符合apt.pattern.name的格式
+        if (!Pattern.matches(NamePattern, request.getFileName())) {
+            return Result.internalError("用户名不合法："+request.getFileName()+"（应该由大小写字母、数字或汉字组成）");
+        }
+        // [br]增加：检查用户名中不能出现"AND"和"OR"，否则加解密会出问题
+        Matcher matcher = Pattern.compile("(AND)|(OR)").matcher(request.getFileName());
+        if (matcher.find()) {
+            return Result.internalError("用户名不能包含\"AND\"和\"OR\"字样");
+        }
         ChaincodeResponse response = userRepositoryService.createUser(request);
 
         //对接
@@ -111,20 +127,18 @@ public class UserController {
     @PostMapping("/create")
     public Result<Object> createUserInOne(@RequestBody @Validated CreateUserInOneRequest request) {
         System.out.println("[br] in UserController.createUserInOne()");
-        // [br]检查user是否已经创建，若已经创建则报错，否则正常创建
-        // TODO：[br]这个原本是检查本地文件？还是没有检查？
-        // 似乎是没有检查，也就是说已经存在的用户还能再注册一遍。但是根据代码逻辑看，已经注册的用户再次注册
-        // 原有的各种信息就都没了，相当于变成一个全新的空用户了。
-        // 这里有两个问题：
-        // 1.我现在是从区块链的数据库里检查用户是否已存在，是不是改成从本地文件里检查更好？【目前代码的逻辑是这样，
-        //      所有的用户、属性、文件等信息都保存在本地atp文件夹里。且区块链上似乎只起到记录用户信息等作用，所以
-        //      如果本地不存在，即使链上已经存在该用户，直接重新创建用户也会把链上用户覆盖】
-        // 2.如果某用户被重新创建了，链上原有的该用户请求、审批属性、上传文件等操作的记录，应该还在【吧？需要检查一下】，
-        //      这和该用户当前是空号有冲突。而且，用户重新创建后，upk,usk都会改变，原来的用户信息也无法再使用或更改了
-        //      【相当于原来的用户信息被清空了，但是他曾经的活动记录还在】
-        //      【那么似乎更好的逻辑是，每次后端启动时，都先从链上重新获取当前所有用户的信息和活动记录？这样本地文件就和
-        //      区块链上信息保持一致了】
+        System.out.println("[br] in UserController.createUser(): NamePattern: " + NamePattern);
+        // [br]增加：用户名要符合apt.pattern.name的格式
+        if (!Pattern.matches(NamePattern, request.getUserName())) {
+            return Result.internalError("用户名不合法："+request.getUserName()+"（应该由大小写字母、数字或汉字组成）");
+        }
+        // [br]增加：检查用户名中不能出现"AND"和"OR"，否则加解密会出问题
+        Matcher matcher = Pattern.compile("(AND)|(OR)").matcher(request.getUserName());
+        if (matcher.find()) {
+            return Result.internalError("用户名不能包含\"AND\"和\"OR\"字样");
+        }
 
+        // [br]检查user是否已经创建，若已经创建则报错，否则正常创建
 //        String url = COUCHDB_URL + "/" + DATABASE_NAME + "/" + documentId;
         String url = couchdbUrl + "/myc_plat/ID:" + request.getUserName();
         System.out.println("[br]检查注册的user是否已经存在：" + url);
@@ -255,6 +269,80 @@ public class UserController {
     @PostMapping("/attr/apply")
     public Result<Object> applyAttr(@RequestBody @Validated ApplyUserAttrRequest request) {
         System.out.println("[br] in UserController.applyAttr()");
+        // [br]增加：检查申请的属性是否存在，若不存在，则弹出提示并退出
+        // 检查属性是否存在的方法：读couchdb数据库，不管是用户还是组织，数据库中都是ID:xxx的attrSet字段，
+        // 记录该用户or组织的全部属性
+
+        // 因为一次申请属性必定只有一个用户或组织的属性，所以toOrgName和toUserName肯定是一个有东西一个是空字符串
+        String entityId;    // 被申请用户/组织的名字
+        String attrName = request.getAttrName();
+        if (request.getToUserName().isEmpty()) {
+            entityId= request.getToOrgName();
+        } else {
+            entityId= request.getToUserName();
+        }
+        System.out.println(String.format("[br] in UserController.applyAttr(): entityId = %s, attrName = %s", entityId, attrName));
+        String url = couchdbUrl + "/myc_plat/ID:" + entityId;
+        System.out.println("[br]检查被申请属性的用户/组织是否存在：" + url);
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpGet checkUserRequest = new HttpGet(url);
+            HttpResponse response = httpClient.execute(checkUserRequest);
+            int statusCode = response.getStatusLine().getStatusCode();
+            if (statusCode == 404) {
+                // 被申请的用户/组织不存在
+                System.out.println("[br]被申请的用户/组织不存在：" + entityId);
+                return Result.internalError("被申请的用户/组织不存在：" + entityId);
+            } else if (statusCode == 200) {
+                System.out.println("[br]被申请的用户/组织存在" + entityId);
+                System.out.println("[br]进一步检查它是否拥有这个属性：" + entityId);
+                // 被申请用户/组织存在。则进一步检查它是否拥有这个属性
+                String jsonResponse = EntityUtils.toString(response.getEntity());
+                // 创建 ObjectMapper 实例
+                ObjectMapper mapper = new ObjectMapper();
+                // 将 JSON 字符串转换为 JsonNode 对象
+                JsonNode jsonNode = mapper.readTree(jsonResponse);
+                // 关闭实体内容流
+                EntityUtils.consume(response.getEntity());
+
+                // 检查是否存在被请求的属性
+                boolean hasAttr = false;
+                if (jsonNode.get("attrSet").isArray()) {
+                    // 肯定是array啊，必须进到这里来
+                    for (JsonNode element : jsonNode.get("attrSet")) {
+                        if (element.asText().equals(attrName)) {
+                            hasAttr = true;
+                            break;
+                        }
+                    }
+                }
+                if (!hasAttr) {
+                    // 没有该属性
+                    System.out.println("[br]被申请的属性不存在：" + attrName);
+                    return Result.internalError("被申请的属性不存在：" + attrName);
+                } else {
+                    System.out.println("[br]被申请的属性存在：" + attrName + "【属性是否存在的检查 完成】");
+                }
+            } else {
+                // Handle other status codes if needed
+                System.out.println("Unexpected response status: " + statusCode);
+                return Result.internalError("Unexpected response status: " + statusCode);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.internalError(e.getMessage());
+        }
+
+        // [br]增加：检查申请的属性是否已经获得授权，如果申请人已经获得该属性的授权，则弹出提示，不允许重复申请
+        System.out.println(String.format("[br]检查申请人：%s，是否已经获得属性：%s，的授权", request.getFileName(), attrName));
+        DABEUser user = dabeService.getUser(request.getFileName());
+        if (user.getAppliedAttrMap().containsKey(request.getAttrName())) {
+            // 已经获得了该属性的授权，直接弹出提示并退出
+            System.out.println("[br]申请人已获得属性授权，不允许重复申请" + request.getAttrName());
+            return Result.failWithMessage(400, "您已经获得该属性授权，请勿重复申请：" + request.getAttrName());
+        }
+        System.out.println("[br]申请人尚未获得属性授权【是否已有属性授权的检查 完成】");
+        System.out.println("[br]进入正常属性申请的处理流程");
+
         ChaincodeResponse chaincodeResponse = attrService.applyAttr2(request);
 
         return Result.okWithData(chaincodeResponse.getResult(str -> str));
@@ -353,7 +441,12 @@ public class UserController {
     public Result<Object> approveAttrApply(@RequestBody @Validated ApproveAttrApplyRequest request) {
         System.out.println("[br] in UserController.approveAttrApply()");
         ChaincodeResponse response = attrService.approveAttrApply2(request);
-        DABEUser applyUser = dabeService.getUser(request.getToUserName());
+        // [br]增加同步属性的调用，这样u1同意u2的属性后，u2就能立即获得属性授权，而不用点同步属性才获得授权了
+        System.out.println(String.format("[br] 审批属性完成，执行用户：%s，的同步属性操作", request.getToUserName()));
+        SyncAttrRequest syncRequest = SyncAttrRequest.builder().fileName(request.getToUserName()).build();
+        syncSuccessApply2(syncRequest);
+        System.out.println(String.format("[br] 用户：%s，的同步属性操作完成。审批流程结束", request.getToUserName()));
+//        DABEUser applyUser = dabeService.getUser(request.getToUserName());
 //        //对接
 //        String url = baseUrl + "/addattr";
 //        HttpClient client = HttpClients.createDefault();
@@ -400,6 +493,17 @@ public class UserController {
      */
     @PostMapping("/attr/sync")
     public Result<DABEUser> syncSuccessApply(@RequestBody @Validated SyncAttrRequest request) {
+        if (request.getType() == null) {
+            return Result.okWithData(attrService.syncSuccessAttrApply(request.getFileName()));
+        }
+        return Result.okWithData(
+                attrService.syncSuccessAttrApply2(request.getFileName(),
+                        request.getType() == 0 ? request.getToId() : "",
+                        request.getType() == 1 ? request.getToId() : ""));
+    }
+
+    // [br]增加。直接以SyncAttrRequest为参数的同步属性函数
+    public Result<DABEUser> syncSuccessApply2(SyncAttrRequest request) {
         if (request.getType() == null) {
             return Result.okWithData(attrService.syncSuccessAttrApply(request.getFileName()));
         }

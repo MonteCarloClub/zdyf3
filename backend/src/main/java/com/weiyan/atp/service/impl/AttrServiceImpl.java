@@ -70,6 +70,12 @@ public class AttrServiceImpl implements AttrService {
         ChaincodeResponse response = chaincodeService.query(ChaincodeTypeEnum.TRUST_PLATFORM,
             "/common/getAttr", new ArrayList<>(Collections.singletonList(attrName)));
         if (response.isFailed()) {
+            System.out.println("[br]in AttrServiceImpl.queryAttrByName(): " + "response is failed ");
+            throw new BaseException("no attr exists for " + attrName);
+        }
+        if (response.getMessage().isEmpty()) {
+            // 说明没查到这个属性？
+            System.out.println("[br]in AttrServiceImpl.queryAttrByName(): " + "response.getMessage() is empty");
             throw new BaseException("no attr exists for " + attrName);
         }
         return JsonProviderHolder.JACKSON.parse(response.getMessage(), PlatAttr.class);
@@ -384,11 +390,6 @@ public class AttrServiceImpl implements AttrService {
                 System.out.println("[br][br]in AttrServiceImpl, approveAttrApply2(), print secret");
                 System.out.println("[br][br]secret:" + secret);
             }
-            // [br]TODO：这里是不是应该写到本地文件里？atp/user/{username}文件的appliedAttrMap字段
-            // TODO:不用写。是在同步属性那里写的。所以，申请了属性以后，必须点一下同步属性。
-            // TODO:假设u1申请u2的属性，u2同意，此时u2再撤销是撤销不掉的，需要u1在前端点一下同步属性，同步完了以后，u1才能用这个属性解密
-            // TODO:u2也才能撤销这个属性
-            // TODO:这个设计不太好吧。感觉实际应用的话需要改一下。。。
 
             ApproveAttrApplyCCRequest ccRequest = ApproveAttrApplyCCRequest.builder()
                     .uid(user.getName())
