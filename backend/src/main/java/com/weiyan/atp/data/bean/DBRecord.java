@@ -1,6 +1,8 @@
 package com.weiyan.atp.data.bean;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.weiyan.atp.constant.BaseException;
+import com.weiyan.atp.utils.PolicyChecker;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,7 +42,7 @@ public class DBRecord {
         private String cipherText;
     }
 
-    public DBRecord(String caseID, Map<String, String> policies, String ownerID) {
+    public DBRecord(String caseID, Map<String, String> policies, String ownerID) throws BaseException {
         System.out.println("[br]:in DBRecord building function.");
         System.out.println("[br]:in DBRecord building function. caseID: "+caseID);
         System.out.println("[br]:in DBRecord building function. policies: "+policies);
@@ -48,6 +50,14 @@ public class DBRecord {
         this.caseID = caseID;
         this.fields = new ArrayList<>();
         for (String key : policies.keySet()) {
+            // 检查策略表达式是否合法
+            String policy = policies.get(key);
+            Result<Object> result = PolicyChecker.policyIsValid(policy);
+            if (result.getCode() != 200) {
+                // 策略表达式有误，抛出一个exception
+                throw new BaseException("invalid policy: " + policy + ": " + result.getMessage());
+            }
+            // 构造DBField并添加到DBRecord.fields里
             DBField dbField = DBField.builder()
                     .name(key)
                     .policy(policies.get(key))
@@ -55,7 +65,7 @@ public class DBRecord {
             this.fields.add(dbField);
         }
         this.ownerID = ownerID;
-        System.out.println("[br]:in DBRecord building function. this DBRecord:" + this.toString());
+        System.out.println("[br]:in DBRecord building function. DBRecord is:" + this.toString());
     }
 
 }

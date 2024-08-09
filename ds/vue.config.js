@@ -8,7 +8,7 @@ module.exports = (options = {}) => ({
     proxy: {
       '/dev/': {
         // target: 'http://10.176.40.46:8080',
-        target: 'http://10.176.40.69:8080',
+        target: 'http://10.176.40.68:8080',
         changeOrigin: true,
         pathRewrite: {
           '^/dev': '/abe'

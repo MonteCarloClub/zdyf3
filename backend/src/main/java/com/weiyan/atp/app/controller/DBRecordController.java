@@ -1,16 +1,13 @@
 package com.weiyan.atp.app.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.weiyan.atp.constant.BaseException;
+import com.weiyan.atp.data.bean.DABEUser;
 import com.weiyan.atp.data.bean.DBRecord;
 import com.weiyan.atp.data.bean.Result;
 import com.weiyan.atp.data.request.web.*;
 import com.weiyan.atp.data.response.intergration.DecryptTextResponse;
 import com.weiyan.atp.data.response.intergration.EncryptTextResponse;
-import com.weiyan.atp.data.response.intergration.EncryptionResponse;
-import com.weiyan.atp.service.AttrService;
-import com.weiyan.atp.service.ContentService;
-import com.weiyan.atp.service.DABEService;
 import com.weiyan.atp.service.TextService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -19,13 +16,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * @author BerryChen0w0
@@ -49,6 +43,9 @@ public class DBRecordController {
 
     @Value("${atp.path.dbRecordData}")
     private String dbRecordDataPath;
+
+    @Value("${atp.pattern.name}")
+    private String NamePattern;
 
     public DBRecordController(TextService textService) {
         this.textService = textService;
@@ -89,19 +86,31 @@ public class DBRecordController {
 
     @PostMapping("/add")
 //    public void addEntry(String caseID, String[] fields, String[] policies) throws IOException {
-    public Result<Object> addDBRecord(@RequestBody @Validated AddDBRecordRequest webRequest) throws IOException {
+    public Result addDBRecord(@RequestBody @Validated AddDBRecordRequest webRequest) throws IOException {
         log.info("[in DBRecordController.addDBRecord()]");
         log.info("webRequest: {}", webRequest);
+
         // userID是向系统中添加这条病例数据的用户（一般是系统管理员？）
-        DBRecord dbRecord = new DBRecord(webRequest.getCaseID(), webRequest.getPolicies(), webRequest.getUserID());
+        DBRecord dbRecord;
+        try {
+            dbRecord = new DBRecord(webRequest.getCaseID(), webRequest.getPolicies(), webRequest.getUserID());
+        } catch (BaseException e) {
+            log.error("addDBRecord: {}", e.getMessage());
+            return Result.failWithMessage(400, e.getMessage());
+        }
         System.out.println("[br] "+dbRecord);
         // 对case的每个字段(field)用其策略加密，密文存储到dbRecord.field.ct里
-        for (DBRecord.DBField field : dbRecord.getFields()) {
-            // 构建EncryptMessageCCRequest, 提交到链上进行加密，然后得到密文放到field.cipherText里
-            System.out.println("[br],in for："+field.getName());
-            EncryptTextRequest request = new EncryptTextRequest(field.getName(), field.getPolicy(), webRequest.getUserID(), webRequest.getCaseID());
-            EncryptTextResponse response = textService.encrypt(request);
-            field.setCipherText(response.getCipherText());
+        try {
+            for (DBRecord.DBField field : dbRecord.getFields()) {
+                // 构建EncryptMessageCCRequest, 提交到链上进行加密，然后得到密文放到field.cipherText里
+                System.out.println("[br]in for loop: " + field.getName());
+                EncryptTextRequest request = new EncryptTextRequest(field.getName(), field.getPolicy(), webRequest.getUserID(), webRequest.getCaseID());
+                EncryptTextResponse response = textService.encrypt(request);
+                field.setCipherText(response.getCipherText());
+            }
+        } catch (BaseException e) {
+            log.error("addDBRecord: {}", e.getMessage());
+            return Result.failWithMessage(400, e.getMessage());
         }
         log.info("addDBRecord: encrypted all fields in record: {}", dbRecord);
 
@@ -125,8 +134,14 @@ public class DBRecordController {
     @PostMapping("/query")
 //    public List<String> queryDBRecord(String userID, String caseID) throws IOException {
     public Result<Object> queryDBRecord(@RequestBody @Validated QueryDBRecordRequest webRequest) throws IOException {
+        log.info("[in DBRecordController.queryDBRecord()]");
         // 从文件名为caseID的文件中读出json内容，对每一个字段(field)的密文进行解密。返回解密成功的那些字段
         File file = new File(new File(dbRecordDataPath).getAbsolutePath() +"/"+ webRequest.getCaseID());
+        if (!file.exists()) {
+            log.info("queryDBRecord: file(caseID:{}) does not exist", webRequest.getCaseID());
+            return Result.failWithMessage(400, "没有该病例的数据："+webRequest.getCaseID());
+        }
+
 
         ObjectMapper mapper = new ObjectMapper();
         DBRecord dbRecord;

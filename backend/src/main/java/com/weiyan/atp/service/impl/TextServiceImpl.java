@@ -63,6 +63,12 @@ public class TextServiceImpl implements TextService {
 
     @Override
     public EncryptTextResponse encrypt(EncryptTextRequest request) {
+        // 首先检查：用户是否存在
+        DABEUser user = dabeService.getUser(request.getUserID());
+        if (user == null) {
+            throw new BaseException("user does not exist: " + request.getUserID());
+        }
+
         // 封装EncryptTextCCRequest，发送到链上调用DABE合约，得到加密结果作为返回值
         // 封装合约调用结果为EncryptTextResponse返回
         EncryptTextCCRequest ccRequest = EncryptTextCCRequest.builder()

@@ -1,19 +1,20 @@
 <template>
   <el-table :data="files">
-    <el-table-column show-overflow-tooltip label="文件名" prop="fileName" />
-    <el-table-column show-overflow-tooltip label="文件索引" prop="cipher">
+    <el-table-column show-overflow-tooltip label="数据源标识" prop="cipher">
       <template slot-scope="scope">
-        {{ `${scope.row.cipher}${scope.row.timeStamp}` }}
+        {{ `${scope.row.cipher}` }}
       </template>
     </el-table-column>
+    <el-table-column show-overflow-tooltip label="文件名" prop="fileName" />
     <el-table-column show-overflow-tooltip label="上传者" prop="sharedUser" />
-    <!-- <el-table-column show-overflow-tooltip label="上传时间" prop="timeStamp" width="250">
+    <el-table-column show-overflow-tooltip label="上传时间" prop="timeStamp" width="250">
       <template slot-scope="scope">
         {{ scope.row.timeStamp }}
       </template>
-    </el-table-column> -->
-    <el-table-column show-overflow-tooltip label="IP" prop="ip" width="130"></el-table-column>
+    </el-table-column>
+<!--    <el-table-column show-overflow-tooltip label="IP" prop="ip" width="130"></el-table-column>-->
     <el-table-column show-overflow-tooltip label="加密策略" prop="policy" />
+<!--    <el-table-column show-overflow-tooltip label="标签" prop="tags">-->
     <el-table-column show-overflow-tooltip label="标签" prop="tags">
       <template slot-scope="scope">
         <el-tag
@@ -57,6 +58,12 @@ export default {
     },
   },
 
+  // computed: {
+  //   showFiles: function () {
+  //     console.log(this.currentPage.value);
+  //     return this.files.slice((this.currentPage - 1) * this.pageSize, this.currentPage * this.pageSize)
+  //   },
+  // },
   methods: {
     decryDownload(scope) {
       const user = getters.userName();

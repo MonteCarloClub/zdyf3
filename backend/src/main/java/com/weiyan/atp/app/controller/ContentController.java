@@ -287,6 +287,7 @@ public class ContentController {
 //            return Result.internalError("policy is not valid");
             return result;
         }
+
         MultipartFile file = request.getFile();
         if(file.isEmpty()){
             return Result.internalError("file is empty");

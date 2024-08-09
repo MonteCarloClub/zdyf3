@@ -23,20 +23,20 @@
             ></el-input>
           </el-form-item>
 
-          <el-form-item prop="cert" label="证书" v-else>
-            <el-input v-model="login.cert" v-show="false"></el-input>
-            <el-button @click="selectFile"> 上传证书文件 </el-button>
-            <div class="text">
-              {{ certFileName }}
-            </div>
-          </el-form-item>
+<!--          <el-form-item prop="cert" label="证书" v-else>-->
+<!--            <el-input v-model="login.cert" v-show="false"></el-input>-->
+<!--            <el-button @click="selectFile"> 上传证书文件 </el-button>-->
+<!--            <div class="text">-->
+<!--              {{ certFileName }}-->
+<!--            </div>-->
+<!--          </el-form-item>-->
 
-          <el-form-item>
-            <el-button v-if="useCert === false" type="text" @click="useCert = true"
-              >使用证书登录</el-button
-            >
-            <el-button v-else type="text" @click="useCert = false">使用密码登录</el-button>
-          </el-form-item>
+<!--          <el-form-item>-->
+<!--            <el-button v-if="useCert === false" type="text" @click="useCert = true"-->
+<!--              >使用证书登录</el-button-->
+<!--            >-->
+<!--            <el-button v-else type="text" @click="useCert = false">使用密码登录</el-button>-->
+<!--          </el-form-item>-->
 
           <el-form-item>
             <el-button style="width: 100%" type="primary" @click="onLoginSubmit" :loading="loading">

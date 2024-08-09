@@ -16,7 +16,7 @@
           <el-input v-model="form.policy" placeholder="(A AND B AND (C OR D))"></el-input>
         </el-form-item>
         <el-form-item prop="tags" label="标签">
-          <el-input v-model="form.tags" placeholder="城市 系统 业务 备注（空格隔开）"></el-input>
+          <el-input v-model="form.tags" placeholder="至少3个标签，标签之间用空格隔开"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="upload">上传到服务器</el-button>
@@ -76,7 +76,7 @@ export default {
         return;
       }
 
-      let tags = this.form.tags.split(" ");
+      let tags = this.form.tags.trim().split(/\s+/);
 
       if (tags.length < 3) {
         Notification.error({

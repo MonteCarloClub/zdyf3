@@ -22,27 +22,33 @@
             <el-input v-model="signup.password" placeholder="请输入密码" show-password></el-input>
           </el-form-item>
 
-          <el-form-item label="用户角色" prop="role" style="text-align: right">
-            <el-radio-group v-model="signup.role">
-              <el-radio v-for="role in userRoles" :key="role.name" :label="role.name">
-                {{ role.label }}
-              </el-radio>
-            </el-radio-group>
-          </el-form-item>
+<!--          <el-form-item label="用户角色" prop="role" style="text-align: right">-->
+<!--            <el-radio-group v-model="signup.role">-->
+<!--              <el-radio v-for="role in userRoles" :key="role.name" :label="role.name">-->
+<!--                {{ role.label }}-->
+<!--              </el-radio>-->
+<!--            </el-radio-group>-->
+<!--          </el-form-item>-->
 
           <el-form-item>
             <el-button
-              :disabled="!agree"
-              style="width: 100%"
-              type="primary"
-              @click="onSignupSubmit"
-              :loading="loading"
+                style="width: 100%"
+                type="primary"
+                @click="onSignupSubmit"
+                :loading="loading"
             >
+<!--            <el-button-->
+<!--              :disabled="!agree"-->
+<!--              style="width: 100%"-->
+<!--              type="primary"-->
+<!--              @click="onSignupSubmit"-->
+<!--              :loading="loading"-->
+<!--            >-->
               注册
             </el-button>
           </el-form-item>
         </el-form>
-        <el-checkbox v-model="agree">我自愿承担使用本系统过程中可能出现的风险</el-checkbox>
+<!--        <el-checkbox v-model="agree">我自愿承担使用本系统过程中可能出现的风险</el-checkbox>-->
       </el-card>
     </div>
   </div>

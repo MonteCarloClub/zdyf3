@@ -32,13 +32,18 @@ export default {
     const userName = getters.userName();
     const { bookmark } = this;
 
-    fileApi
-      .files({ userName, tag, bookmark })
-      .then((_) => {
-        this.files = _.contents;
-        this.bookmark = _.bookmark;
-      })
-      .catch(console.log);
+    do {
+      console.log("br：bookmark=" + this.bookmark + ",this.files.length=" + this.files.length)
+      fileApi
+          .files({userName, tag, bookmark})
+          .then((_) => {
+            console.log("br：调用了fileApi, bookmark=" + this.bookmark + ",this.files.length=" + this.files.length)
+            this.files = this.files.concat(_.contents);
+            this.bookmark = _.bookmark;
+          })
+          .catch(console.log);
+    } while (this.bookmark !== "")
+    console.log(this.files)
   },
 };
 </script>

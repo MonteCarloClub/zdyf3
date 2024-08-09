@@ -19,7 +19,7 @@
     </el-carousel>
     <div class="intro">
       <div>
-        <h1>智慧城市数据共享交换</h1>
+        <h1>细粒度权限管理</h1>
       </div>
       <router-link v-if="login" to="/user">
         <div class="wrap">
