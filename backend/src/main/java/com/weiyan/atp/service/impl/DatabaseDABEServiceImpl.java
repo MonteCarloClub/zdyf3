@@ -11,7 +11,6 @@ import com.weiyan.atp.utils.EntityConverter;
 import com.weiyan.atp.utils.JsonProviderHolder;
 import com.weiyan.atp.utils.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -31,12 +30,13 @@ import java.util.Optional;
 @Slf4j
 @Validated
 public class DatabaseDABEServiceImpl implements DABEService {
+    private final UserRepository userRepository;
+    private final ChaincodeService chaincodeService;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private ChaincodeService chaincodeService;
+    public DatabaseDABEServiceImpl(UserRepository userRepository, ChaincodeService chaincodeService) {
+        this.userRepository = userRepository;
+        this.chaincodeService = chaincodeService;
+    }
 
     @Override
     public DABEUser getUser(@NotEmpty String fileName) {
