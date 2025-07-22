@@ -10,9 +10,9 @@
         </div>
 
         <el-form ref="signupForm" :model="signup" :rules="signupRules">
-          <el-form-item label="业务域" prop="channel">
-            <el-input v-model="signup.channel" placeholder="请输入用户所在的业务域"></el-input>
-          </el-form-item>
+<!--          <el-form-item label="业务域" prop="channel">-->
+<!--            <el-input v-model="signup.channel" placeholder="请输入用户所在的业务域"></el-input>-->
+<!--          </el-form-item>-->
 
           <el-form-item label="用户名" prop="name">
             <el-input v-model="signup.name" placeholder="请输入用户名"></el-input>
@@ -22,13 +22,13 @@
             <el-input v-model="signup.password" placeholder="请输入密码" show-password></el-input>
           </el-form-item>
 
-          <el-form-item label="用户角色" prop="role" style="text-align: right">
-            <el-radio-group v-model="signup.role">
-              <el-radio v-for="role in userRoles" :key="role.name" :label="role.name">
-                {{ role.label }}
-              </el-radio>
-            </el-radio-group>
-          </el-form-item>
+<!--          <el-form-item label="用户角色" prop="role" style="text-align: right">-->
+<!--            <el-radio-group v-model="signup.role">-->
+<!--              <el-radio v-for="role in userRoles" :key="role.name" :label="role.name">-->
+<!--                {{ role.label }}-->
+<!--              </el-radio>-->
+<!--            </el-radio-group>-->
+<!--          </el-form-item>-->
 
           <el-form-item>
             <el-button
@@ -60,7 +60,7 @@ export default {
         name: "",
         password: "",
         role: "user", // 用户默认角色
-        channel: "", // 请输入用户所在通道
+        channel: "default", // 默认channel
       },
       signupRules: {
         name: [{ required: true, trigger: "blur", message: "用户名不能为空" }],
