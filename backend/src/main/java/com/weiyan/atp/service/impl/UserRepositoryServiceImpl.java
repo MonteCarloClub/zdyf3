@@ -119,6 +119,7 @@ public class UserRepositoryServiceImpl implements UserRepositoryService {
                             .publicKey(pubKey)
                             .uid(user.getName())
                             .upk(user.getEggAlpha())
+                            .channel(user.getChannel())
                             .userType(userType)
                             .build();
             CCUtils.sign(ccRequest, priKey);

@@ -4,6 +4,7 @@ import com.weiyan.atp.constant.ChaincodeTypeEnum;
 import com.weiyan.atp.data.bean.ChaincodeResponse;
 import com.weiyan.atp.data.bean.DABEUser;
 import com.weiyan.atp.data.bean.entity.UserEntity;
+import com.weiyan.atp.data.response.web.RsaKeysResponse;
 import com.weiyan.atp.repository.UserRepository;
 import com.weiyan.atp.service.ChaincodeService;
 import com.weiyan.atp.service.DABEService;
@@ -16,10 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * 基于数据库的DABE服务实现
@@ -99,13 +97,52 @@ public class DatabaseDABEServiceImpl implements DABEService {
 
     @Override
     public DABEUser createUser(@NotEmpty String fileName, @NotEmpty String userName) {
-        return createUser(fileName, userName, "DEFAULT", "default", "123456");
+        ChaincodeResponse response = chaincodeService.query(
+                ChaincodeTypeEnum.DABE, "/user/create", new ArrayList<>(Collections.singletonList(userName)));
+        if (response.getStatus() == ChaincodeResponse.Status.FAIL) {
+            log.warn("query chaincode error: {}", response.getMessage());
+            return null;
+        }
+        try {
+            // 检查用户是否已存在
+            if (userRepository.existsByUserName(userName)) {
+                log.warn("用户已存在: {}", userName);
+                return getUser(userName);
+            }
+
+            // 解析链码返回的用户信息
+            DABEUser dabeUser = JsonProviderHolder.JACKSON.parse(response.getMessage(), DABEUser.class);
+            if (dabeUser.getEggAlpha() == null) {
+                log.warn("链码返回的用户缺少eggAlpha字段");
+                // 可以选择抛出异常或设置默认值
+            }
+
+            // 转换并保存到数据库
+            UserEntity userEntity = EntityConverter.toUserEntity(dabeUser);
+            userEntity.setUserName(userName);
+            userEntity = userRepository.save(userEntity);
+
+            log.info("用户创建成功: {}", userName);
+            return EntityConverter.toDABEUser(userEntity);
+
+        } catch (Exception e) {
+            log.warn("create user error", e);
+            return null;
+        }
     }
 
     @Override
     public DABEUser createUser(@NotEmpty String fileName, @NotEmpty String userName,
                                @NotEmpty String userType, @NotEmpty String channel,
                                @NotEmpty String password) {
+        System.out.println("[br][br] In createUser method. invoke ChaincodeResponse response=...");
+        ChaincodeResponse response = chaincodeService.query(
+                ChaincodeTypeEnum.DABE, "/user/create", new ArrayList<>(Collections.singletonList(userName)));
+        System.out.println("[br][br] In createUser method. got chaincode response: {}" + response);
+        if (response.getStatus() == ChaincodeResponse.Status.FAIL) {
+            log.warn("query chaincode error: {}", response.getMessage());
+            return null;
+        }
         try {
             // 检查用户是否已存在
             if (userRepository.existsByUserName(fileName)) {
@@ -113,25 +150,21 @@ public class DatabaseDABEServiceImpl implements DABEService {
                 return getUser(fileName);
             }
 
-            // 调用链码创建用户
-            ChaincodeResponse response = chaincodeService.query(
-                    ChaincodeTypeEnum.DABE, "/user/create",
-                    new ArrayList<>(Collections.singletonList(userName)));
-
-            if (response.getStatus() == ChaincodeResponse.Status.FAIL) {
-                log.error("链码创建用户失败: {}", response.getMessage());
-                return null;
-            }
-
-            // 解析链码返回的用户信息
+            // 创建新用户对象
             DABEUser dabeUser = JsonProviderHolder.JACKSON.parse(response.getMessage(), DABEUser.class);
             dabeUser.setUserType(userType);
             dabeUser.setChannel(channel);
             dabeUser.setPassword(SecurityUtils.md5(password));
+            dabeUser.setName(userName);
+
 
             // 转换并保存到数据库
             UserEntity userEntity = EntityConverter.toUserEntity(dabeUser);
             userEntity.setUserName(fileName);
+            // 生成用户/组织公私钥，存储到数据库
+            RsaKeysResponse rsaKeysResponse = SecurityUtils.generateKeyPair();
+            userEntity.setPublicKey(rsaKeysResponse.getPubKey());
+            userEntity.setPrivateKey(rsaKeysResponse.getPriKey());
             userEntity = userRepository.save(userEntity);
 
             log.info("用户创建成功: {}", fileName);
@@ -154,34 +187,29 @@ public class DatabaseDABEServiceImpl implements DABEService {
 
             String userJson = JsonProviderHolder.JACKSON.toJsonString(user);
 
-            // 调用链码声明属性
             ChaincodeResponse response = chaincodeService.query(
                     ChaincodeTypeEnum.DABE, "/user/declareAttr",
                     new ArrayList<>(Arrays.asList(userJson, attrName)));
-
             if (response.getStatus() == ChaincodeResponse.Status.FAIL) {
-                log.error("链码声明属性失败: {}", response.getMessage());
+                log.warn("query chaincode error: {}", response.getMessage());
                 return null;
             }
+            try {
+                DABEUser newUser = JsonProviderHolder.JACKSON.parse(response.getMessage(), DABEUser.class);
+                newUser.setUserType(user.getUserType()); //保存用户类型
+                newUser.setChannel(user.getChannel());
+                newUser.setPassword(SecurityUtils.md5(user.getPassword()));  //保存密码hash
 
-            // 更新用户信息
-            DABEUser updatedUser = JsonProviderHolder.JACKSON.parse(response.getMessage(), DABEUser.class);
-            updatedUser.setUserType(user.getUserType());
-            updatedUser.setChannel(user.getChannel());
-            updatedUser.setPassword(user.getPassword());
+                // 转换并保存到数据库
+                UserEntity userEntity = EntityConverter.toUserEntity(newUser);
+                userEntity.setUserName(fileName);
+                userEntity = userRepository.save(userEntity);
 
-            // 保存到数据库
-            Optional<UserEntity> userEntityOpt = userRepository.findByUserName(fileName);
-            if (userEntityOpt.isPresent()) {
-                UserEntity userEntity = userEntityOpt.get();
-                EntityConverter.updateUserEntity(userEntity, updatedUser);
-                userRepository.save(userEntity);
-
-                log.info("属性声明成功: {} - {}", fileName, attrName);
-                return updatedUser;
+                return EntityConverter.toDABEUser(userEntity);
+            } catch (Exception e) {
+                log.warn("create user attrs error", e);
+                return null;
             }
-
-            return null;
         } catch (Exception e) {
             log.error("声明属性失败: {} - {}", fileName, attrName, e);
             return null;
@@ -191,30 +219,14 @@ public class DatabaseDABEServiceImpl implements DABEService {
     @Override
     public ChaincodeResponse approveAttrApply(@NotEmpty String fileName, @NotEmpty String attrName,
                                               @NotEmpty String toUserName) {
-        try {
-            DABEUser user = getUser(fileName);
-            if (user == null) {
-                log.warn("用户不存在: {}", fileName);
-                return ChaincodeResponse.builder()
-                        .status(ChaincodeResponse.Status.FAIL)
-                        .message("用户不存在")
-                        .build();
-            }
-
-            String userJson = JsonProviderHolder.JACKSON.toJsonString(user);
-            ChaincodeResponse response = chaincodeService.query(ChaincodeTypeEnum.DABE, "/user/approveAttr",
-                    new ArrayList<>(Arrays.asList(userJson, toUserName, attrName)));
-
-            log.info("属性申请审批完成: {} -> {} ({})", fileName, toUserName, attrName);
-            return response;
-
-        } catch (Exception e) {
-            log.error("审批属性申请失败: {} -> {} ({})", fileName, toUserName, attrName, e);
-            return ChaincodeResponse.builder()
-                    .status(ChaincodeResponse.Status.FAIL)
-                    .message("审批失败: " + e.getMessage())
-                    .build();
+        DABEUser user = getUser(fileName);
+        if (user == null) {
+            log.info("no user found");
+            return null;
         }
+        String userJson = JsonProviderHolder.JACKSON.toJsonString(user);
+        return chaincodeService.query(ChaincodeTypeEnum.DABE, "/user/approveAttr",
+                new ArrayList<>(Arrays.asList(userJson, toUserName, attrName)));
     }
 
     /**

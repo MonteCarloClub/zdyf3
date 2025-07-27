@@ -2,17 +2,16 @@ package com.weiyan.atp.utils;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-
 import com.weiyan.atp.constant.BaseException;
 import com.weiyan.atp.data.response.web.RsaKeysResponse;
-
 import org.apache.commons.codec.binary.Base64;
-import org.bouncycastle.asn1.ASN1Encodable;
-import org.bouncycastle.asn1.ASN1Primitive;
-import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
-import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -25,12 +24,6 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Enumeration;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author : 魏延thor
@@ -50,7 +43,9 @@ public class SecurityUtils {
 
     public static RsaKeysResponse generateKeyPair() throws NoSuchAlgorithmException {
         KeyPairGenerator gen = KeyPairGenerator.getInstance(RSA);
-        gen.initialize(2048);
+        // 使用强随机数生成器初始化
+        SecureRandom secureRandom = new SecureRandom();
+        gen.initialize(2048, secureRandom);
         KeyPair keyPair = gen.generateKeyPair();
         PublicKey pubKey = keyPair.getPublic();
         PrivateKey priKey = keyPair.getPrivate();

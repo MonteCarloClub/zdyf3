@@ -3,12 +3,16 @@ package com.weiyan.atp.app.controller;
 import com.weiyan.atp.data.bean.DABEUser;
 import com.weiyan.atp.data.bean.Result;
 import com.weiyan.atp.service.DABEService;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-import org.w3c.dom.Attr;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,6 +25,7 @@ import java.util.regex.Pattern;
 @Slf4j
 @RequestMapping("/dabe")
 @CrossOrigin//支持跨域访问
+@Tag(name = "DABE接口", description = "基于属性的加密用户管理接口")
 public class DABEController {
     private final DABEService dabeService;
 
@@ -31,25 +36,44 @@ public class DABEController {
         this.dabeService = dabeService;
     }
 
+    @Operation(summary = "获取用户信息", description = "根据文件名获取用户信息")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "成功获取用户信息",
+                    content = @Content(schema = @Schema(implementation = Result.class))),
+        @ApiResponse(responseCode = "500", description = "用户不存在或服务器错误")
+    })
     @GetMapping("/user")
-    public Result<DABEUser> getUser(String fileName) {
+    public Result<DABEUser> getUser(
+            @Parameter(description = "用户文件名", required = true) @RequestParam String fileName) {
         return handleUser(dabeService.getUser(fileName));
     }
 
-    //增加密码判断
+    @Operation(summary = "验证用户密码", description = "根据文件名和密码验证用户")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "密码验证成功",
+                    content = @Content(schema = @Schema(implementation = Result.class))),
+        @ApiResponse(responseCode = "500", description = "用户不存在或密码错误")
+    })
     @PostMapping("/user2")
-    public Result<DABEUser> getUser2(String fileName, String password) {
+    public Result<DABEUser> getUser2(
+            @Parameter(description = "用户文件名", required = true) @RequestParam String fileName,
+            @Parameter(description = "用户密码", required = true) @RequestParam String password) {
         return handleUser(dabeService.getUser2(fileName, password));
     }
 
+    @Operation(summary = "用户验证干运行", description = "用户验证的干运行模式，不实际验证密码")
     @GetMapping("/user2_dry_run")
-    public Result<DABEUser> getUser2DryRun(String filename, String password) {
+    public Result<DABEUser> getUser2DryRun(
+            @Parameter(description = "用户文件名") @RequestParam String filename,
+            @Parameter(description = "用户密码") @RequestParam String password) {
         dabeService.getUser2DryRun(filename, password);
         return handleUserDryRun();
     }
 
+    @Operation(summary = "批量用户验证干运行", description = "批量执行用户验证的干运行模式，用于性能测试")
     @GetMapping("/user2_batch_dry_run")
-    public Result<DABEUser> getUser2BatchDryRun(int batch_size) {
+    public Result<DABEUser> getUser2BatchDryRun(
+            @Parameter(description = "批处理大小", required = true) @RequestParam int batch_size) {
         String filename = "filename_", password = "password_";
         long loTimestamp = System.currentTimeMillis();
         int logStep = batch_size / 10;
@@ -65,18 +89,44 @@ public class DABEController {
         return handleUserDryRun();
     }
 
+    @Operation(summary = "通过证书验证用户", description = "根据文件名和证书验证用户")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "证书验证成功",
+                    content = @Content(schema = @Schema(implementation = Result.class))),
+        @ApiResponse(responseCode = "500", description = "证书无效或已过期")
+    })
     @PostMapping("/user3")
-    public Result<DABEUser> getUser3(String fileName, String cert) {
+    public Result<DABEUser> getUser3(
+            @Parameter(description = "用户文件名", required = true) @RequestParam String fileName,
+            @Parameter(description = "用户证书", required = true) @RequestParam String cert) {
         return handleUser1(dabeService.getUser3(fileName, cert));
     }
 
+    @Operation(summary = "创建用户", description = "创建新用户并存储到数据库和区块链")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "用户创建成功",
+                    content = @Content(schema = @Schema(implementation = Result.class))),
+        @ApiResponse(responseCode = "500", description = "用户创建失败")
+    })
     @PostMapping("/user")
-    public Result<DABEUser> createUser(String fileName, String userName, String userType, String password) {
+    public Result<DABEUser> createUser(
+            @Parameter(description = "用户文件名", required = true) @RequestParam String fileName,
+            @Parameter(description = "用户名", required = true) @RequestParam String userName,
+            @Parameter(description = "用户类型", required = true) @RequestParam String userType,
+            @Parameter(description = "用户密码", required = true) @RequestParam String password) {
         return handleUser(dabeService.createUser(fileName, userName, userType, "myc", password));
     }
 
+    @Operation(summary = "声明属性", description = "为用户声明属性")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "属性声明成功",
+                    content = @Content(schema = @Schema(implementation = Result.class))),
+        @ApiResponse(responseCode = "500", description = "属性声明失败或属性名不合法")
+    })
     @PostMapping("/user/attr")
-    public Result<DABEUser> declareAttr(String fileName, String attrName) {
+    public Result<DABEUser> declareAttr(
+            @Parameter(description = "用户文件名", required = true) @RequestParam String fileName,
+            @Parameter(description = "属性名称", required = true) @RequestParam String attrName) {
         // [br]增加：属性名要符合apt.pattern.attr的格式
         System.out.println("[br]in DABEController.declareAttr(): AttrPattern = " + AttrPattern);
         if (!Pattern.matches(AttrPattern, attrName)) {
@@ -110,8 +160,17 @@ public class DABEController {
         }
     }
 
+    @Operation(summary = "审批属性申请", description = "审批其他用户的属性申请")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "审批成功",
+                    content = @Content(schema = @Schema(implementation = Result.class))),
+        @ApiResponse(responseCode = "500", description = "审批失败")
+    })
     @GetMapping("/user/apply")
-    public Result<Object> approveAttrApply(String fileName, String attrName, String toUserName) {
+    public Result<Object> approveAttrApply(
+            @Parameter(description = "审批者文件名", required = true) @RequestParam String fileName,
+            @Parameter(description = "属性名称", required = true) @RequestParam String attrName,
+            @Parameter(description = "申请者用户名", required = true) @RequestParam String toUserName) {
         return dabeService.approveAttrApply(fileName, attrName, toUserName).getResult(str -> str);
     }
 }
