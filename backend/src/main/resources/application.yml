@@ -59,7 +59,7 @@ spring:
 
   datasource:     # 浦东项目，迁移到mysql
 #    url: jdbc:mysql://10.176.40.69:3306/pudong?serverTimezone=GMT&useSSL=false
-    url: jdbc:mysql://21.0.25.1:3306/pudong?serverTimezone=GMT&useSSL=false
+    url: jdbc:mysql://21.0.25.1:3306/pudong?serverTimezone=GMT&useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
