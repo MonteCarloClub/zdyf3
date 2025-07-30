@@ -9,13 +9,16 @@ atp:
     ordererName: orderer
 #    peerUrl: grpc://180.167.127.16:7051
 #    ordererUrl: grpc://180.167.127.16:7050
-    peerUrl: grpc://10.176.40.69:7051
-    ordererUrl: grpc://10.176.40.69:7050
+#    peerUrl: grpc://10.176.40.69:7051
+#    ordererUrl: grpc://10.176.40.69:7050
+    peerUrl: grpc://21.0.25.1:7051
+    ordererUrl: grpc://21.0.25.1:7050
     channelName: myc
 #    baseUrl: http://47.94.164.138:8000 # 和华科对接
 
 #    dpkiUrl: http://10.176.40.47/dpki  # 课题二(dpki)的
-    couchdbUrl: http://10.176.40.69:5984
+#    couchdbUrl: http://10.176.40.69:5984
+    couchdbUrl: http://21.0.25.1:5984
 
   path:
     dabeUser: atp/user/
@@ -55,7 +58,8 @@ spring:
 #    password: Root@123
 
   datasource:     # 浦东项目，迁移到mysql
-    url: jdbc:mysql://10.176.40.69:3306/pudong?serverTimezone=GMT&useSSL=false
+#    url: jdbc:mysql://10.176.40.69:3306/pudong?serverTimezone=GMT&useSSL=false
+    url: jdbc:mysql://21.0.25.1:3306/pudong?serverTimezone=GMT&useSSL=false
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver

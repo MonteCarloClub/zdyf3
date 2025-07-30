@@ -76,11 +76,11 @@ CREATE TABLE IF NOT EXISTS atp_keys (
     INDEX idx_status (status)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='密钥存储表';
 
--- 插入一些测试数据（可选）
-INSERT IGNORE INTO atp_users (user_name, name, password, user_type, channel) VALUES
-('admin', '管理员', MD5('admin123'), 'ADMIN', 'default'),
-('test_user', '测试用户', MD5('123456'), 'USER', 'default');
-
-INSERT IGNORE INTO atp_organizations (org_name, display_name, description, org_type) VALUES
-('default_org', '默认组织', '系统默认组织', 'DEFAULT'),
-('test_org', '测试组织', '用于测试的组织', 'TEST');
+-- -- 插入一些测试数据（可选）
+-- INSERT IGNORE INTO atp_users (user_name, name, password, user_type, channel) VALUES
+-- ('admin', '管理员', MD5('admin123'), 'ADMIN', 'default'),
+-- ('test_user', '测试用户', MD5('123456'), 'USER', 'default');
+--
+-- INSERT IGNORE INTO atp_organizations (org_name, display_name, description, org_type) VALUES
+-- ('default_org', '默认组织', '系统默认组织', 'DEFAULT'),
+-- ('test_org', '测试组织', '用于测试的组织', 'TEST');
