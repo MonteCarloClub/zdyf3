@@ -237,7 +237,17 @@
             <version>42.7.3</version>
         </dependency>
 
-
+        <!-- SpringDoc OpenAPI 依赖 -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.6.15</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-webmvc-core</artifactId>
+            <version>1.6.15</version>
+        </dependency>
 
     </dependencies>
 
