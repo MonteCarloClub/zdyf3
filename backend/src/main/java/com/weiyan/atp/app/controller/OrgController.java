@@ -8,6 +8,7 @@ import com.weiyan.atp.data.bean.Result;
 import com.weiyan.atp.data.request.web.ApproveOrgApplyRequest;
 import com.weiyan.atp.data.request.web.CreateOrgRequest;
 import com.weiyan.atp.data.request.web.DeclareOrgAttrRequest;
+import com.weiyan.atp.data.request.web.SubmitPartPkRequest;
 import com.weiyan.atp.service.OrgRepositoryService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -151,7 +152,11 @@ public class OrgController {
      * 创建组织/声明属性
      */
     @PostMapping("/part-pk")
-    public Result<Object> submitPartPk(String type, String orgName, String fileName, String attrName) {
+    public Result<Object> submitPartPk(@RequestBody SubmitPartPkRequest submitPartPkRequest) {
+        String type = submitPartPkRequest.getType();
+        String orgName = submitPartPkRequest.getOrgName();
+        String fileName = submitPartPkRequest.getFileName();
+        String attrName = submitPartPkRequest.getAttrName();
         orgRepositoryService.submitPartPk2(OrgApplyTypeEnum.valueOf(type), orgName, fileName, attrName);
         return Result.success();
     }
