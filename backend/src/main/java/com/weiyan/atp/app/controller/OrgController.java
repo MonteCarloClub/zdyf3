@@ -5,10 +5,7 @@ import com.weiyan.atp.constant.OrgApplyTypeEnum;
 import com.weiyan.atp.data.bean.ChaincodeResponse;
 import com.weiyan.atp.data.bean.PlatOrgApply;
 import com.weiyan.atp.data.bean.Result;
-import com.weiyan.atp.data.request.web.ApproveOrgApplyRequest;
-import com.weiyan.atp.data.request.web.CreateOrgRequest;
-import com.weiyan.atp.data.request.web.DeclareOrgAttrRequest;
-import com.weiyan.atp.data.request.web.SubmitPartPkRequest;
+import com.weiyan.atp.data.request.web.*;
 import com.weiyan.atp.service.OrgRepositoryService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -62,10 +59,10 @@ public class OrgController {
         }
         // [br]改：改为，申请创建的用户，创建之后，自动同意
         ChaincodeResponse response = orgRepositoryService.applyCreateOrg2(request);
-        approveCreateOrgApply2(ApproveOrgApplyRequest.builder()
-                .fileName(request.getFileName())
-                .orgName(request.getOrgName())
-                .build());
+//        approveCreateOrgApply2(ApproveOrgApplyRequest.builder()
+//                .fileName(request.getFileName())
+//                .orgName(request.getOrgName())
+//                .build());
         return response.getResult(str -> str);
     }
 
@@ -114,11 +111,11 @@ public class OrgController {
         }
         // [br]改：同组织创建，改为发起声明的用户自动同意
         ChaincodeResponse response =  orgRepositoryService.applyDeclareOrgAttr2(request);
-        approveDeclareAttrApply2(ApproveOrgApplyRequest.builder()
-                .fileName(request.getFileName())
-                .orgName(request.getOrgName())
-                .attrName(request.getAttrName())
-                .build());
+//        approveDeclareAttrApply2(ApproveOrgApplyRequest.builder()
+//                .fileName(request.getFileName())
+//                .orgName(request.getOrgName())
+//                .attrName(request.getAttrName())
+//                .build());
         return response.getResult(str -> str);
     }
 
@@ -166,7 +163,11 @@ public class OrgController {
      * 创建组织/声明属性
      */
     @PostMapping("/complete-pk")
-    public Result<Object> mixPartPk(String type, String orgName, String attrName, String fileName) {
+    public Result<Object> mixPartPk(@RequestBody MixPartPkRequest mixPartPkRequest) {
+        String type = mixPartPkRequest.getType();
+        String orgName = mixPartPkRequest.getOrgName();
+        String fileName = mixPartPkRequest.getFileName();
+        String attrName = mixPartPkRequest.getAttrName();
         orgRepositoryService.mixPartPk2(OrgApplyTypeEnum.valueOf(type), orgName, attrName, fileName);
         return Result.success();
     }
