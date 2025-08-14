@@ -116,6 +116,7 @@ public class OrgController {
         approveDeclareAttrApply2(ApproveOrgApplyRequest.builder()
                 .fileName(request.getFileName())
                 .orgName(request.getOrgName())
+                .attrName(request.getAttrName())
                 .build());
         return response.getResult(str -> str);
     }
