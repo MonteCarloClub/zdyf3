@@ -2,6 +2,8 @@ package com.weiyan.atp.app.controller;
 
 import com.weiyan.atp.data.bean.DABEUser;
 import com.weiyan.atp.data.bean.Result;
+import com.weiyan.atp.data.request.web.CreateUserAttrRequest;
+import com.weiyan.atp.data.request.web.UserLoginRequest;
 import com.weiyan.atp.service.DABEService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +40,9 @@ public class DABEController {
 
     //增加密码判断
     @PostMapping("/user2")
-    public Result<DABEUser> getUser2(String fileName, String password) {
+    public Result<DABEUser> getUser2(@RequestBody UserLoginRequest userLoginRequest) {
+        String fileName = userLoginRequest.getFileName();
+        String password = userLoginRequest.getPassword();
         return handleUser(dabeService.getUser2(fileName, password));
     }
 
@@ -65,19 +69,21 @@ public class DABEController {
         return handleUserDryRun();
     }
 
-    @PostMapping("/user3")
-    public Result<DABEUser> getUser3(String fileName, String cert) {
-        return handleUser1(dabeService.getUser3(fileName, cert));
-    }
+//    @PostMapping("/user3")
+//    public Result<DABEUser> getUser3(String fileName, String cert) {
+//        return handleUser1(dabeService.getUser3(fileName, cert));
+//    }
 
-    @PostMapping("/user")
-    public Result<DABEUser> createUser(String fileName, String userName, String userType, String password) {
-        return handleUser(dabeService.createUser(fileName, userName, userType, "myc", password));
-    }
+//    @PostMapping("/user")
+//    public Result<DABEUser> createUser(String fileName, String userName, String userType, String password) {
+//        return handleUser(dabeService.createUser(fileName, userName, userType, "myc", password));
+//    }
 
     @PostMapping("/user/attr")
-    public Result<DABEUser> declareAttr(String fileName, String attrName) {
+    public Result<DABEUser> declareAttr(@RequestBody CreateUserAttrRequest createUserAttrRequest) {
         // [br]增加：属性名要符合apt.pattern.attr的格式
+        String attrName = createUserAttrRequest.getAttrName();
+        String fileName = createUserAttrRequest.getFileName();
         System.out.println("[br]in DABEController.declareAttr(): AttrPattern = " + AttrPattern);
         if (!Pattern.matches(AttrPattern, attrName)) {
             return Result.internalError("属性名不合法："+attrName+"（应该由大小写字母、数字或汉字组成）");

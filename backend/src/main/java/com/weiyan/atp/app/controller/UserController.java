@@ -517,7 +517,8 @@ public class UserController {
      * 属性历史记录
      */
     @PostMapping("/attr/history")
-    public Result<Object> attrHistory(String userName) {
+    public Result<Object> attrHistory(@RequestBody AttrHistoryRequest attrHistoryRequest) {
+        String userName = attrHistoryRequest.getUserName();
         return attrService.queryAttrHistory(userName)
                 .getResult(str -> JsonProviderHolder.JACKSON.parseList(str, PlatUserAttrHistory.class));
     }

@@ -1,6 +1,7 @@
 package com.weiyan.atp.data.request.web;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import javax.validation.constraints.NotNull;
  * @since : 2020/10/29
  */
 @Data
+@NoArgsConstructor
 public class DecryptContentRequest {
     @NotEmpty
     private String userName;
@@ -19,7 +21,6 @@ public class DecryptContentRequest {
     @NotEmpty
     private String fileName;
 
-    @NotEmpty
     private String cipher;
 
     private List<String> tags;

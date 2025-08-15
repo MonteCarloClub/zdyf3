@@ -322,11 +322,11 @@ public class ContentController {
         }
 //        String ipAddress = SecurityUtils.getIpAddr(req);
 ////        request.setIp(ipAddress);
-        if(request.getTags().get(2).equals("test")){
-            request.setIp("101.201.49.180");
-        }else{
-            request.setIp("58.247.201.96");
-        }
+//        if(request.getTags().get(2).equals("test")){
+//            request.setIp("101.201.49.180");
+//        }else{
+        request.setIp("58.247.201.96");
+//        }
         //获取文件的原始名
         String filename = file.getOriginalFilename();
         System.out.println(filename);
