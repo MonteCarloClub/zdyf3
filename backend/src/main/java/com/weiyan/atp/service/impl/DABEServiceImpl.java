@@ -159,7 +159,7 @@ public class DABEServiceImpl implements DABEService {
         ChaincodeResponse response = chaincodeService.query(
                 ChaincodeTypeEnum.DABE, "/user/declareAttr",
                 new ArrayList<>(Arrays.asList(userJson, attrName)));
-        return CCUtils.saveResponse(userPath, fileName, user.getUserType(), user.getChannel(), user.getPassword(), true, response);
+        return CCUtils.saveResponse(userPath, fileName, user, true, response);
     }
 
     @Override

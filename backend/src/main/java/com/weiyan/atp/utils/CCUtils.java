@@ -4,33 +4,22 @@ import com.weiyan.atp.constant.BaseException;
 import com.weiyan.atp.data.bean.ChaincodeResponse;
 import com.weiyan.atp.data.bean.ChaincodeResponse.Status;
 import com.weiyan.atp.data.bean.DABEUser;
-import com.weiyan.atp.data.bean.intergration.Cert;
 import com.weiyan.atp.data.request.chaincode.plat.BaseCCRequest;
-
 import lombok.extern.slf4j.Slf4j;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Base64;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
-import java.security.MessageDigest;
 import java.security.PrivateKey;
 import java.security.Security;
 import java.security.Signature;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.util.Calendar;
-import java.util.Date;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 
 /**
@@ -114,6 +103,26 @@ public class CCUtils {
             String filePath = userPath + fileName;
             String resource = response.getMessage();
             DABEUser newUser = JsonProviderHolder.JACKSON.parse(resource, DABEUser.class);
+            saveDABEUser(filePath, resource);
+            return newUser;
+        } catch (Exception e) {
+            log.warn("create user error", e);
+            return null;
+        }
+    }
+
+    public static DABEUser saveResponse(String userPath, String fileName, DABEUser user, Boolean hash, ChaincodeResponse response) {
+        if (response.getStatus() == Status.FAIL) {
+            log.warn("query chaincode error: {}", response.getMessage());
+            return user;
+        }
+        try {
+            String filePath = userPath + fileName;
+            DABEUser newUser = JsonProviderHolder.JACKSON.parse(response.getMessage(), DABEUser.class);
+            newUser.setUserType(user.getUserType()); //保存用户类型
+            newUser.setChannel(user.getChannel());
+            newUser.setPassword(hash?user.getPassword():SecurityUtils.md5(user.getPassword()));  //保存密码hash
+            String resource = JsonProviderHolder.JACKSON.toJsonString(newUser);
             saveDABEUser(filePath, resource);
             return newUser;
         } catch (Exception e) {
