@@ -1,25 +1,14 @@
 package com.weiyan.atp.service.impl;
 
 import com.google.common.base.Preconditions;
-
 import com.weiyan.atp.constant.BaseException;
 import com.weiyan.atp.constant.ChaincodeTypeEnum;
 import com.weiyan.atp.constant.OrgApplyStatusEnum;
 import com.weiyan.atp.constant.OrgApplyTypeEnum;
-import com.weiyan.atp.data.bean.ChaincodeResponse;
-import com.weiyan.atp.data.bean.DABEUser;
+import com.weiyan.atp.data.bean.*;
 import com.weiyan.atp.data.bean.DABEUser.ASKPart;
 import com.weiyan.atp.data.bean.DABEUser.OSKPart;
-import com.weiyan.atp.data.bean.PlatOrg;
-import com.weiyan.atp.data.bean.PlatOrgApply;
-import com.weiyan.atp.data.bean.PlatUser;
-import com.weiyan.atp.data.request.chaincode.plat.ApproveOrgApplyCCRequest;
-import com.weiyan.atp.data.request.chaincode.plat.CreateOrgCCRequest;
-import com.weiyan.atp.data.request.chaincode.plat.DeclareOrgAttrCCRequest;
-import com.weiyan.atp.data.request.chaincode.plat.MixPartPKCCRequest;
-import com.weiyan.atp.data.request.chaincode.plat.QueryOrgApplyCCRequest;
-import com.weiyan.atp.data.request.chaincode.plat.SubmitOrgPartPKCCRequest;
-import com.weiyan.atp.data.request.chaincode.plat.SubmitOrgShareCCRequest;
+import com.weiyan.atp.data.request.chaincode.plat.*;
 import com.weiyan.atp.data.request.web.ApproveOrgApplyRequest;
 import com.weiyan.atp.data.request.web.CreateOrgRequest;
 import com.weiyan.atp.data.request.web.DeclareOrgAttrRequest;
@@ -31,9 +20,7 @@ import com.weiyan.atp.service.UserRepositoryService;
 import com.weiyan.atp.utils.CCUtils;
 import com.weiyan.atp.utils.JsonProviderHolder;
 import com.weiyan.atp.utils.SecurityUtils;
-
 import lombok.extern.slf4j.Slf4j;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.util.encoders.Base64;
@@ -41,17 +28,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotEmpty;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.validation.constraints.NotEmpty;
+import java.util.*;
 
 /**
  * @author : 魏延thor
@@ -274,6 +256,7 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
 
         // 0_5. 查询必要的申请信息
         PlatOrgApply orgApply = queryOrgApply(request.getOrgName(), type, request.getAttrName());
+        Preconditions.checkNotNull(orgApply, "Org Apply is null");
 
         // 1. plat的同意加入
         if (!orgApply.getFromUserName().equals(user.getName())) {
