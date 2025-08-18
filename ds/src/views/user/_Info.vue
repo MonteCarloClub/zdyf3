@@ -1,14 +1,14 @@
 <template>
-  <Card title="我的信息" key="-1" data-index="-1">
+  <Card v-bind:title="`用户：${name}`" key="-1" data-index="-1">
     <template v-slot:op>
       <el-button size="small" @click="logoutClicked">退出登录</el-button>
     </template>
-    <el-descriptions :column="1">
-      <el-descriptions-item label="用户名">{{ name }} </el-descriptions-item>
-      <el-descriptions-item label="我的角色">
-        {{ roleTitles[role]}}
-      </el-descriptions-item>
-    </el-descriptions>
+<!--    <el-descriptions :column="1">-->
+<!--      <el-descriptions-item label="用户名">{{ name }} </el-descriptions-item>-->
+<!--      <el-descriptions-item label="我的角色">-->
+<!--        {{ roleTitles[role]}}-->
+<!--      </el-descriptions-item>-->
+<!--    </el-descriptions>-->
   </Card>
 </template>
 

@@ -9,7 +9,7 @@
         {{ scope.row.timeStamp }}
       </template>
     </el-table-column>
-    <el-table-column show-overflow-tooltip label="IP" prop="ip" width="130"></el-table-column>
+<!--    <el-table-column show-overflow-tooltip label="IP" prop="ip" width="130"></el-table-column>-->
     <el-table-column show-overflow-tooltip label="加密策略" prop="policy" />
     <el-table-column show-overflow-tooltip label="标签" prop="tags">
       <template slot-scope="scope">

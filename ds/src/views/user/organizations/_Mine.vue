@@ -37,7 +37,7 @@
         </el-form-item>
 
         <el-form-item prop="userStr" label="其它成员">
-          <el-input v-model="form.userStr" placeholder="请输入除您之外包含的其它成员"></el-input>
+          <el-input v-model="form.userStr" placeholder="请输入除您之外包含的其它成员（用空格隔开）"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer">

@@ -22,7 +22,7 @@
           <el-input v-model="form.attr"></el-input>
         </el-form-item>
 
-        <el-form-item label="属性类型">
+        <el-form-item prop="belongs" label="属性类型">
           <el-input
             placeholder="请输入用户或组织名"
             v-model="form.belongs"
@@ -87,6 +87,7 @@ export default {
       },
       applyRules: {
         attr: [{ required: true, trigger: "blur", message: "属性名不能为空" }],
+        belongs: [{ required: true, trigger: "blur", message: "请输入用户或组织名"}]
       },
     };
   },

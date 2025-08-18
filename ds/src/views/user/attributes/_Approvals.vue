@@ -123,7 +123,7 @@ export default {
         SUCCESS: "success",
         FAIL: "danger",
         PENDING: "pending",
-        REVOKE: "revoke",
+        REVOKE: "warning",
       },
       // selectedStatus: "PENDING",
     };
