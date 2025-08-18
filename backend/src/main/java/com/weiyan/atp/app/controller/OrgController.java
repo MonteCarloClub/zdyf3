@@ -58,7 +58,12 @@ public class OrgController {
             return Result.internalError("组织名不能包含\"AND\"和\"OR\"字样");
         }
         // [br]改：改为，申请创建的用户，创建之后，自动同意
-        ChaincodeResponse response = orgRepositoryService.applyCreateOrg2(request);
+        ChaincodeResponse response = null;
+        try {
+            response = orgRepositoryService.applyCreateOrg2(request);
+        } catch (Exception e) {
+            return Result.failWithMessage(400, e.getMessage());
+        }
 //        approveCreateOrgApply2(ApproveOrgApplyRequest.builder()
 //                .fileName(request.getFileName())
 //                .orgName(request.getOrgName())
@@ -75,21 +80,27 @@ public class OrgController {
         // [br]增加：catch BaseException，获取其中的提示信息，返回给前端
         try {
             orgRepositoryService.approveOrgApply2(OrgApplyTypeEnum.CREATION, request);
-        } catch (BaseException be) {
+        } catch (Exception be) {
             // 如果是BaseException，则承载的是链码上的提示信息，这里做一下处理
-            if (be.getMessage().equals("generate share in dabe error: already has this org")) {
+            if (be instanceof BaseException && be.getMessage().equals("generate share in dabe error: already has this org")) {
                 // 是 2. dabe生成对应的秘密 这一步的报错，且报错信息是“已经有该属性”，那就是说，调用者在重复加入组织，弹出提示
                 return Result.ResultWithMessage("您已经加入组织");
             }
-            // 如果是其他错误，还是直接扔出去
-            throw be;
+            // 处理其他错误
+            else {
+                return Result.failWithMessage(400, be.getMessage());
+            }
         }
         return Result.success();
     }
 
     // [br]跟approveCreateOrgApply逻辑一样。用于给applyCreateOrg调用
     public Result<Object> approveCreateOrgApply2(ApproveOrgApplyRequest request) {
-        orgRepositoryService.approveOrgApply2(OrgApplyTypeEnum.CREATION, request);
+        try {
+            orgRepositoryService.approveOrgApply2(OrgApplyTypeEnum.CREATION, request);
+        } catch (Exception e) {
+            return Result.failWithMessage(400, e.getMessage());
+        }
         return Result.success();
     }
 
@@ -110,7 +121,12 @@ public class OrgController {
             return Result.internalError("属性名不能包含\"AND\"和\"OR\"字样");
         }
         // [br]改：同组织创建，改为发起声明的用户自动同意
-        ChaincodeResponse response =  orgRepositoryService.applyDeclareOrgAttr2(request);
+        ChaincodeResponse response = null;
+        try {
+            response = orgRepositoryService.applyDeclareOrgAttr2(request);
+        } catch (Exception e) {
+            return Result.failWithMessage(400, e.getMessage());
+        }
 //        approveDeclareAttrApply2(ApproveOrgApplyRequest.builder()
 //                .fileName(request.getFileName())
 //                .orgName(request.getOrgName())
@@ -125,13 +141,21 @@ public class OrgController {
      */
     @PostMapping("/apply/attribute/approval")
     public Result<Object> approveDeclareAttrApply(@RequestBody @Validated ApproveOrgApplyRequest request) {
-        orgRepositoryService.approveOrgApply2(OrgApplyTypeEnum.ATTRIBUTE, request);
+        try {
+            orgRepositoryService.approveOrgApply2(OrgApplyTypeEnum.ATTRIBUTE, request);
+        } catch (Exception e) {
+            return Result.failWithMessage(400, e.getMessage());
+        }
         return Result.success();
     }
 
     // [br]跟approveDeclareAttrApply一样，用于给applyDeclareAttr调用
     public Result<Object> approveDeclareAttrApply2(ApproveOrgApplyRequest request) {
-        orgRepositoryService.approveOrgApply2(OrgApplyTypeEnum.ATTRIBUTE, request);
+        try {
+            orgRepositoryService.approveOrgApply2(OrgApplyTypeEnum.ATTRIBUTE, request);
+        } catch (Exception e) {
+            return Result.failWithMessage(400, e.getMessage());
+        }
         return Result.success();
     }
 
@@ -154,7 +178,11 @@ public class OrgController {
         String orgName = submitPartPkRequest.getOrgName();
         String fileName = submitPartPkRequest.getFileName();
         String attrName = submitPartPkRequest.getAttrName();
-        orgRepositoryService.submitPartPk2(OrgApplyTypeEnum.valueOf(type), orgName, fileName, attrName);
+        try {
+            orgRepositoryService.submitPartPk2(OrgApplyTypeEnum.valueOf(type), orgName, fileName, attrName);
+        } catch (Exception e) {
+            return Result.failWithMessage(400, e.getMessage());
+        }
         return Result.success();
     }
 
@@ -168,7 +196,11 @@ public class OrgController {
         String orgName = mixPartPkRequest.getOrgName();
         String fileName = mixPartPkRequest.getFileName();
         String attrName = mixPartPkRequest.getAttrName();
-        orgRepositoryService.mixPartPk2(OrgApplyTypeEnum.valueOf(type), orgName, attrName, fileName);
+        try {
+            orgRepositoryService.mixPartPk2(OrgApplyTypeEnum.valueOf(type), orgName, attrName, fileName);
+        } catch (Exception e) {
+            return Result.failWithMessage(400, e.getMessage());
+        }
         return Result.success();
     }
 

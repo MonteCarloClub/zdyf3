@@ -94,7 +94,12 @@ public class UserController {
         if (matcher.find()) {
             return Result.internalError("用户名不能包含\"AND\"和\"OR\"字样");
         }
-        ChaincodeResponse response = userRepositoryService.createUser(request);
+        ChaincodeResponse response = null;
+        try {
+            response = userRepositoryService.createUser(request);
+        } catch (Exception e) {
+            return Result.failWithMessage(400, e.getMessage());
+        }
 
         //对接
 //            String url = baseUrl+"/attruser";
@@ -167,7 +172,12 @@ public class UserController {
         System.out.println("[br] invoke dabeService.createUser()");
         dabeService.createUser(request.getUserName(), request.getUserName(), request.getUserType(), request.getChannel(), request.getPassword());
         System.out.println("[br] dabeService.createUser() finished, invoke ChaincodeResponse response =...");
-        ChaincodeResponse response = userRepositoryService.createUserInOne(request.getUserName(), request.getUserType(), request.getChannel());
+        ChaincodeResponse response = null;
+        try {
+            response = userRepositoryService.createUserInOne(request.getUserName(), request.getUserType(), request.getChannel());
+        } catch (Exception e) {
+            return Result.failWithMessage(400, e.getMessage());
+        }
         System.out.println("[br] got chaincode response: {}" + response);
 
         //对接
@@ -210,14 +220,24 @@ public class UserController {
         if (StringUtils.isEmpty(request.getUserName()) && StringUtils.isEmpty(request.getPubKey())) {
             return Result.internalError("all empty request");
         }
-        return Result.okWithData(userRepositoryService.queryUser(request));
+        PlatUser platUser = null;
+        try {
+            platUser = userRepositoryService.queryUser(request);
+        } catch (Exception e) {
+            return Result.failWithMessage(400, e.getMessage());
+        }
+        return Result.okWithData(platUser);
     }
 
     @PostMapping("/attr")
     public Result<Object> declareAttr(@RequestBody @Validated DeclareUserAttrRequest request) {
         System.out.println("[br] in UserController.declareAttr()");
-
-        ChaincodeResponse response = attrService.declareUserAttr2(request);
+        ChaincodeResponse response = null;
+        try {
+            response = attrService.declareUserAttr2(request);
+        } catch (Exception e) {
+            return Result.failWithMessage(400, e.getMessage());
+        }
         //对接
 //        String url = baseUrl + "/creatattr";
 //        HttpClient client = HttpClients.createDefault();
@@ -259,8 +279,13 @@ public class UserController {
 
     @PostMapping("/batchAttr")
     public Result<Object> batchDeclareAttr(@RequestBody @Validated DeclareUserAttrRequest request) {
-        return attrService.batchDeclareUserAttr(request)
-                .getResult(str -> str);
+        Result<Object> result;
+        try {
+            result = attrService.batchDeclareUserAttr(request).getResult(str -> str);
+        } catch (Exception e) {
+            return Result.failWithMessage(400, e.getMessage());
+        }
+        return result;
     }
 
     /**
@@ -343,8 +368,12 @@ public class UserController {
         System.out.println("[br]申请人尚未获得属性授权【是否已有属性授权的检查 完成】");
         System.out.println("[br]进入正常属性申请的处理流程");
 
-        ChaincodeResponse chaincodeResponse = attrService.applyAttr2(request);
-
+        ChaincodeResponse chaincodeResponse = null;
+        try {
+            chaincodeResponse = attrService.applyAttr2(request);
+        } catch (Exception e) {
+            return Result.failWithMessage(400, e.getMessage());
+        }
         return Result.okWithData(chaincodeResponse.getResult(str -> str));
     }
 
@@ -354,7 +383,12 @@ public class UserController {
     @PostMapping("/attr/revoke")
     public Result<Object> revokeAttr(@RequestBody @Validated RevokeUserAttrRequest request) {
         System.out.println("[br] in UserController.revokeAttr()");
-        ChaincodeResponse chaincodeResponse = attrService.revokeAttr(request);
+        ChaincodeResponse chaincodeResponse = null;
+        try {
+            chaincodeResponse = attrService.revokeAttr(request);
+        } catch (Exception e) {
+            return Result.failWithMessage(400, e.getMessage());
+        }
         DABEUser user = dabeService.getUser(request.getUserName());
 
 //        //对接
@@ -407,8 +441,13 @@ public class UserController {
      */
     @PostMapping("/attr/batchApply")
     public Result<Object> batchApplyAttr(@RequestBody @Validated ApplyUserAttrRequest request) {
-        return attrService.batchApplyAttr(request)
-                .getResult(str -> str);
+        Result<Object> result = null;
+        try {
+            result = attrService.batchApplyAttr(request).getResult(str -> str);
+        } catch (Exception e) {
+            return Result.failWithMessage(400, e.getMessage());
+        }
+        return result;
     }
 
     /**
@@ -440,7 +479,12 @@ public class UserController {
     @PostMapping("/attr/approval")
     public Result<Object> approveAttrApply(@RequestBody @Validated ApproveAttrApplyRequest request) {
         System.out.println("[br] in UserController.approveAttrApply()");
-        ChaincodeResponse response = attrService.approveAttrApply2(request);
+        ChaincodeResponse response = null;
+        try {
+            response = attrService.approveAttrApply2(request);
+        } catch (Exception e) {
+            return Result.failWithMessage(400, e.getMessage());
+        }
         // [br]增加同步属性的调用，这样u1同意u2的属性后，u2就能立即获得属性授权，而不用点同步属性才获得授权了
         System.out.println(String.format("[br] 审批属性完成，执行用户：%s，的同步属性操作", request.getToUserName()));
         SyncAttrRequest syncRequest = SyncAttrRequest.builder().fileName(request.getToUserName()).build();
@@ -494,23 +538,45 @@ public class UserController {
     @PostMapping("/attr/sync")
     public Result<DABEUser> syncSuccessApply(@RequestBody @Validated SyncAttrRequest request) {
         if (request.getType() == null) {
-            return Result.okWithData(attrService.syncSuccessAttrApply(request.getFileName()));
+            DABEUser dabeUser = null;
+            try {
+                dabeUser = attrService.syncSuccessAttrApply(request.getFileName());
+            } catch (Exception e) {
+                return Result.failWithMessage(400, e.getMessage());
+            }
+            return Result.okWithData(dabeUser);
         }
-        return Result.okWithData(
-                attrService.syncSuccessAttrApply2(request.getFileName(),
-                        request.getType() == 0 ? request.getToId() : "",
-                        request.getType() == 1 ? request.getToId() : ""));
+        DABEUser dabeUser = null;
+        try {
+            dabeUser = attrService.syncSuccessAttrApply2(request.getFileName(),
+                    request.getType() == 0 ? request.getToId() : "",
+                    request.getType() == 1 ? request.getToId() : "");
+        } catch (Exception e) {
+            return Result.failWithMessage(400, e.getMessage());
+        }
+        return Result.okWithData(dabeUser);
     }
 
     // [br]增加。直接以SyncAttrRequest为参数的同步属性函数
     public Result<DABEUser> syncSuccessApply2(SyncAttrRequest request) {
         if (request.getType() == null) {
-            return Result.okWithData(attrService.syncSuccessAttrApply(request.getFileName()));
+            DABEUser dabeUser = null;
+            try {
+                dabeUser = attrService.syncSuccessAttrApply(request.getFileName());
+            } catch (Exception e) {
+                return Result.failWithMessage(400, e.getMessage());
+            }
+            return Result.okWithData(dabeUser);
         }
-        return Result.okWithData(
-                attrService.syncSuccessAttrApply2(request.getFileName(),
-                        request.getType() == 0 ? request.getToId() : "",
-                        request.getType() == 1 ? request.getToId() : ""));
+        DABEUser dabeUser = null;
+        try {
+            dabeUser = attrService.syncSuccessAttrApply2(request.getFileName(),
+                    request.getType() == 0 ? request.getToId() : "",
+                    request.getType() == 1 ? request.getToId() : "");
+        } catch (Exception e) {
+            return Result.failWithMessage(400, e.getMessage());
+        }
+        return Result.okWithData(dabeUser);
     }
 
     /**
@@ -519,8 +585,14 @@ public class UserController {
     @PostMapping("/attr/history")
     public Result<Object> attrHistory(@RequestBody AttrHistoryRequest attrHistoryRequest) {
         String userName = attrHistoryRequest.getUserName();
-        return attrService.queryAttrHistory(userName)
-                .getResult(str -> JsonProviderHolder.JACKSON.parseList(str, PlatUserAttrHistory.class));
+        Result<Object> result = null;
+        try {
+            result = attrService.queryAttrHistory(userName)
+                    .getResult(str -> JsonProviderHolder.JACKSON.parseList(str, PlatUserAttrHistory.class));
+        } catch (Exception e) {
+            return Result.failWithMessage(400, e.getMessage());
+        }
+        return result;
     }
 
     /**

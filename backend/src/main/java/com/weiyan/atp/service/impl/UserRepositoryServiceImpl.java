@@ -57,8 +57,8 @@ public class UserRepositoryServiceImpl implements UserRepositoryService {
     public ChaincodeResponse createUser(CreateUserRequest request) {
         DABEUser user = dabeService.getUser(request.getFileName());
         Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
-        Preconditions.checkNotNull(user.getName());
-        Preconditions.checkNotNull(user.getEggAlpha());
+        Preconditions.checkNotNull(user.getName(), "user name is null");
+        Preconditions.checkNotNull(user.getEggAlpha(), "user egg alpha is null");
         try {
             CommonController cc = new CommonController();
             cc.generateRsaKeysFile(user.getName());
@@ -88,8 +88,8 @@ public class UserRepositoryServiceImpl implements UserRepositoryService {
     public ChaincodeResponse createUserInOne(String userName,String userType,String channel) {
         DABEUser user = dabeService.getUser(userName);
         Preconditions.checkNotNull(user, NO_USER_ERROR + userName);
-        Preconditions.checkNotNull(user.getName());
-        Preconditions.checkNotNull(user.getEggAlpha());
+        Preconditions.checkNotNull(user.getName(), "user name is null");
+        Preconditions.checkNotNull(user.getEggAlpha(), "user egg alpha is null");
 //        CommonController cc = new CommonController();
 //        cc.generateRsaKeysFile(user.getName());
 //        String priKey = FileUtils.readFileToString(new File(priKeyPath + userName),

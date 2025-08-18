@@ -70,6 +70,8 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
     @Value("${atp.path.privateKey}")
     private String priKeyPath;
 
+    private static final String NO_USER_ERROR = "no user for file:";
+
     public OrgRepositoryServiceImpl(ChaincodeService chaincodeService, DABEService dabeService,
                                     UserRepositoryService userRepositoryService) {
         this.chaincodeService = chaincodeService;
@@ -80,7 +82,8 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
     @Override
     public ChaincodeResponse applyCreateOrg(CreateOrgRequest request) {
         DABEUser user = dabeService.getUser(request.getFileName());
-        Preconditions.checkNotNull(user.getName());
+        Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
+        Preconditions.checkNotNull(user.getName(), "user name is null");
 
         //check request
         if (request.getUsers().size() != request.getN()
@@ -106,7 +109,8 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
     @Override
     public ChaincodeResponse applyCreateOrg2(CreateOrgRequest request) {
         DABEUser user = dabeService.getUser(request.getFileName());
-        Preconditions.checkNotNull(user.getName());
+        Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
+        Preconditions.checkNotNull(user.getName(), "user name is null");
 
         //check request
         if (request.getUsers().size() != request.getN()
@@ -132,7 +136,8 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
     @Override
     public ChaincodeResponse applyDeclareOrgAttr(DeclareOrgAttrRequest request) {
         DABEUser user = dabeService.getUser(request.getFileName());
-        Preconditions.checkNotNull(user.getName());
+        Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
+        Preconditions.checkNotNull(user.getName(), "user name is null");
 
         DeclareOrgAttrCCRequest ccRequest = DeclareOrgAttrCCRequest.builder()
             .orgId(request.getOrgName())
@@ -147,7 +152,8 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
     @Override
     public ChaincodeResponse applyDeclareOrgAttr2(DeclareOrgAttrRequest request) {
         DABEUser user = dabeService.getUser(request.getFileName());
-        Preconditions.checkNotNull(user.getName());
+        Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
+        Preconditions.checkNotNull(user.getName(), "user name is null");
 
         DeclareOrgAttrCCRequest ccRequest = DeclareOrgAttrCCRequest.builder()
                 .orgId(request.getOrgName())
@@ -180,7 +186,8 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
     public void approveOrgApply(OrgApplyTypeEnum type,
                                 ApproveOrgApplyRequest request) {
         DABEUser user = dabeService.getUser(request.getFileName());
-        Preconditions.checkNotNull(user.getName());
+        Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
+        Preconditions.checkNotNull(user.getName(), "user name is null");
         String priKey = getPriKey(request.getFileName());
 
         // 0_5. 查询必要的申请信息
@@ -261,7 +268,8 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
     public void approveOrgApply2(OrgApplyTypeEnum type,
                                  ApproveOrgApplyRequest request) {
         DABEUser user = dabeService.getUser(request.getFileName());
-        Preconditions.checkNotNull(user.getName());
+        Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
+        Preconditions.checkNotNull(user.getName(), "user name is null");
         String priKey = getPriKey(request.getFileName());
 
         // 0_5. 查询必要的申请信息
@@ -346,7 +354,8 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
     public void submitPartPk(OrgApplyTypeEnum type, String orgName,
                              String fileName, String attrName) {
         DABEUser user = dabeService.getUser(fileName);
-        Preconditions.checkNotNull(user.getName());
+        Preconditions.checkNotNull(user, NO_USER_ERROR + fileName);
+        Preconditions.checkNotNull(user.getName(), "user name is null");
         String priKey = getPriKey(fileName);
         PrivateKey privateKey = SecurityUtils.from(SecurityUtils.X509, priKey, "");
 
@@ -382,7 +391,8 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
     public void submitPartPk2(OrgApplyTypeEnum type, String orgName,
                              String fileName, String attrName) {
         DABEUser user = dabeService.getUser(fileName);
-        Preconditions.checkNotNull(user.getName());
+        Preconditions.checkNotNull(user, NO_USER_ERROR + fileName);
+        Preconditions.checkNotNull(user.getName(), "user name is null");
         String priKey = getPriKey(fileName);
         PrivateKey privateKey = SecurityUtils.from(SecurityUtils.X509, priKey, "");
         if ((type == OrgApplyTypeEnum.CREATION && user.getOpkMap().containsKey(orgName)
@@ -518,7 +528,8 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
     @Override
     public void mixPartPk(OrgApplyTypeEnum type, String orgName, String attrName, String fileName) {
         DABEUser user = dabeService.getUser(fileName);
-        Preconditions.checkNotNull(user.getName());
+        Preconditions.checkNotNull(user, NO_USER_ERROR + fileName);
+        Preconditions.checkNotNull(user.getName(), "user name is null");
         String priKey = getPriKey(fileName);
 
         MixPartPKCCRequest request = MixPartPKCCRequest.builder()
@@ -538,7 +549,8 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
     @Override
     public void mixPartPk2(OrgApplyTypeEnum type, String orgName, String attrName, String fileName) {
         DABEUser user = dabeService.getUser(fileName);
-        Preconditions.checkNotNull(user.getName());
+        Preconditions.checkNotNull(user, NO_USER_ERROR + fileName);
+        Preconditions.checkNotNull(user.getName(), "user name is null");
         String priKey = getPriKey(fileName);
         MixPartPKCCRequest request = MixPartPKCCRequest.builder()
                 .orgId(orgName)
