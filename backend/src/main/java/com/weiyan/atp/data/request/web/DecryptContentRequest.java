@@ -21,8 +21,6 @@ public class DecryptContentRequest {
     @NotEmpty
     private String fileName;
 
-    private String cipher;
-
     private List<String> tags;
 
     @NotEmpty
@@ -37,7 +35,6 @@ public class DecryptContentRequest {
         return "DecryptContentRequest{" +
                 "userName='" + userName + '\'' +
                 ", fileName='" + fileName + '\'' +
-                ", cipher='" + cipher + '\'' +
                 ", tags=" + tags +
                 ", sharedUser='" + sharedUser + '\'' +
                 ", ip='" + ip + '\'' +

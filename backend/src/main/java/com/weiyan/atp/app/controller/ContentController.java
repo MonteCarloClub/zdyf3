@@ -12,24 +12,13 @@ import com.weiyan.atp.data.response.web.PlatContentsResponse;
 import com.weiyan.atp.service.AttrService;
 import com.weiyan.atp.service.ContentService;
 import com.weiyan.atp.service.DABEService;
-import com.weiyan.atp.utils.JsonProviderHolder;
 import com.weiyan.atp.utils.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.configurationprocessor.json.JSONArray;
-import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,8 +31,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.sql.*;
-import java.util.Date;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Objects;
 
 /**
  * @author : 魏延thor
@@ -162,18 +153,22 @@ public class ContentController {
         if(!request.getUserName().equals(request.getSharedUser())){
 
             String filePath = encryptDataPath +request.getSharedUser()+"/"+ request.getFileName();
+            String cipher;
             try {
-                String cipher= FileUtils.readFileToString(new File(filePath), StandardCharsets.UTF_8);
-                request.setCipher(cipher);
+                cipher= FileUtils.readFileToString(new File(filePath), StandardCharsets.UTF_8);
+                if (!StringUtils.isEmpty(cipher)) {
+                    response = contentService.decryptContent2(cipher, request.getUserName(), request.getFileName(), request.getSharedUser());
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            response = contentService.decryptContent2(request.getCipher(), request.getUserName(), request.getFileName(), request.getSharedUser());
         }else{
             response = new ChaincodeResponse();
             response.setStatus(ChaincodeResponse.Status.SUCCESS);
         }
-
+        if (Objects.isNull(response)) {
+            return Result.failWithMessage(400, "ChaincodeResponse is null");
+        }
         if(response.isFailed()){
             return Result.attrsError(response.getMessage());
       //      throw new BaseException("test error: " + response.getMessage());
@@ -193,13 +188,14 @@ public class ContentController {
  //           String filePath = "atp\\data\\enc\\深圳市气象局\\深圳市\\ 深圳市福田区\\ 气象\\ 福田区-气象数据.xlsx";
             try {
                 String cipher= FileUtils.readFileToString(new File(filePath), StandardCharsets.UTF_8);
-                request.setCipher(cipher);
+                System.out.println("before DC2");
+                if (!StringUtils.isEmpty(cipher)) {
+                    response = contentService.decryptContent2(cipher, request.getUserName(), request.getFileName(), request.getSharedUser());
+                }
+                System.out.println("after DC2");
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.out.println("before DC2");
-            response = contentService.decryptContent2(request.getCipher(), request.getUserName(), request.getFileName(), request.getSharedUser());
-            System.out.println("after DC2");
         }else{
             response = new ChaincodeResponse();
             response.setStatus(ChaincodeResponse.Status.SUCCESS);
@@ -250,6 +246,9 @@ public class ContentController {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
+        if (Objects.isNull(response)) {
+            return Result.failWithMessage(400, "ChaincodeResponse is null");
+        }
         if(response.isFailed()){
             return Result.failWithMessage(404,"test error: " + response.getMessage());
 
@@ -273,7 +272,7 @@ public class ContentController {
     @PostMapping("/decrypt")
     public Result<String> decContent(@RequestBody @Validated DecryptContentRequest request) {
         return Result.okWithData(
-                contentService.decryptContent(request.getCipher(), request.getFileName()));
+                contentService.decryptContent("fake-cipher", request.getFileName()));
     }
 
     @GetMapping("/list")
