@@ -1,16 +1,11 @@
 package com.weiyan.atp.service.impl;
 
 import com.google.common.base.Preconditions;
-
 import com.weiyan.atp.constant.AttrApplyStatusEnum;
 import com.weiyan.atp.constant.BaseException;
 import com.weiyan.atp.constant.ChaincodeTypeEnum;
-import com.weiyan.atp.data.bean.ChaincodeResponse;
+import com.weiyan.atp.data.bean.*;
 import com.weiyan.atp.data.bean.ChaincodeResponse.Status;
-import com.weiyan.atp.data.bean.DABEUser;
-import com.weiyan.atp.data.bean.PlatAttr;
-import com.weiyan.atp.data.bean.PlatUser;
-import com.weiyan.atp.data.bean.PlatUserAttrApply;
 import com.weiyan.atp.data.request.chaincode.plat.*;
 import com.weiyan.atp.data.request.web.*;
 import com.weiyan.atp.service.AttrService;
@@ -20,9 +15,7 @@ import com.weiyan.atp.service.UserRepositoryService;
 import com.weiyan.atp.utils.CCUtils;
 import com.weiyan.atp.utils.JsonProviderHolder;
 import com.weiyan.atp.utils.SecurityUtils;
-
 import lombok.extern.slf4j.Slf4j;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.Strings;
@@ -36,7 +29,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 /**
  * @author : 魏延thor
@@ -85,7 +77,7 @@ public class AttrServiceImpl implements AttrService {
     public ChaincodeResponse declareUserAttr(DeclareUserAttrRequest request) {
         DABEUser user = dabeService.getUser(request.getFileName());
         Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
-        Preconditions.checkNotNull(user.getName());
+        Preconditions.checkNotNull(user.getName(), "user name is null");
         Preconditions.checkNotNull(user.getApkMap().get(request.getAttrName()), "no attr");
 
         try {
@@ -114,7 +106,7 @@ public class AttrServiceImpl implements AttrService {
         System.out.println("[br][br] to declare: attrName = " + request.getAttrName());
         DABEUser user = dabeService.getUser(request.getFileName());
         Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
-        Preconditions.checkNotNull(user.getName());
+        Preconditions.checkNotNull(user.getName(), "user name is null");
         System.out.println("[br][br] 'user.getApkMap().get(request.getAttrName())'=" + user.getApkMap().get(request.getAttrName()));
         Preconditions.checkNotNull(user.getApkMap().get(request.getAttrName()), "no attr");
         try{
@@ -140,7 +132,7 @@ public class AttrServiceImpl implements AttrService {
     public ChaincodeResponse batchDeclareUserAttr(DeclareUserAttrRequest request) {
         DABEUser user = dabeService.getUser(request.getFileName());
         Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
-        Preconditions.checkNotNull(user.getName());
+        Preconditions.checkNotNull(user.getName(), "user name not exist");
         Preconditions.checkNotNull(user.getApkMap().get(request.getAttrName()), "no attr");
 
         DeclareUserAttrCCRequest ccRequest =
@@ -163,7 +155,7 @@ public class AttrServiceImpl implements AttrService {
     public ChaincodeResponse applyAttr(ApplyUserAttrRequest request) {
         DABEUser user = dabeService.getUser(request.getFileName());
         Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
-        Preconditions.checkNotNull(user.getName());
+        Preconditions.checkNotNull(user.getName(), "user name is null");
 
         try {
             String priKey = FileUtils.readFileToString(
@@ -189,7 +181,7 @@ public class AttrServiceImpl implements AttrService {
     public ChaincodeResponse applyAttr2(ApplyUserAttrRequest request) {
         DABEUser user = dabeService.getUser(request.getFileName());
         Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
-        Preconditions.checkNotNull(user.getName());
+        Preconditions.checkNotNull(user.getName(), "user name is null");
 
 //        ApplyUserAttrCCRequest ccRequest = ApplyUserAttrCCRequest.builder()
 //                .uid(user.getName())
@@ -226,12 +218,12 @@ public class AttrServiceImpl implements AttrService {
     public ChaincodeResponse revokeAttr(RevokeUserAttrRequest request) {
         DABEUser user1 = dabeService.getUser(request.getUserName());
         Preconditions.checkNotNull(user1, NO_USER_ERROR + request.getUserName());
-        Preconditions.checkNotNull(user1.getName());
+        Preconditions.checkNotNull(user1.getName(), "user name is null");
         Preconditions.checkNotNull(user1.getApkMap().get(request.getAttrName()), "no attr");
 
         DABEUser user2 = dabeService.getUser(request.getToUserName());
         Preconditions.checkNotNull(user2, NO_USER_ERROR + request.getToUserName());
-        Preconditions.checkNotNull(user2.getName());
+        Preconditions.checkNotNull(user2.getName(), "user name is null");
         Preconditions.checkNotNull(user2.getAppliedAttrMap().get(request.getAttrName()), "no attr");
 
         user2.deleteAttr(request.getAttrName());
@@ -253,7 +245,7 @@ public class AttrServiceImpl implements AttrService {
     public ChaincodeResponse batchApplyAttr(ApplyUserAttrRequest request) {
         DABEUser user = dabeService.getUser(request.getFileName());
         Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
-        Preconditions.checkNotNull(user.getName());
+        Preconditions.checkNotNull(user.getName(), "user name is null");
 
         try {
             String priKey = FileUtils.readFileToString(
@@ -312,7 +304,7 @@ public class AttrServiceImpl implements AttrService {
     public ChaincodeResponse approveAttrApply(ApproveAttrApplyRequest request) {
         DABEUser user = dabeService.getUser(request.getFileName());
         Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
-        Preconditions.checkNotNull(user.getName());
+        Preconditions.checkNotNull(user.getName(), "user name is null");
 
         try {
             // 自己签名私钥
@@ -365,7 +357,7 @@ public class AttrServiceImpl implements AttrService {
         System.out.println("[br][br]in AttrServiceImpl.approveAttrApply2()");
         DABEUser user = dabeService.getUser(request.getFileName());
         Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
-        Preconditions.checkNotNull(user.getName());
+        Preconditions.checkNotNull(user.getName(), "user name is null");
         try{
             String priKey = FileUtils.readFileToString(
                     new File(priKeyPath + request.getFileName()),
@@ -421,7 +413,7 @@ public class AttrServiceImpl implements AttrService {
     public DABEUser syncSuccessAttrApply2(String fileName, String toUid, String toOrgId) {
         DABEUser user = dabeService.getUser(fileName);
         Preconditions.checkNotNull(user, NO_USER_ERROR + fileName);
-        Preconditions.checkNotNull(user.getName());
+        Preconditions.checkNotNull(user.getName(), "user name is null");
 
         AtomicBoolean success = new AtomicBoolean(true);
         ChaincodeResponse response = null;
@@ -480,7 +472,7 @@ public class AttrServiceImpl implements AttrService {
     public DABEUser syncSuccessAttrApply(String fileName, String toUid, String toOrgId) {
         DABEUser user = dabeService.getUser(fileName);
         Preconditions.checkNotNull(user, NO_USER_ERROR + fileName);
-        Preconditions.checkNotNull(user.getName());
+        Preconditions.checkNotNull(user.getName(), "user name is null");
         user.setAppliedAttrMap(new HashMap<>());
 
         AtomicBoolean success = new AtomicBoolean(true);
