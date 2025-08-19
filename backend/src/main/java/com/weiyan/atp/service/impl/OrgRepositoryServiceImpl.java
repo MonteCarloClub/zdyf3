@@ -67,11 +67,36 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
         Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
         Preconditions.checkNotNull(user.getName(), "user name is null");
 
+        // 0. 组织名不能重复：若已存在则拒绝创建
+        try {
+            PlatOrg exists = queryOrg(request.getOrgName());
+            if (exists != null) {
+                throw new BaseException("org already exists: " + request.getOrgName());
+            }
+        } catch (BaseException be) {
+            // 允许“没有该组织”的提示通过，其余异常向上抛出
+            if (!be.getMessage().startsWith("no org exists")) {
+                throw be;
+            }
+        }
+
+        // 0.5 所有用户必须已存在（平台用户）
+        Preconditions.checkNotNull(request.getUsers(), "users is null");
+        for (String name : request.getUsers()) {
+            try {
+                userRepositoryService.queryUser(QueryUserRequest.builder().userName(name).build());
+            } catch (Exception e) {
+                throw new BaseException("no user exists: " + name);
+            }
+        }
+
+        // 后端强制使用 users.size() 作为 n，避免前端传错 n
+        int n = request.getUsers().size();
+        int t = request.getT();
         //check request
-        if (request.getUsers().size() != request.getN()
-            || request.getN() < request.getT()
-            || request.getT() < 1
-            || !request.getUsers().contains(user.getName())) {
+        if (n < t
+                || t < 1
+                || !request.getUsers().contains(user.getName())) {
             throw new BaseException("request error");
         }
 
@@ -94,10 +119,35 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
         Preconditions.checkNotNull(user, NO_USER_ERROR + request.getFileName());
         Preconditions.checkNotNull(user.getName(), "user name is null");
 
+        // 0. 组织名不能重复：若已存在则拒绝创建
+        try {
+            PlatOrg exists = queryOrg(request.getOrgName());
+            if (exists != null) {
+                throw new BaseException("org already exists: " + request.getOrgName());
+            }
+        } catch (BaseException be) {
+            // 允许“没有该组织”的提示通过，其余异常向上抛出
+            if (!be.getMessage().startsWith("no org exists")) {
+                throw be;
+            }
+        }
+
+        // 0.5 所有用户必须已存在（平台用户）
+        Preconditions.checkNotNull(request.getUsers(), "users is null");
+        for (String name : request.getUsers()) {
+            try {
+                userRepositoryService.queryUser(QueryUserRequest.builder().userName(name).build());
+            } catch (Exception e) {
+                throw new BaseException("no user exists: " + name);
+            }
+        }
+
+        // 后端强制使用 users.size() 作为 n，避免前端传错 n
+        int n = request.getUsers().size();
+        int t = request.getT();
         //check request
-        if (request.getUsers().size() != request.getN()
-                || request.getN() < request.getT()
-                || request.getT() < 1
+        if (n < t
+                || t < 1
                 || !request.getUsers().contains(user.getName())) {
             throw new BaseException("request error");
         }
@@ -172,8 +222,14 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
         Preconditions.checkNotNull(user.getName(), "user name is null");
         String priKey = getPriKey(request.getFileName());
 
-        // 0_5. 查询必要的申请信息
-        PlatOrgApply orgApply = queryOrgApply(request.getOrgName(), type, request.getAttrName());
+        // 0. 查询必要的申请信息：必须存在对应的组织申请，否则不允许审批
+        PlatOrgApply orgApply;
+        try {
+            orgApply = queryOrgApply(request.getOrgName(), OrgApplyTypeEnum.CREATION, null);
+        } catch (BaseException be) {
+            throw new BaseException("no creation apply exists for org: " + request.getOrgName());
+        }
+
 
         // 1. plat的同意加入
         if (!orgApply.getFromUserName().equals(user.getName())) {

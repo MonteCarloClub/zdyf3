@@ -17,7 +17,7 @@ public class CreateOrgRequest {
     private String fileName;
     @NotNull
     private Integer t;
-    @NotNull
+
     private Integer n;
 
     private List<String> users;
