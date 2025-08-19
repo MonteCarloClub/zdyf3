@@ -13,6 +13,7 @@ import com.weiyan.atp.utils.SecurityUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -53,6 +54,11 @@ public class DABEServiceImpl implements DABEService {
 
 //    @Value("${atp.devMode.dpkiUrl}")
 //    private String dpkiUrl;
+
+    /**
+     * 来自链码的重复属性提示消息前缀
+     */
+    private static final String DUPLICATE_ATTR_MSG = "already has this attr:";
 
     public DABEServiceImpl(ChaincodeService chaincodeService) {
         this.chaincodeService = chaincodeService;
@@ -159,6 +165,10 @@ public class DABEServiceImpl implements DABEService {
         ChaincodeResponse response = chaincodeService.query(
                 ChaincodeTypeEnum.DABE, "/user/declareAttr",
                 new ArrayList<>(Arrays.asList(userJson, attrName)));
+        if (StringUtils.startsWith(response.getMessage(), DUPLICATE_ATTR_MSG)) {
+            user.setDuplicateAttrCreation(true);
+            return user;
+        }
         return CCUtils.saveResponse(userPath, fileName, user, true, response);
     }
 

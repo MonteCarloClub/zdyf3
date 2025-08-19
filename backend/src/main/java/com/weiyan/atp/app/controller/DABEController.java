@@ -5,12 +5,9 @@ import com.weiyan.atp.data.bean.Result;
 import com.weiyan.atp.data.request.web.CreateUserAttrRequest;
 import com.weiyan.atp.data.request.web.UserLoginRequest;
 import com.weiyan.atp.service.DABEService;
-
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-import org.w3c.dom.Attr;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -86,7 +83,7 @@ public class DABEController {
         String fileName = createUserAttrRequest.getFileName();
         System.out.println("[br]in DABEController.declareAttr(): AttrPattern = " + AttrPattern);
         if (!Pattern.matches(AttrPattern, attrName)) {
-            return Result.internalError("属性名不合法："+attrName+"（应该由大小写字母、数字或汉字组成）");
+            return Result.internalError("属性名不合法：" + attrName + "（应该由大小写字母、数字或汉字组成）");
         }
         // [br]增加：检查属性名中不能出现"AND"和"OR"，否则加解密会出问题
         Matcher matcher = Pattern.compile("(AND)|(OR)").matcher(attrName);
@@ -100,6 +97,9 @@ public class DABEController {
         if (user == null) {
             return Result.internalError("no user or password error");
         } else {
+            if (user.isDuplicateAttrCreation()) {
+                return Result.failWithMessage(400, "already has this attr");
+            }
             return Result.okWithData(user);
         }
     }

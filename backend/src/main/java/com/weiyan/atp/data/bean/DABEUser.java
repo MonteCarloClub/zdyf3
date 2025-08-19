@@ -110,4 +110,7 @@ public class DABEUser {
         @JsonProperty("Share")
         private Map<String, String> share;
     }
+
+    // 用于创建属性时，判断是否重复创建，方便给出错误提示
+    public boolean duplicateAttrCreation;
 }
