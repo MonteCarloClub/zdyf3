@@ -34,7 +34,9 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.security.MessageDigest;
 import java.util.Objects;
+
 
 /**
  * @author : 魏延thor
@@ -319,6 +321,11 @@ public class ContentController {
         if(file.isEmpty()){
             return Result.internalError("file is empty");
         }
+        
+        // 验证tags数量：大于等于0且小于等于5
+        if (request.getTags() == null || request.getTags().size() < 0 || request.getTags().size() > 5) {
+            return Result.internalError("tags数量必须在0-5之间");
+        }
 //        String ipAddress = SecurityUtils.getIpAddr(req);
 ////        request.setIp(ipAddress);
 //        if(request.getTags().get(2).equals("test")){
@@ -329,25 +336,45 @@ public class ContentController {
         //获取文件的原始名
         String filename = file.getOriginalFilename();
         System.out.println(filename);
-
-        //连接gbase
-
-
-
-        //根据相对路径获取绝对路径
-        File dest = new File(new File(shareDataPath).getAbsolutePath()+ "/" + request.getFileName()+"/"+filename);
-        // [br]增加：检查是否已经有同名文件，同名文件不允许上传，必须不同名【因为同名文件只保存一份，永远都是以最新上传的策略为准的】
-        // 方法是，检查本地文件atp/data/enc/{username}/{filename}文件是否存在
-//        File encFile = new File(encryptDataPath + request.getFileName() + "/" + request.getSharedFileName());
-//        System.out.println("[br]in ContentController.upload(): encFile.getAbsolutePath() = " + encFile.getAbsolutePath());
-        System.out.println("[br]in ContentController.upload(): dest.getAbsolutePath() = " + dest.getAbsolutePath());
-        if (dest.exists()) {
-            // 说明该文件的encrypt文件（和cipher那里的密文还不太一样，encrypt里好像只是一些加密的基本信息C0,C1s之类的，没有包含文件加密的完整密文，cipher里则含有完整的密文信息）
-            // 已经存在，说明该用户已经上传过该文件
-            System.out.println("[br] in ContentController.upload(): 用户" + request.getFileName() + "已经上传过文件" + request.getSharedFileName());
-            return Result.internalError("您已经上传过该文件，请勿重复上传");
+        
+        // 若 tags 可用且未超过上限，将原文件名加入标签，便于前端展示
+        if (request.getTags() == null) {
+            request.setTags(new java.util.ArrayList<>());
         }
-        // [br]增加到此结束，下面是原有代码
+        if (request.getTags().size() < 5) {
+            String origNameTag = "fileName:" + filename;
+            if (!request.getTags().contains(origNameTag)) {
+                request.getTags().add(origNameTag);
+            }
+        }
+        
+        // 生成去重文件名：使用 hash(文件名, 时间戳)
+        String ts = String.valueOf(System.currentTimeMillis());
+        String newName = "";
+        try {
+            // 直接使用SHA256哈希值，避免时间格式中的冒号字符
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            String input = filename + ts;
+            byte[] hash = md.digest(input.getBytes(StandardCharsets.UTF_8));
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+            newName = hexString.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.internalError("生成文件名失败");
+        }
+        
+
+        
+        //根据相对路径获取绝对路径（使用新名）
+        File dest = new File(new File(shareDataPath).getAbsolutePath()+ "/" + request.getFileName()+"/"+ newName);
+        System.out.println("[br]in ContentController.upload(): dest.getAbsolutePath() = " + dest.getAbsolutePath());
         System.out.println(dest.getPath());
         if (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdir();
@@ -366,11 +393,11 @@ public class ContentController {
 
 
         request.setPlainContent(data);      // [br]这里的data是读取的完整的上传文件
-        request.setSharedFileName(filename);
+        request.setSharedFileName(newName);  // 使用哈希文件名，让链上操作也基于哈希
         System.out.println("before encContent2");
         EncryptionResponse encryptionResponse = contentService.encContent2(request);    // [br]此时，返回的encryptionResponse的.cipher，是对上传的完整文件的加密后完整的密文的简化版本（可见contentService.encContent()函数内的注释，那里解释了为什么是简化版本）
         System.out.println("before write");
-        FileUtils.write(new File(encryptDataPath +request.getFileName()+"/"+ filename), encryptionResponse.getCipher(),
+        FileUtils.write(new File(encryptDataPath +request.getFileName()+"/"+ newName), encryptionResponse.getCipher(),
                 StandardCharsets.UTF_8);
         System.out.println("uploadenc success");
 
@@ -389,8 +416,25 @@ public class ContentController {
             System.out.println("Connection succeed!");
 
             //获取时间与文件名哈希作为标识
-            SHA256hash foo = new SHA256hash();
-            String id = foo.getSHA(filename);
+            String id = "";
+            try {
+                // 使用相同的SHA256逻辑生成数据库ID
+                MessageDigest md = MessageDigest.getInstance("SHA-256");
+                String input = filename + ts;
+                byte[] hash = md.digest(input.getBytes(StandardCharsets.UTF_8));
+                StringBuilder hexString = new StringBuilder();
+                for (byte b : hash) {
+                    String hex = Integer.toHexString(0xff & b);
+                    if (hex.length() == 1) {
+                        hexString.append('0');
+                    }
+                    hexString.append(hex);
+                }
+                id = hexString.toString();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return Result.internalError("生成数据库ID失败: " + e.getMessage());
+            }
 
 
             //插入标识与文件路径
@@ -400,7 +444,7 @@ public class ContentController {
             try {
                 pstmt = conn.prepareStatement(sql);
                 pstmt.setString(1, id);
-                pstmt.setString(2, encryptDataPath +request.getFileName()+"/"+ filename);
+                pstmt.setString(2, encryptDataPath +request.getFileName()+"/"+ newName);
                 pstmt.setString(3, request.getPolicy());
                 int i = pstmt.executeUpdate();
                 if (i>0) {
@@ -480,9 +524,8 @@ public class ContentController {
         FileUtils.copyInputStreamToFile(file.getInputStream(), dest);
 
         log.info("记录完成！！");
-//        return Result.success();
-        // [br]按照蓝象的要求，修改接口，额外返回cipher数据
-        return Result.okWithData(encryptionResponse.getCipher());
+        // 返回哈希文件名，前端和链上都使用此哈希值
+        return Result.okWithData(newName);
     }
 
     //下载解密后的原文
@@ -492,12 +535,8 @@ public class ContentController {
         File dest = new File(new File(shareDataPath).getAbsolutePath()+ "/" + sharedUser+"/"+fileName);
         //获取输入流对象（用于读文件）
         FileInputStream fis = new FileInputStream(dest);
-        //获取文件后缀（.txt）
-        String extendFileName = fileName.substring(fileName.lastIndexOf('.'));
-        //动态设置响应类型，根据前台传递文件类型设置响应类型
-        //response.setContentType(request.getSession().getServletContext().getMimeType(extendFileName));
-        //response.setContentType("content-type:octet-stream");
-        response.setContentType("application/force-download");
+        // 以通用二进制流类型下载（哈希无扩展名场景）
+        response.setContentType("application/octet-stream");
         //设置响应头,attachment表示以附件的形式下载，inline表示在线打开
         response.setHeader("content-disposition","attachment;fileName="+ URLEncoder.encode(fileName,"UTF-8"));
         //获取输出流对象（用于写文件）
