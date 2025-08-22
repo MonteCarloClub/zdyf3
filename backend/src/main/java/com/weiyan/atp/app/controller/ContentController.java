@@ -322,9 +322,14 @@ public class ContentController {
             return Result.internalError("file is empty");
         }
         
-        // 验证tags数量：大于等于0且小于等于5
-        if (request.getTags() == null || request.getTags().size() < 0 || request.getTags().size() > 5) {
-            return Result.internalError("tags数量必须在0-5之间");
+        // 初始化tags（如果为null）
+        if (request.getTags() == null) {
+            request.setTags(new java.util.ArrayList<>());
+        }
+        
+        // 验证用户自定义tags数量：必须小于等于4（因为要预留1个给原始文件名）
+        if (request.getTags().size() > 4) {
+            return Result.internalError("用户自定义tags数量不能超过4个（系统会自动添加原始文件名tag）");
         }
 //        String ipAddress = SecurityUtils.getIpAddr(req);
 ////        request.setIp(ipAddress);
@@ -337,15 +342,10 @@ public class ContentController {
         String filename = file.getOriginalFilename();
         System.out.println(filename);
         
-        // 若 tags 可用且未超过上限，将原文件名加入标签，便于前端展示
-        if (request.getTags() == null) {
-            request.setTags(new java.util.ArrayList<>());
-        }
-        if (request.getTags().size() < 5) {
-            String origNameTag = "fileName:" + filename;
-            if (!request.getTags().contains(origNameTag)) {
-                request.getTags().add(origNameTag);
-            }
+        // 优先添加原始文件名tag，确保每个文件都有此标识
+        String origNameTag = "fileName:" + filename;
+        if (!request.getTags().contains(origNameTag)) {
+            request.getTags().add(origNameTag);
         }
         
         // 生成去重文件名：使用 hash(文件名, 时间戳)
