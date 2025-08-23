@@ -90,7 +90,7 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
             }
         }
 
-        // 后端强制使用 users.size() 作为 n，避免前端传错 n
+        // 后端强制使用 users.size() 作为 n，忽略用户传入的 n 值
         int n = request.getUsers().size();
         int t = request.getT();
         //check request
@@ -102,7 +102,7 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
 
         CreateOrgCCRequest ccRequest = CreateOrgCCRequest.builder()
             .t(request.getT())
-            .n(request.getN())
+            .n(n)  // 使用后端计算的 n 值，而不是 request.getN()
             .orgId(request.getOrgName())
             .uidList(request.getUsers())
             .uid(user.getName())
@@ -142,7 +142,7 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
             }
         }
 
-        // 后端强制使用 users.size() 作为 n，避免前端传错 n
+        // 后端强制使用 users.size() 作为 n，忽略用户传入的 n 值
         int n = request.getUsers().size();
         int t = request.getT();
         //check request
@@ -154,7 +154,7 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
 
         CreateOrgCCRequest ccRequest = CreateOrgCCRequest.builder()
                 .t(request.getT())
-                .n(request.getN())
+                .n(n)  // 使用后端计算的 n 值，而不是 request.getN()
                 .orgId(request.getOrgName())
                 .uidList(request.getUsers())
                 .uid(user.getName())
