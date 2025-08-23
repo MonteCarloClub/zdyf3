@@ -111,9 +111,19 @@ public class OrgController {
     public Result<Object> applyDeclareAttr(@RequestBody @Validated DeclareOrgAttrRequest request) {
 //        return orgRepositoryService.applyDeclareOrgAttr2(request).getResult(str -> str);
         // [br]增加：属性名要符合apt.pattern.attr的格式
+        String attrName = request.getAttrName();
+        String orgName = request.getOrgName();
         System.out.println("[br]in OrgController.applyDeclareAttr(): AttrPattern = " + AttrPattern);
         if (!Pattern.matches(AttrPattern, request.getAttrName())) {
             return Result.internalError("属性名不合法："+request.getAttrName()+"（应该由大小写字母、数字或汉字组成）");
+        }
+        //权限检查
+        if(attrName.contains(":")){
+            String[] parts=attrName.split(":",2);
+            String declaredUser=parts[0];
+            if(!declaredUser.equals(orgName)){
+                return Result.internalError("权限不足：属性"+attrName+"不属于组织"+orgName+",无法审批");
+            }
         }
         // [br]增加：检查属性名中不能出现"AND"和"OR"，否则加解密会出问题
         Matcher matcher = Pattern.compile("(AND)|(OR)").matcher(request.getAttrName());

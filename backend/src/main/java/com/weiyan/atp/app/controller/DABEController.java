@@ -85,6 +85,14 @@ public class DABEController {
         if (!Pattern.matches(AttrPattern, attrName)) {
             return Result.internalError("属性名不合法：" + attrName + "（应该由大小写字母、数字或汉字组成）");
         }
+        //权限检查
+        if(attrName.contains(":")){
+            String[] parts=attrName.split(":",2);
+            String declaredUser=parts[0];
+            if(!declaredUser.equals(fileName)){
+                return Result.internalError("权限不足：属性"+attrName+"不属于用户"+fileName+",无法审批");
+            }
+        }
         // [br]增加：检查属性名中不能出现"AND"和"OR"，否则加解密会出问题
         Matcher matcher = Pattern.compile("(AND)|(OR)").matcher(attrName);
         if (matcher.find()) {

@@ -432,6 +432,17 @@ public class OrgRepositoryServiceImpl implements OrgRepositoryService {
         DABEUser user = dabeService.getUser(fileName);
         Preconditions.checkNotNull(user, NO_USER_ERROR + fileName);
         Preconditions.checkNotNull(user.getName(), "user name is null");
+        //检查用户是否调用审批接口
+        if (type == OrgApplyTypeEnum.CREATION) {
+            if (!user.getOskMap().containsKey(orgName)) {
+                throw new BaseException("您还没有调用 org/apply/creation/approval 接口，请先执行审批流程");
+            }
+        } else if (type == OrgApplyTypeEnum.ATTRIBUTE) {
+            if (!user.getOskMap().containsKey(orgName) ||
+                    !user.getOskMap().get(orgName).getAskMap().containsKey(attrName)) {
+                throw new BaseException("您还没有调用 org/apply/attribute/approval 接口，请先执行审批流程");
+            }
+        }
         String priKey = getPriKey(fileName);
         PrivateKey privateKey = SecurityUtils.from(SecurityUtils.X509, priKey, "");
         if ((type == OrgApplyTypeEnum.CREATION && user.getOpkMap().containsKey(orgName)
