@@ -11,7 +11,7 @@
 
         <el-form ref="loginForm" :model="login" :rules="loginRules" label-position="top">
           <el-form-item prop="name" label="用户名">
-            <el-input v-model="login.name" placeholder="请输入用户名" maxlength="11"></el-input>
+            <el-input v-model="login.name" placeholder="请输入用户名"></el-input>
           </el-form-item>
 
           <el-form-item prop="password" label="密码" v-if="useCert === false">

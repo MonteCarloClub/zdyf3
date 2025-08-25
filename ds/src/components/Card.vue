@@ -37,5 +37,8 @@ export default {
 .card-head {
   font-weight: 500;
   margin-top: 6px;
+
+  white-space: normal;
+  word-break: break-word;
 }
 </style>
